@@ -31,7 +31,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="orange" text>Review</v-btn>
+              <v-btn color="orange" text>Edit</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -63,6 +63,7 @@ export default {
         this.$store.commit("setLoginState", true);
       } else {
         this.$store.commit("setLoginState", false);
+        this.$router.push("/login");
       }
     });
   },
@@ -70,11 +71,12 @@ export default {
     return {
       tab: -1,
       checkbox: true,
-      cards: []
+      cards: [],
+
     };
   },
   mounted(){
-    this.$store.commit("setshowPlus", false);
+      this.$store.commit("setshowPlus", true);
   }
 };
 </script>

@@ -43,6 +43,9 @@ export default {
       isLogout: true,
       message: ""
     };
+  },
+  mounted(){
+    this.$store.commit("setshowPlus", false);
   }
 };
 </script>
