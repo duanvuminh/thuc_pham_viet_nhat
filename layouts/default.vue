@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
-      <v-list>
+      <v-list class="pt-0">
         <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -56,6 +56,7 @@ export default {
           to: "/contacts"
         }
       ];
+      
       rs.push({
         icon: "mdi-chart-bubble",
         title: this.$store.state.loggedIn ? "Logout" : "Login",
