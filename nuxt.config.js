@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config();
 
 export default {
   mode: 'universal',
@@ -6,8 +7,8 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - Review hàng hoá',
+    title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,12 +30,12 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-  ],
+  plugins: ['~/plugins/fireinit.js'],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
+    '@nuxtjs/dotenv',
     '@nuxtjs/vuetify',
     'nuxt-material-design-icons'
   ],
@@ -43,7 +44,7 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    '@nuxtjs/axios'
   ],
   /*
   ** Axios module configuration
@@ -87,8 +88,5 @@ export default {
   router: {
     // middleware: 'auth'
   },
-  /*
-  ** plugins
-  */
-  plugins: ['~/plugins/fireinit.js']
+
 }

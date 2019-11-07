@@ -71,12 +71,11 @@ export default {
     return {
       tab: -1,
       checkbox: true,
-      cards: [],
-
+      cards: []
     };
   },
-  mounted(){
-      this.$store.commit("setshowPlus", true);
+  mounted() {
+    this.$store.commit("setshowPlus", true);
   }
 };
 </script>

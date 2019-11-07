@@ -19,18 +19,19 @@
       <v-toolbar-title v-text="title" />
     </v-app-bar>
     <v-content color="white">
-      <v-container>
+      <v-container fluid >
         <nuxt />
       </v-container>
     </v-content>
     <v-footer :fixed="fixed" app color="cyan" dark>
       <span>&copy; 2019</span>
-      <v-btn absolute dark fab top right color="pink" v-if="showPlus">
+
+      <v-btn absolute dark fab top right color="pink" v-if="showPlus" href="/auth/create">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-footer>
   </v-app>
-</template>
+</template> 
 
 <script>
 export default {

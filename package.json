@@ -1,7 +1,7 @@
 {
-  "name": "thuc-pham-viet-gao",
+  "name": "vija",
   "version": "1.0.0",
-  "description": "My breathtaking Nuxt.js project",
+  "description": "Review hàng Nhật",
   "author": "duanvuminh",
   "private": true,
   "scripts": {
@@ -15,11 +15,13 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "@nuxtjs/vuetify": "^1.0.0",
     "firebase": "^7.2.3",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
-    "@nuxtjs/vuetify": "^1.0.0"
+    "vue-beautiful-chat": "^2.3.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
