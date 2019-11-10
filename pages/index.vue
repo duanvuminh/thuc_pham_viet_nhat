@@ -12,50 +12,11 @@
         </v-btn>
       </template>
     </v-toolbar>
-    <v-container fluid>
-      <v-row dense>
-        <v-col v-for="card in cards" :key="card.title" cols="12" sm="4" md="3" lg="3" xl="3">
-          <v-card class="mx-auto" max-width="400">
-            <v-img class="orange--text align-end" height="200px" :src="card.image_url1">
-              <v-card-title>{{card.name}}</v-card-title>
-            </v-img>
-
-            <v-card-subtitle
-              class="pb-0"
-            >{{`${card.unit} ${card.price}/ ${card.net>0?card.net+'kg':''} ${card.items_number>0?card.items_number+'cái':''}`}}</v-card-subtitle>
-
-            <v-card-text class="text--primary">
-              <div class="d-block text-truncate">{{card.description}}</div>
-              <div class="d-block text-truncate">{{card.paymethod}}</div>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="orange" text>Review</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
   </v-card>
 </template>
 <script>
 import firebase from "firebase";
 export default {
-  async asyncData({ params }) {
-    let collection = firebase
-      .app()
-      .firestore()
-      .collection("Goods")
-      .limit(20);
-    const rs = await collection.get();
-    let cards = [];
-    rs.forEach(doc => {
-      // console.log(doc);
-      cards.push(doc.data());
-    });
-    return { cards };
-  },
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {
@@ -68,12 +29,10 @@ export default {
   },
   data() {
     return {
-      tab: -1,
-      checkbox: true,
-      cards: []
+      tab: -1
     };
   },
-  mounted(){
+  mounted() {
     this.$store.commit("setshowPlus", false);
   }
 };

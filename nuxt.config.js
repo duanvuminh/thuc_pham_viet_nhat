@@ -7,7 +7,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - Review hàng hoá',
+    titleTemplate: '%s - Thông tin hàng ở Nhật',
     title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },
