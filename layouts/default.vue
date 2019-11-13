@@ -44,7 +44,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "ViJa"
+      title: process.env.site_name
     };
   },
   computed: {

@@ -7,7 +7,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - Thông tin hàng ở Nhật',
+    titleTemplate: '%s - Giới thiệu về cửa hàng, món ăn, địa điểm ở Nhật',
     title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -44,8 +44,12 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/markdownit'
   ],
+  markdownit: {
+    injected: true
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
