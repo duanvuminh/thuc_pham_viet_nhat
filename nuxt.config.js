@@ -91,6 +91,14 @@ export default {
   */
   router: {
     // middleware: 'auth'
+    extendRoutes (routes, resolve) {
+      routes.push({
+        path: '/items/:id',
+        components: {
+          default: resolve(__dirname, 'pages/items')
+        }
+      })
+    }
   },
 
 }

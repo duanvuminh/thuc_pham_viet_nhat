@@ -56,7 +56,7 @@
         <v-card class="elevation-1">
           <v-card-title>Preview</v-card-title>
           <v-card-subtitle>
-            <nuxt-link to="/">Cách viết tại đây</nuxt-link>
+            <a href="https://miaolz123.github.io/vue-markdown/">Cách viết tại đây</a>
           </v-card-subtitle>
           <div v-html="$md.render(content)" class="pa-2"></div>
         </v-card>
@@ -71,12 +71,18 @@
 </template>
 <script>
 import firebase from "firebase";
+const algoliasearch = require("algoliasearch");
+
+const client = algoliasearch("N7UFARQ48L", "0f4b8cf4d4b946f94b9bac03c2b8782d");
+const indexAlgolia = client.initIndex("GaoNhat_algolia");
 
 export default {
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        // console.log(user);
+        this.email = user.email;
         this.$store.commit("setLoginState", true);
       } else {
         this.$store.commit("setLoginState", false);
@@ -87,6 +93,7 @@ export default {
   data() {
     return {
       address: "",
+      email: "",
       content: "",
       files: [],
       name: "",
@@ -105,14 +112,105 @@ export default {
   },
   methods: {
     save() {
-      firebase
-        .database()
-        .ref("Goods")
-        .set({
-          username: "name",
-          email: "email",
-          profile_picture: "imageUrl"
-        });
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+      var files = this.files;
+      if (files.length > 0) {
+        Promise.all(
+          // Array of "Promises"
+          files.map(item => {
+            var ref = firebase.storage().ref(this.email + "/" + item.name);
+            ref.put(item);
+            return ref.getDownloadURL();
+          })
+        )
+          .then(url => {
+            // console.log(url);
+            firebase
+              .firestore()
+              .collection("Goods")
+              .add({
+                address: this.address,
+                creator_id: this.email,
+                date_create: new Date(),
+                date_edit: new Date(),
+                description: this.content,
+                image_url1: url[0],
+                image_url2: url[1],
+                image_url3: url[2],
+                name: this.name,
+                type: this.type
+              })
+              .then(r => {
+                const objects = [
+                  {
+                    id: r.id,
+                    address: this.address,
+                    creator_id: this.email,
+                    date_create: new Date(),
+                    date_edit: new Date(),
+                    description: this.content,
+                    image_url1: "",
+                    image_url2: "",
+                    image_url3: "",
+                    name: this.name,
+                    type: this.type
+                  }
+                ];
+
+                indexAlgolia.addObjects(objects, (err, content) => {
+                  console.log(content);
+                  this.$router.push("/");
+                });
+              });
+          })
+          .catch(error => {
+            console.log(`Some failed: `, error.message);
+          });
+      } else {
+        firebase
+          .firestore()
+          .collection("Goods")
+          .add({
+            address: this.address,
+            creator_id: this.email,
+            date_create: new Date(),
+            date_edit: new Date(),
+            description: this.content,
+            image_url1: "",
+            image_url2: "",
+            image_url3: "",
+            name: this.name,
+            type: this.type
+          })
+          .then(r => {
+            const objects = [
+              {
+                id: r.id,
+                address: this.address,
+                creator_id: this.email,
+                date_create: new Date(),
+                date_edit: new Date(),
+                description: this.content,
+                image_url1: "",
+                image_url2: "",
+                image_url3: "",
+                name: this.name,
+                type: this.type
+              }
+            ];
+
+            indexAlgolia.addObjects(objects, (err, content) => {
+              console.log(content);
+              this.$router.push("/");
+            });
+          });
+      }
+      // storeRef.put(file).then(function(snapshot) {
+      //   console.log("Uploaded a blob or file!");
+      // });
+      return;
     }
   },
   mounted() {
