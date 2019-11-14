@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
+const getAppRoutes = require('./utils/getRoutes.js');
 
 export default {
   mode: 'universal',
@@ -45,11 +46,13 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/sitemap'
   ],
   markdownit: {
     injected: true
   },
+  sitemap: getAppRoutes(),
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

@@ -34,11 +34,10 @@
                     <v-card class="mx-auto" max-width="400">
                       <v-img class="orange--text align-end" height="200px" :src="item.image_url1"></v-img>
                       <v-card-title>
-                        <ais-highlight attribute="name" :hit="item" />
+                        <ais-highlight attribute="name" :hit="item" class="d-inline-block text-truncate" style="max-width:100%"/>
                       </v-card-title>
                       <v-card-subtitle class="pb-0">
-                        Địa chỉ:
-                        <ais-highlight attribute="address" :hit="item" />
+                        <ais-highlight attribute="address" :hit="item" class="d-inline-block text-truncate" style="max-width:100%"/>
                       </v-card-subtitle>
                       <v-card-actions>
                         <v-spacer></v-spacer>

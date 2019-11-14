@@ -64,12 +64,6 @@ export default {
           title: "Trang cá nhân",
           to: "/auth/",
           show: this.$store.state.loggedIn
-        },
-        {
-          icon: "mdi-apps",
-          title: "Liên hệ",
-          to: "/contacts",
-          show: true
         }
       ];
       rs.push({

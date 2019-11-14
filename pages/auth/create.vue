@@ -93,7 +93,24 @@ export default {
     return {
       address: "",
       email: "",
-      content: "",
+      content: `**Đây là template**
+
+# Tên sản phẩm
+Mô tả chi tiết về sản phẩm
+
+Xuống dòng
+
+* Đây là danh sách 1
+* Đây là danh sách 2
+      
+# Link
+[google](https://google.com)
+
+# Các icon
+[Toàn bộ icon](https://gist.github.com/rxaviers/7360908)
+
+🌲 🐈
+      `,
       files: [],
       name: "",
       rules: {
@@ -120,12 +137,16 @@ export default {
           // Array of "Promises"
           files.map(item => {
             var ref = firebase.storage().ref(this.email + "/" + item.name);
-            ref.put(item);
-            return ref.getDownloadURL();
+            return ref.put(item).then(r=>{
+              return ref.getDownloadURL();
+            });
+            
           })
         )
           .then(url => {
             // console.log(url);
+            url.push("");
+            url.push("");
             firebase
               .firestore()
               .collection("Goods")
@@ -139,7 +160,8 @@ export default {
                 image_url2: url[1],
                 image_url3: url[2],
                 name: this.name,
-                type: this.type
+                type: this.type,
+                seo:this.seo
               })
               .then(r => {
                 const objects = [
@@ -154,7 +176,8 @@ export default {
                     image_url2: url[1],
                     image_url3: url[2],
                     name: this.name,
-                    type: this.type
+                    type: this.type,
+                    seo:this.seo
                   }
                 ];
 
@@ -181,7 +204,8 @@ export default {
             image_url2: "",
             image_url3: "",
             name: this.name,
-            type: this.type
+            type: this.type,
+            seo:this.seo
           })
           .then(r => {
             const objects = [
@@ -196,7 +220,8 @@ export default {
                 image_url2: "",
                 image_url3: "",
                 name: this.name,
-                type: this.type
+                type: this.type,
+                seo:this.seo
               }
             ];
 

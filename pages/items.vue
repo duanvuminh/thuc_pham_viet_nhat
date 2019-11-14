@@ -18,7 +18,7 @@
             <v-list-item-content>
               <v-list-item-title>Tên</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action  style="max-width:80%">
               <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -26,7 +26,7 @@
             <v-list-item-content>
               <v-list-item-title>Địa chỉ</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action style="max-width:80%">
               <v-list-item-action-text v-text="card.address"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -34,7 +34,7 @@
             <v-list-item-content>
               <v-list-item-title>Ngày viết</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action  style="max-width:80%">
               <v-list-item-action-text v-text="iso8601Time(card.date_edit)"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -42,7 +42,7 @@
             <v-list-item-content>
               <v-list-item-title>By</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action  style="max-width:80%">
               <v-list-item-action-text v-text="card.creator_id"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -95,7 +95,7 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: this.card.description || ""
+          content: this.card.seo || ""
         }
       ]
     };
