@@ -1,52 +1,95 @@
 <template>
-  <v-card class="elevation-0 pa-5">
-    <v-toolbar color="orange accent-1">
-      <v-toolbar-title class="title mr-6">Tìm kiếm</v-toolbar-title>
-      <v-text-field clearable placeholder="Từ khoá bất kì" hide-details solo flat class="mx-4"></v-text-field>
-      <!-- <template v-slot:extension>
+      <ais-instant-search-ssr>
+        <v-row>
+          <v-col cols="12">
+            <v-toolbar color="orange accent-1">
+              <ais-powered-by class="ma-1" />
+              <ais-search-box style="flex:1" />
+              <!-- <template v-slot:extension>
         <v-spacer></v-spacer>
         <v-btn text>Địa điểm</v-btn>
         <v-btn text>Giá cả</v-btn>
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
-      </template> -->
-    </v-toolbar>
-    <v-container fluid>
-      <v-row dense>
-        <v-col v-for="card in cards" :key="card.title" cols="12" sm="4" md="3" lg="3" xl="3">
-          <v-card class="mx-auto" max-width="400">
-            <v-img class="orange--text align-end" height="200px" :src="card.image_url1"></v-img>
-            <v-card-title>{{card.name}}</v-card-title>
-            <v-card-subtitle class="pb-0">{{`Địa chỉ:${card.address?card.address:'?'}`}}</v-card-subtitle>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="orange" text :href="`/items/${card.id}`">Chi tiết</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+              </template>-->
+            </v-toolbar>
+          </v-col>
+          <v-col cols="12" md="2">
+            <ais-refinement-list attribute="type" />
+          </v-col>
+          <v-col cols="12" md="8">
+            <ais-hits class="mb-5">
+              <template slot-scope="{ items }">
+                <v-row>
+                  <v-col
+                    v-for="item in items"
+                    :key="item.title"
+                    cols="12"
+                    sm="4"
+                    md="3"
+                    lg="3"
+                    xl="3"
+                  >
+                    <v-card class="mx-auto" max-width="400">
+                      <v-img class="orange--text align-end" height="200px" :src="item.image_url1"></v-img>
+                      <v-card-title>
+                        <ais-highlight attribute="name" :hit="item" />
+                      </v-card-title>
+                      <v-card-subtitle class="pb-0">
+                        Địa chỉ:
+                        <ais-highlight attribute="address" :hit="item" />
+                      </v-card-subtitle>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="orange" text :href="`/items/${item.id}`">Chi tiết</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </template>
+            </ais-hits>
+
+            <ais-pagination />
+          </v-col>
+        </v-row>
+      </ais-instant-search-ssr>
 </template>
 <script>
 import firebase from "firebase";
+import {
+  AisInstantSearchSsr,
+  AisRefinementList,
+  AisHits,
+  AisHighlight,
+  AisSearchBox,
+  AisPagination,
+  AisPoweredBy,
+  createInstantSearch
+} from "vue-instantsearch";
+import algoliasearch from "algoliasearch/lite";
+const searchClient = algoliasearch(
+  "N7UFARQ48L",
+  "8d219c45506c851ab82563e0297891dd"
+);
+const { instantsearch, rootMixin } = createInstantSearch({
+  searchClient,
+  indexName: "GaoNhat_algolia"
+});
+
 export default {
-  async asyncData({ params }) {
-    let collection = firebase
-      .app()
-      .firestore()
-      .collection("Goods")
-      .limit(100);
-    const rs = await collection.get();
-    let cards = [];
-    rs.forEach(doc => {
-      console.log(doc);
-      let x = doc.data();
-      x.id = doc.id;
-      cards.push(x);
-    });
-    return { cards };
+  asyncData({ params }) {
+    return instantsearch
+      .findResultsState({
+        // find out which parameters to use here using ais-state-results
+        query: "",
+        hitsPerPage: 20,
+        disjunctiveFacets: ["type"]
+        // disjunctiveFacetsRefinements: { type }
+      })
+      .then(() => ({
+        instantSearchState: instantsearch.getState()
+      }));
   },
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
@@ -59,13 +102,33 @@ export default {
       }
     });
   },
+  beforeMount() {
+    instantsearch.hydrate(this.instantSearchState);
+  },
+  components: {
+    AisInstantSearchSsr,
+    AisRefinementList,
+    AisHits,
+    AisHighlight,
+    AisSearchBox,
+    AisPoweredBy,
+    AisPagination
+  },
   data() {
+    return {};
+  },
+  head() {
     return {
-      tab: -1,
-      checkbox: true,
-      cards: []
+      link: [
+        {
+          rel: "stylesheet",
+          href:
+            "https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/algolia-min.css"
+        }
+      ]
     };
   },
+  mixins: [rootMixin],
   mounted() {
     this.$store.commit("setshowPlus", false);
   }

@@ -84,7 +84,8 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-    }
+    },
+    transpile: ['vue-instantsearch', 'instantsearch.js/es'],
   },
   /*
   ** router

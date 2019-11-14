@@ -10,7 +10,6 @@
       <v-col cols="12" md="6">
         <v-text-field
           label="Tag, phân loại bài viết"
-          hint="Phân loại cách nhau dấu ,"
           v-model="type"
           :rules="rules.typeRules"
         ></v-text-field>
@@ -73,7 +72,7 @@
 import firebase from "firebase";
 const algoliasearch = require("algoliasearch");
 
-const client = algoliasearch("N7UFARQ48L", "0f4b8cf4d4b946f94b9bac03c2b8782d");
+const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
 const indexAlgolia = client.initIndex("GaoNhat_algolia");
 
 export default {
@@ -151,9 +150,9 @@ export default {
                     date_create: new Date(),
                     date_edit: new Date(),
                     description: this.content,
-                    image_url1: "",
-                    image_url2: "",
-                    image_url3: "",
+                    image_url1: url[0],
+                    image_url2: url[1],
+                    image_url3: url[2],
                     name: this.name,
                     type: this.type
                   }

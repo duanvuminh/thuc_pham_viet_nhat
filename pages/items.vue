@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <v-row justify="center" align="center" class="pa-5">
-      <v-col cols="6">
+    <v-row>
+      <v-col cols="12">
         <v-carousel>
           <v-carousel-item
             v-for="(item,i) in [card.image_url1,card.image_url2,card.image_url3]"
@@ -12,27 +12,43 @@
           ></v-carousel-item>
         </v-carousel>
       </v-col>
-      <div v-html="$md.render(card.description)"></div>
-      <v-list>
-        <v-list-item-group mandatory color="indigo">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Tên</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Địa chỉ</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-list-item-action-text v-text="card.address"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-item-group>
+      <v-list class="mb-5 mt-5">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>Tên</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
+          </v-list-item-action>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>Địa chỉ</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-list-item-action-text v-text="card.address"></v-list-item-action-text>
+          </v-list-item-action>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>Ngày viết</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-list-item-action-text v-text="iso8601Time(card.date_edit)"></v-list-item-action-text>
+          </v-list-item-action>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>By</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-list-item-action-text v-text="card.creator_id"></v-list-item-action-text>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
+      <v-col cols="12" justify="center">
+        <div v-html="$md.render(card.description)"></div>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -67,6 +83,12 @@ export default {
       checkbox: true,
       card: {}
     };
+  },
+  methods: {
+    iso8601Time(timestamp) {
+      // console.log(timestamp);
+      return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+    }
   },
   mounted() {
     this.$store.commit("setshowPlus", false);
