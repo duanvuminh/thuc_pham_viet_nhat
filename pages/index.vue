@@ -3,7 +3,7 @@
         <v-row>
           <v-col cols="12">
             <v-toolbar color="orange accent-1">
-              <ais-powered-by class="ma-1" />
+              <v-icon class="pr-5" color="purple  accent-3">pets</v-icon>
               <ais-search-box style="flex:1" />
               <!-- <template v-slot:extension>
         <v-spacer></v-spacer>
@@ -98,7 +98,6 @@ export default {
         this.$store.commit("setLoginState", true);
       } else {
         this.$store.commit("setLoginState", false);
-        this.$router.push("/login");
       }
     });
   },
