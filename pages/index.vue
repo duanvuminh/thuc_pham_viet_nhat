@@ -1,58 +1,66 @@
 <template>
-      <ais-instant-search-ssr>
-        <v-row>
-          <v-col cols="12">
-            <v-toolbar color="orange accent-1">
-              <v-icon class="pr-5" color="purple  accent-3">pets</v-icon>
-              <ais-search-box style="flex:1" />
-              <!-- <template v-slot:extension>
+  <ais-instant-search-ssr>
+    <v-row>
+      <v-col cols="12">
+        <v-toolbar color="orange accent-1">
+          <v-icon class="pr-5" color="purple  accent-3">pets</v-icon>
+          <ais-search-box style="flex:1" />
+          <!-- <template v-slot:extension>
         <v-spacer></v-spacer>
         <v-btn text>Địa điểm</v-btn>
         <v-btn text>Giá cả</v-btn>
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
-              </template>-->
-            </v-toolbar>
-          </v-col>
-          <v-col cols="12" md="2">
-            <ais-refinement-list attribute="type" />
-          </v-col>
-          <v-col cols="12" md="8">
-            <ais-hits class="mb-5">
-              <template slot-scope="{ items }">
-                <v-row>
-                  <v-col
-                    v-for="item in items"
-                    :key="item.title"
-                    cols="12"
-                    sm="4"
-                    md="3"
-                    lg="3"
-                    xl="3"
-                  >
-                    <v-card class="mx-auto" max-width="400">
-                      <v-img class="orange--text align-end" height="200px" :src="item.image_url1"></v-img>
-                      <v-card-title>
-                        <ais-highlight attribute="name" :hit="item" class="d-inline-block text-truncate" style="max-width:100%"/>
-                      </v-card-title>
-                      <v-card-subtitle class="pb-0">
-                        <ais-highlight attribute="address" :hit="item" class="d-inline-block text-truncate" style="max-width:100%"/>
-                      </v-card-subtitle>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="orange" text :href="`/items/${item.id}`">Chi tiết</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </template>
-            </ais-hits>
+          </template>-->
+        </v-toolbar>
+      </v-col>
+      <v-col cols="12" md="2">
+        <ais-refinement-list attribute="type" />
+      </v-col>
+      <v-col cols="12" md="8">
+        <ais-hits class="mb-5">
+          <template slot-scope="{ items }">
+            <v-row>
+              <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md="3" lg="3" xl="3">
+                <v-card class="mx-auto" max-width="400">
+                  <v-img class="orange--text align-end" height="200px" :src="item.image_url1">
+                    <v-row v-if="!item.image_url1" align="top" class="lightbox pa-2 fill-height">
+                      <v-col>
+                        <div class="d-inline-block text-truncate" v-html="item.description"  style="max-width:100%"></div>
+                      </v-col>
+                    </v-row>
+                  </v-img>
+                  <v-card-title>
+                    <ais-highlight
+                      attribute="name"
+                      :hit="item"
+                      class="d-inline-block text-truncate"
+                      style="max-width:100%"
+                    />
+                  </v-card-title>
+                  <v-card-subtitle class="pb-0">
+                    <ais-highlight
+                      attribute="address"
+                      :hit="item"
+                      class="d-inline-block text-truncate"
+                      style="max-width:100%"
+                    />
+                  </v-card-subtitle>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="orange" text :href="`/items/${item.id}`">Chi tiết</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </template>
+        </ais-hits>
 
-            <ais-pagination />
-          </v-col>
-        </v-row>
-      </ais-instant-search-ssr>
+        <ais-pagination />
+      </v-col>
+    </v-row>
+  </ais-instant-search-ssr>
 </template>
 <script>
 import firebase from "firebase";

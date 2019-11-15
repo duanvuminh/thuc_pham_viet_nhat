@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" v-if="card.image_url1">
         <v-carousel>
           <v-carousel-item
             v-for="(item,i) in [card.image_url1,card.image_url2,card.image_url3]"
@@ -12,7 +12,7 @@
           ></v-carousel-item>
         </v-carousel>
       </v-col>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" md="6">
         <v-list class="mb-5 mt-5">
           <v-list-item>
             <v-list-item-content>

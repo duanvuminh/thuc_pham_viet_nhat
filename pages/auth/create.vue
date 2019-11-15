@@ -147,6 +147,7 @@ Xuống dòng
             // console.log(url);
             url.push("");
             url.push("");
+            url.push("");
             firebase
               .firestore()
               .collection("Goods")
