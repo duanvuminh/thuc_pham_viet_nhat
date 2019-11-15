@@ -51,7 +51,7 @@ module.exports = async function() {
             return responses.hits;
         });
     let routes = result.map(x => {
-        return `/indexs/${x.id}`;
+        return `/items/${x.id}`;
     })
     routes.push('/')
     return routes;
