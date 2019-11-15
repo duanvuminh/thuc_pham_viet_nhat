@@ -49,6 +49,10 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap'
   ],
+  axios: {
+    proxyHeaders: false,
+    credentials: false
+  },
   markdownit: {
     injected: true
   },
