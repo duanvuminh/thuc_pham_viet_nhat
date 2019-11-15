@@ -17,7 +17,7 @@ const indexAlgolia = client.initIndex("GaoNhat_algolia");
 //       sitemaps: [{
 //         // array of Sitemap configuration
 //       }]
-module.exports = async function getAppRoutes() {
+module.exports = async function() {
     let result = await indexAlgolia
         .search({
 
@@ -31,8 +31,6 @@ module.exports = async function getAppRoutes() {
     let routes = result.map(x => {
         return `/indexs/${x.id}`;
     })
-    console.log(routes)
     routes.push('/')
-    return { path: '/sitemap.xml', gzip: true, generate: false, routes, exclude: ['/auth/**'] };
-
+    return routes;
 }

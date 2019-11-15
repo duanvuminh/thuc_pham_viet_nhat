@@ -52,7 +52,14 @@ export default {
   markdownit: {
     injected: true
   },
-  sitemap: getAppRoutes(),
+  sitemap: 
+    {
+      path: '/sitemap.xml',
+      gzip: true,
+      generate: false,
+      routes:()=>{return getAppRoutes()},
+      exclude: ['/auth/**'] 
+    },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

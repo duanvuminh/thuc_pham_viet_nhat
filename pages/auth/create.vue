@@ -182,7 +182,7 @@ Xuống dòng
                 ];
 
                 indexAlgolia.addObjects(objects, (err, content) => {
-                  console.log(content);
+                  // console.log(content);
                   this.$router.push("/");
                 });
               });
@@ -226,7 +226,7 @@ Xuống dòng
             ];
 
             indexAlgolia.addObjects(objects, (err, content) => {
-              console.log(content);
+              // console.log(content);
               this.$router.push("/");
             });
           });
