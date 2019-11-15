@@ -58,7 +58,7 @@ export default {
       gzip: true,
       generate: false,
       routes:()=>{return getAppRoutes()},
-      exclude: ['/auth/**'] 
+      exclude: ['/auth/','/auth/**'] 
     },
   /*
   ** Axios module configuration
