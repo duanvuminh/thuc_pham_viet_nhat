@@ -24,13 +24,12 @@
             <v-row>
               <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md="3" lg="3" xl="3">
                 <v-card class="mx-auto" max-width="400">
-                  <v-img class="orange--text align-end" height="200px" :src="item.image_url1">
-                    <v-row v-if="!item.image_url1" align="top" class="lightbox pa-2 fill-height">
-                      <v-col>
-                        <div class="d-inline-block text-truncate" v-html="item.description"  style="max-width:100%"></div>
-                      </v-col>
-                    </v-row>
-                  </v-img>
+                  <v-img
+                    v-if="item.image_url1"
+                    class="orange--text align-end"
+                    height="200px"
+                    :src="item.image_url1"
+                  ></v-img>
                   <v-card-title>
                     <ais-highlight
                       attribute="name"
@@ -47,6 +46,16 @@
                       style="max-width:100%"
                     />
                   </v-card-subtitle>
+                  <v-row v-if="!item.image_url1" style="height:200px" align="end">
+                    <v-col>
+                      <v-card style="width:100%" class="elevation-0 text-right">
+                        <v-card-subtitle>{{item.date_edit}}</v-card-subtitle>
+                      </v-card>
+                      <v-card style="width:100%" class="elevation-0 text-right">
+                        <v-card-subtitle>{{item.creator_id}}</v-card-subtitle>
+                      </v-card>
+                    </v-col>
+                  </v-row>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="orange" text :href="`/items/${item.id}`">Chi tiết</v-btn>
@@ -135,6 +144,7 @@ export default {
     };
   },
   mixins: [rootMixin],
+  methods: {},
   mounted() {
     this.$store.commit("setshowPlus", false);
   }
