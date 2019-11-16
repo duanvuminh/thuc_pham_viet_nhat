@@ -4,7 +4,7 @@
       <v-col cols="12" v-if="card.image_url1">
         <v-carousel>
           <v-carousel-item
-            v-for="(item,i) in [card.image_url1,card.image_url2,card.image_url3]"
+            v-for="(item,i) in arrayImage"
             :key="i"
             :src="item"
             reverse-transition="fade-transition"
@@ -12,13 +12,13 @@
           ></v-carousel-item>
         </v-carousel>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12">
         <v-list class="mb-5 mt-5">
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>Tên</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action  style="max-width:80%">
+            <v-list-item-action style="max-width:80%">
               <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -34,7 +34,7 @@
             <v-list-item-content>
               <v-list-item-title>Ngày viết</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action  style="max-width:80%">
+            <v-list-item-action style="max-width:80%">
               <v-list-item-action-text v-text="iso8601Time(card.date_edit)"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -42,7 +42,7 @@
             <v-list-item-content>
               <v-list-item-title>By</v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action  style="max-width:80%">
+            <v-list-item-action style="max-width:80%">
               <v-list-item-action-text v-text="card.creator_id"></v-list-item-action-text>
             </v-list-item-action>
           </v-list-item>
@@ -77,6 +77,21 @@ export default {
         this.$store.commit("setLoginState", false);
       }
     });
+  },
+  computed: {
+    arrayImage(){
+      let ar=[];
+      if(this.card.image_url1){
+        ar=[this.card.image_url1]
+      }
+      if(this.card.image_url2){
+        ar=[this.card.image_url1,this.card.image_url2]
+      }
+      if(this.card.image_url3){
+        ar=[this.card.image_url1,this.card.image_url2,this.card.image_url3]
+      }
+      return ar;
+    }
   },
   data() {
     return {

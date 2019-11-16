@@ -30,6 +30,15 @@
                     height="200px"
                     :src="item.image_url1"
                   ></v-img>
+                  <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
+                    <v-col>
+                      <v-card-text>
+                        <div class="text--primary">
+                          {{item.description}}
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
                   <v-card-title>
                     <ais-highlight
                       attribute="name"
@@ -46,16 +55,6 @@
                       style="max-width:100%"
                     />
                   </v-card-subtitle>
-                  <v-row v-if="!item.image_url1" style="height:200px" align="end">
-                    <v-col>
-                      <v-card style="width:100%" class="elevation-0 text-right">
-                        <v-card-subtitle>{{item.date_edit}}</v-card-subtitle>
-                      </v-card>
-                      <v-card style="width:100%" class="elevation-0 text-right">
-                        <v-card-subtitle>{{item.creator_id}}</v-card-subtitle>
-                      </v-card>
-                    </v-col>
-                  </v-row>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="orange" text :href="`/items/${item.id}`">Chi tiết</v-btn>

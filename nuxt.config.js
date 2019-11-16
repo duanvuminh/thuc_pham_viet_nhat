@@ -49,26 +49,25 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap'
   ],
-  axios: {
-    proxyHeaders: false,
-    credentials: false
-  },
   markdownit: {
     injected: true
   },
-  sitemap: 
-    {
-      path: '/sitemap.xml',
-      gzip: true,
-      generate: false,
-      routes:()=>{return getAppRoutes()},
-      exclude: ['/auth/','/auth/**'] 
-    },
+  sitemap:
+  {
+    path: '/sitemap.xml',
+    gzip: true,
+    generate: false,
+    routes: () => { return getAppRoutes() },
+    exclude: ['/auth/', '/auth/**']
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: 'https://cors-anywhere.herokuapp.com/https://www.chiikinogennki.soumu.go.jp/k-cloud-api/v001/kanko',
+    proxyHeaders: false,
+    credentials: false
   },
   /*
   ** vuetify module configuration
@@ -106,7 +105,7 @@ export default {
   */
   router: {
     // middleware: 'auth'
-    extendRoutes (routes, resolve) {
+    extendRoutes(routes, resolve) {
       routes.push({
         path: '/items/:id',
         components: {
