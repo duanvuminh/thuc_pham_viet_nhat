@@ -128,6 +128,9 @@ Xuống dòng
   },
   methods: {
     save() {
+      if(this.email!="duanvuminh@gmail.com"){
+        return;
+      }
       if (!this.$refs.form.validate()) {
         return;
       }
