@@ -15,8 +15,8 @@
           </template>-->
         </v-toolbar>
       </v-col>
-      <v-col cols="12" md="2">
-        <ais-refinement-list attribute="type" />
+      <v-col cols="12" md="3">
+        <ais-refinement-list attribute="type" :limit="100" />
       </v-col>
       <v-col cols="12" md="8">
         <ais-hits class="mb-5">
@@ -69,7 +69,7 @@
           </template>
         </ais-hits>
 
-        <ais-pagination />
+        <ais-pagination :total-pages="5"/>
       </v-col>
     </v-row>
   </ais-instant-search-ssr>
@@ -103,8 +103,8 @@ export default {
         // find out which parameters to use here using ais-state-results
         query: "",
         hitsPerPage: 20,
-        disjunctiveFacets: ["type"]
-        // disjunctiveFacetsRefinements: { type }
+        disjunctiveFacets: ["type"],
+        //disjunctiveFacetsRefinements: { type }
       })
       .then(() => ({
         instantSearchState: instantsearch.getState()
