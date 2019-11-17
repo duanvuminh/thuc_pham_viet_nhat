@@ -57,7 +57,9 @@ export default {
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
-    routes: () => { return getAppRoutes() },
+    routes: () => { 
+      return getAppRoutes() 
+    },
     exclude: ['/auth/', '/auth/**']
   },
   /*

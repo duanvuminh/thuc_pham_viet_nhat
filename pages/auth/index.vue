@@ -196,14 +196,15 @@ ${r.data.translations[1].translatedText}
 ${x.parkings&&x.parkings[0].name?x.parkings[0].name:''}  
 ${x.parkings&&x.parkings[0].info?'Thông tin: '+x.parkings[0].info:''}  
 ${x.parkings&&x.parkings[0].free_or_pay?'Có phí/ không: '+x.parkings[0].free_or_pay:''}
-
+## Trang web
+${x.place&&x.place.url?x.place.url:''}
               `,
                 image_url1: x.imgUrl1,
                 image_url2: x.imgUrl2,
                 image_url3: x.imgUrl3,
                 name: x.name.name1.written,
-                type: "Leo núi",
-                seo: "Đi chơi ở Nhật, Địa điểm đi chơi ở Nhật, Leo núi"
+                type: "Phố xá",
+                seo: "Đi chơi ở Nhật, Địa điểm đi chơi ở Nhật, Phố xá"
               };
               firebase
                 .firestore()

@@ -30,10 +30,14 @@
                     height="200px"
                     :src="item.image_url1"
                   ></v-img>
+                  <v-img
+                    v-else
+                    height="5px"
+                  ></v-img>
                   <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
                     <v-col>
                       <v-card-text>
-                        <div class="text--primary">
+                        <div class="text--primary" style="height: 175px!important;line-height: 25px;overflow: hidden;">
                           {{item.description}}
                         </div>
                       </v-card-text>
