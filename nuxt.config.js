@@ -49,15 +49,10 @@ export default {
       'nuxt-i18n',{
         parsePages: false,
         pages: {
-          type: {
+          '/': {
             en: '/tiengviet',
             ja: '/日本',
             lo: '/ພາສາລາວ',
-          },
-          'items/_id':{
-            en: '/items/:id',
-            ja: '/items/:id',
-            lo: '/items/:id',
           }
         }
       }],
