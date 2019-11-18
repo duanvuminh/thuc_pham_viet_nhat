@@ -45,10 +45,41 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    [
+      'nuxt-i18n',{
+        parsePages: false,
+        pages: {
+          type: {
+            en: '/tiengviet',
+            ja: '/日本',
+            lo: '/ພາສາລາວ',
+          },
+          'items/_id':{
+            en: '/items/:id',
+            ja: '/items/:id',
+            lo: '/items/:id',
+          }
+        }
+      }],
     '@nuxtjs/markdownit',
+    'nuxt-i18n',
     '@nuxtjs/sitemap'
   ],
+  i18n: {
+    locales: ['ja','en'],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: {
+          welcome: 'Welcome'
+        },
+        ja: {
+          welcome: 'ようこそ'
+        }
+      }
+    }
+  },
   markdownit: {
     injected: true
   },
@@ -57,8 +88,8 @@ export default {
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
-    routes: () => { 
-      return getAppRoutes() 
+    routes: () => {
+      return getAppRoutes()
     },
     exclude: ['/auth/', '/auth/**']
   },
@@ -105,16 +136,16 @@ export default {
   /*
   ** router
   */
-  router: {
-    // middleware: 'auth'
-    extendRoutes(routes, resolve) {
-      routes.push({
-        path: '/items/:id',
-        components: {
-          default: resolve(__dirname, 'pages/items')
-        }
-      })
-    }
-  },
+  // router: {
+  //   // middleware: 'auth'
+  //   extendRoutes(routes, resolve) {
+  //     routes.push({
+  //       path: '/items/:id',
+  //       components: {
+  //         default: resolve(__dirname, 'pages/items')
+  //       }
+  //     })
+  //   }
+  // },
 
 }

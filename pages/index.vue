@@ -69,7 +69,7 @@
           </template>
         </ais-hits>
 
-        <ais-pagination :total-pages="5"/>
+        <ais-pagination/>
       </v-col>
     </v-row>
   </ais-instant-search-ssr>
