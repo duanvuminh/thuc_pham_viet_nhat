@@ -1,6 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
-const getAppRoutes = require('./utils/getRoutes.js');
 
 export default {
   mode: 'universal',
@@ -31,7 +30,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/fireinit.js'],
+  plugins: [],
   /*
   ** Nuxt.js dev-modules
   */
@@ -47,31 +46,33 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     [
       'nuxt-i18n',{
+        baseUrl: 'https://typing.lithong.com',
+        seo: false,
         parsePages: false,
         pages: {
-          '/': {
-            en: '/tiengviet',
-            ja: '/日本',
-            lo: '/ພາສາລາວ',
+          index: {
+            vi: '/',
+            ja: '/'
           }
         }
       }],
-    '@nuxtjs/markdownit',
-    'nuxt-i18n',
     '@nuxtjs/sitemap'
   ],
   i18n: {
-    locales: ['ja','en'],
-    defaultLocale: 'en',
+    locales: ['ja','vi'],
+    defaultLocale: 'vi',
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: 'vi',
       messages: {
-        en: {
-          welcome: 'Welcome'
+        vi: {
+          welcome: 'Tiếng Việt có dấu',
+          description:' Đánh Tiếng Việt có dấu'
         },
         ja: {
-          welcome: 'ようこそ'
-        }
+          welcome: '日本語入力',
+          description:'日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu'
+        },
+
       }
     }
   },
@@ -83,17 +84,16 @@ export default {
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
-    routes: () => {
-      return getAppRoutes()
-    },
-    exclude: ['/auth/', '/auth/**']
+    routes: [
+      '/',
+      '/ja',
+    ]
   },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://cors-anywhere.herokuapp.com/https://www.chiikinogennki.soumu.go.jp/k-cloud-api/v001/kanko',
     proxyHeaders: false,
     credentials: false
   },

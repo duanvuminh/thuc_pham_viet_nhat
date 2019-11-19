@@ -1,23 +1,32 @@
 <template>
-  <main>
+  <v-row>
     <h1>{{ $t('welcome') }}</h1>
-
+    <v-col cols="12">
+       <v-textarea
+          solo
+          name="input-10-4"
+          label="type somethings"
+          v-model="text"
+        ></v-textarea>
+      </v-col>
     <nuxt-link
-      v-if="$i18n.locale !== 'en'"
-      :to="switchLocalePath('en')"
+      :to="switchLocalePath('vi')"
     >
-      English
-    </nuxt-link>
-
+    Tiếng Việt
+    </nuxt-link>|
     <nuxt-link
-      v-if="$i18n.locale !== 'ja'"
       :to="switchLocalePath('ja')"
     >
-      Español
+      日本語
     </nuxt-link>
-  </main>
+  </v-row>
 </template>
 <script>
 export default {
+  data(){
+    return {
+      text:null
+    }
+  }
 }
 </script>
