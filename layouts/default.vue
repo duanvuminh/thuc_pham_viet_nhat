@@ -17,6 +17,8 @@ export default {
         title: "Free input tools",
         ...i18nSeo.htmlAttrs
       },
+      titleTemplate: `%s - ${this.$t("title")}`,
+      title: process.env.site_name || "",
       meta: [
         {
           hid: "description",

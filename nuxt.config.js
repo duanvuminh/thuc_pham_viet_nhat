@@ -74,11 +74,13 @@ export default {
       messages: {
         vi: {
           welcome: 'Tiếng Việt có dấu',
-          description: ' Đánh Tiếng Việt có dấu'
+          description: 'Đánh Tiếng Việt có dấu',
+          title:"Đánh tiếng Việt, Vietnamese input tools"
         },
         ja: {
           welcome: '日本語入力',
-          description: '日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu'
+          description: '日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu',
+          title:"日本語入力, Japanese input tools"
         },
 
       }

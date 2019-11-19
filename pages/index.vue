@@ -59,14 +59,13 @@ export default {
   },
   methods: {
     openDg(e) {
-      var specialKeys = [37, 38, 39, 40, 8, 13, 27, 46];
+      var specialKeys = [37, 38, 39, 40, 8, 13, 27, 46, 32];
       if (specialKeys.indexOf(e.keyCode) === -1) {
         console.log(String.fromCharCode(e.keyCode) + " Key is validated!");
         if (String.fromCharCode(e.keyCode).match(/[A-Za-z0-9,]/)) {
           event.preventDefault();
           this.text1 = String.fromCharCode(e.keyCode);
           this.show = true;
-          this.$refs.duan.focus();
         }
       }
     },
