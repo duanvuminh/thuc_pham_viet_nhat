@@ -25,7 +25,16 @@
 export default {
   data(){
     return {
-      text:null
+      text:""
+    }
+  },
+  watch:{
+    text(){
+      alert(this.$i18n.locale);
+      this.$axios.$get(
+          "http://www.google.com/transliterate?langpair=en|ja&text=haha"
+        )
+        .then(r => console.log(r));
     }
   }
 }
