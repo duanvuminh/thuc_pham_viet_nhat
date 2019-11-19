@@ -45,7 +45,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     [
-      'nuxt-i18n',{
+      'nuxt-i18n', {
         baseUrl: 'https://typing.lithong.com',
         seo: false,
         parsePages: false,
@@ -56,21 +56,29 @@ export default {
           }
         }
       }],
+    '@nuxtjs/axios',
     '@nuxtjs/sitemap'
   ],
   i18n: {
-    locales: ['ja','vi'],
+    locales: [{
+      code: 'ja',
+      iso: 'ja-JP'
+    },
+    {
+      code: 'vi',
+      iso: 'vi-VN'
+    }],
     defaultLocale: 'vi',
     vueI18n: {
       fallbackLocale: 'vi',
       messages: {
         vi: {
           welcome: 'Tiếng Việt có dấu',
-          description:' Đánh Tiếng Việt có dấu'
+          description: ' Đánh Tiếng Việt có dấu'
         },
         ja: {
           welcome: '日本語入力',
-          description:'日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu'
+          description: '日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu'
         },
 
       }

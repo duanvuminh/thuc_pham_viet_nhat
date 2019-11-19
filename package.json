@@ -23,7 +23,8 @@
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.3.1",
     "nuxt-material-design-icons": "^1.0.4",
-    "vue-instantsearch": "^2.6.0"
+    "vue-instantsearch": "^2.6.0",
+    "wanakana": "^4.0.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
