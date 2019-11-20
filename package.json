@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest",
-    "deploy": "nuxt build && gcloud app deploy app.yaml --project gaonhat-1b0c8"
+    "deploy": "nuxt build && gcloud app deploy app.yaml --project nihongoinput"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
@@ -23,6 +23,7 @@
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.3.1",
     "nuxt-material-design-icons": "^1.0.4",
+    "textarea-caret": "^3.1.0",
     "vue-instantsearch": "^2.6.0",
     "wanakana": "^4.0.2"
   },

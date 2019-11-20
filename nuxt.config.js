@@ -73,14 +73,18 @@ export default {
       fallbackLocale: 'vi',
       messages: {
         vi: {
-          welcome: 'Tiếng Việt có dấu',
-          description: 'Đánh Tiếng Việt có dấu',
-          title:"Đánh tiếng Việt, Vietnamese input tools"
+          welcome: 'Hỗ trợ gõ tiếng Nhật',
+          description: 'Hỗ trợ gõ tiếng Nhật',
+          title:"Hỗ trợ gõ tiếng Nhật, Japanese input tools",
+          pr:"Công cụ hỗ trợ cho nhập liệu trên chrome google-cloud-input",
+          dowloadpage:"Tới trang cài đặt"
         },
         ja: {
           welcome: '日本語入力',
           description: '日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu',
-          title:"日本語入力, Japanese input tools"
+          title:"日本語入力, Japanese input tools",
+          pr:"クロムで入力ツール- google-cloud-input",
+          dowloadpage:"インストールページへ"
         },
 
       }
