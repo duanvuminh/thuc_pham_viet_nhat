@@ -5,6 +5,9 @@
         <nuxt />
       </v-container>
     </v-content>
+    <v-footer :fixed="fixed" app color="cyan" dark>
+      <span>&copy; duanvuminh@gmail.com</span>
+    </v-footer>
   </v-app>
 </template> 
 

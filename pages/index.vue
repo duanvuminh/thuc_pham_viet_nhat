@@ -13,10 +13,10 @@
         v-model="text"
         @keydown="openDg"
         hide-details
-        @blur="show=false"
+        @blur="blurCheck"
       ></v-textarea>
       <v-col cols="12">
-        <v-card max-width="400" c>
+        <v-card max-width="250">
           <v-img
             src="https://lh3.googleusercontent.com/SjIqtAFVZqAddDtevUlG6jjiDlumvgDPakI6Hxf08diFWN-N0TyFHl2pbawi6Pszn82I34aZjuU=w128-h128-e365"
             class="lighten-2 pink--text"
@@ -97,30 +97,38 @@ export default {
     });
   },
   methods: {
-    setText(){
-      let startPos = this.$refs.textarea1.$el.getElementsByTagName(
+    blurCheck() {
+      setTimeout(() => {
+        this.show = false;
+        this.textreal = "";
+      }, 300); 
+    },
+    setText() {
+      this.$nextTick(() => {
+        let startPos = this.$refs.textarea1.$el.getElementsByTagName(
+          "textarea"
+        )[0].selectionStart;
+        let endPos = this.$refs.textarea1.$el.getElementsByTagName(
+          "textarea"
+        )[0].selectionEnd;
+        let cursorPos = startPos;
+        let tmpStr = this.text;
+        let tmpShow = this.textshow;
+        // insert:
+        this.text =
+          tmpStr.substring(0, startPos) +
+          tmpShow +
+          tmpStr.substring(endPos, tmpStr.length);
+        this.$nextTick(() => {
+          this.$refs.textarea1.$el.getElementsByTagName(
             "textarea"
-          )[0].selectionStart;
-          let endPos = this.$refs.textarea1.$el.getElementsByTagName(
-            "textarea"
-          )[0].selectionEnd;
-          let cursorPos = startPos;
-          let tmpStr = this.text;
-          let tmpShow = this.textshow;
-          // insert:
-          this.text =
-            tmpStr.substring(0, startPos) +
-            tmpShow +
-            tmpStr.substring(endPos, tmpStr.length);
-          this.$nextTick(() => {
-            this.$refs.textarea1.$el.getElementsByTagName(
-              "textarea"
-            )[0].selectionEnd = endPos + tmpShow.length;
-          });
-          //this.text += this.textshow;
-          this.item = null;
-          this.textreal = "";
-          this.show = false;
+          )[0].selectionEnd = endPos + tmpShow.length;
+        });
+        //this.text += this.textshow;
+        this.item = null;
+        this.textreal = "";
+        this.show = false;
+      });
     },
     openDg(e) {
       var specialKeys = [
@@ -135,7 +143,7 @@ export default {
       ];
       if (this.show) {
         event.preventDefault();
-       if (e.key == "Backspace") {
+        if (e.key == "Backspace") {
           this.item = null;
           console.log(this.textreal);
           this.textreal =
@@ -203,7 +211,6 @@ export default {
         .then(r => {
           console.log(r);
           this.items = [
-            convertText,
             ...r[0][1],
             wanakana.toKatakana(this.textreal),
             this.textreal,
