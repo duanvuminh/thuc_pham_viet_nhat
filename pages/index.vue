@@ -48,7 +48,7 @@
             <span :class="tongle?'white--text':'grey--text'">|</span>
           </div>
           <v-list-item-group v-model="item" color="primary">
-            <v-list-item v-for="(me, i) in items" :key="i">
+            <v-list-item v-for="(me, i) in items" :key="i" @click="setText">
               <v-list-item-content>
                 <v-list-item-title v-text="me"></v-list-item-title>
               </v-list-item-content>
@@ -97,6 +97,31 @@ export default {
     });
   },
   methods: {
+    setText(){
+      let startPos = this.$refs.textarea1.$el.getElementsByTagName(
+            "textarea"
+          )[0].selectionStart;
+          let endPos = this.$refs.textarea1.$el.getElementsByTagName(
+            "textarea"
+          )[0].selectionEnd;
+          let cursorPos = startPos;
+          let tmpStr = this.text;
+          let tmpShow = this.textshow;
+          // insert:
+          this.text =
+            tmpStr.substring(0, startPos) +
+            tmpShow +
+            tmpStr.substring(endPos, tmpStr.length);
+          this.$nextTick(() => {
+            this.$refs.textarea1.$el.getElementsByTagName(
+              "textarea"
+            )[0].selectionEnd = endPos + tmpShow.length;
+          });
+          //this.text += this.textshow;
+          this.item = null;
+          this.textreal = "";
+          this.show = false;
+    },
     openDg(e) {
       var specialKeys = [
         "ArrowLeft",
