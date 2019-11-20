@@ -74,15 +74,15 @@ export default {
       messages: {
         vi: {
           welcome: 'Hỗ trợ gõ tiếng Nhật',
-          description: 'Hỗ trợ gõ tiếng Nhật',
-          title:"Hỗ trợ gõ tiếng Nhật, Japanese input tools",
+          description: 'Hỗ trợ gõ tiếng Nhật online',
+          title:"Hỗ trợ gõ tiếng Nhật online, Japanese input tools online,Hỗ trợ gõ tiếng Nhật cho web,Japanese input tools online for web",
           pr:"Công cụ hỗ trợ cho nhập liệu trên chrome google-cloud-input",
           dowloadpage:"Tới trang cài đặt"
         },
         ja: {
           welcome: '日本語入力',
           description: '日本語入力、日本語仮想キーボード,Đánh Tiếng Nhật có dấu',
-          title:"日本語入力, Japanese input tools",
+          title:"日本語入力オンライン, Japanese input tools online,日本語入力WEB, Japanese input tools for web",
           pr:"クロムで入力ツール- google-cloud-input",
           dowloadpage:"インストールページへ"
         },
