@@ -110,12 +110,12 @@ export default {
       ];
       if (this.show) {
         event.preventDefault();
-        if (e.keyCode == 8) {
+       if (e.key == "Backspace") {
           this.item = null;
           console.log(this.textreal);
           this.textreal =
             this.textreal.length > 1
-              ? this.textreal.substr(0, this.textreal.lecngth - 1)
+              ? this.textreal.substr(0, this.textreal.length - 1)
               : "";
         }
         if (
