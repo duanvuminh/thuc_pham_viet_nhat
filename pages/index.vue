@@ -173,7 +173,7 @@ export default {
       let convertText = wanakana.toHiragana(this.textreal);
       this.$axios
         .$get(
-          `http://www.google.com/transliterate?langpair=ja-Hira|ja&text=${convertText}`
+          `https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${convertText}`
         )
         .then(r => {
           console.log(r);
