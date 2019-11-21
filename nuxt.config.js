@@ -74,8 +74,8 @@ export default {
       messages: {
         vi: {
           welcome: 'Hỗ trợ gõ tiếng Nhật',
-          description: 'Hỗ trợ gõ tiếng Nhật online',
-          title:"Hỗ trợ gõ tiếng Nhật online, Japanese input tools online,Hỗ trợ gõ tiếng Nhật cho web,Japanese input tools online for web",
+          description: 'Hỗ trợ gõ tiếng Nhật online,Đánh tiếng Nhật online',
+          title:"Hỗ trợ gõ tiếng Nhật online,Đánh tiếng Nhật online, Japanese input tools online,Hỗ trợ gõ tiếng Nhật cho web,Japanese input tools online for web",
           pr:"Công cụ hỗ trợ cho nhập liệu trên chrome google-cloud-input",
           dowloadpage:"Tới trang cài đặt"
         },

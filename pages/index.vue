@@ -75,7 +75,9 @@ export default {
       item: null,
       items: [],
       show: false,
-      caret: {}
+      caret: {},
+      //Last key
+      lastKey: "xxxx"
     };
   },
   mounted() {
@@ -101,7 +103,7 @@ export default {
       setTimeout(() => {
         this.show = false;
         this.textreal = "";
-      }, 300); 
+      }, 200);
     },
     setText() {
       this.$nextTick(() => {
@@ -131,7 +133,25 @@ export default {
       });
     },
     openDg(e) {
+      console.log(this.lastKey);
+      console.log(e.key);
       var specialKeys = [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+        "F10",
+        "F11",
+        "F12",
+        "Shift",
+        "Tab",
+        "Control",
+        "Meta",
         "ArrowLeft",
         "ArrowRight",
         "ArrowUp",
@@ -192,9 +212,27 @@ export default {
         }
       }
       if (specialKeys.indexOf(e.key) === -1) {
-        event.preventDefault();
-        this.textreal += e.key;
-        this.show = true;
+        if (
+          (this.lastKey == "Meta" ||
+            this.lastKey == "Control") &&
+          (e.key == "a" ||
+            e.key == "x" ||
+            e.key == "A" ||
+            e.key == "X" ||
+            e.key == "v" ||
+            e.key == "V" ||
+            e.key == "c" ||
+            e.key == "C")
+        ) {
+          this.lastKey = e.key;
+        } else {
+          this.lastKey = e.key;
+          event.preventDefault();
+          this.textreal += e.key;
+          this.show = true;
+        }
+      } else {
+        this.lastKey = e.key;
       }
     }
   },
