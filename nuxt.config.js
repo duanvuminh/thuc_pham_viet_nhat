@@ -8,8 +8,8 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - Giới thiệu về cửa hàng, món ăn, địa điểm ở Nhật',
-    title: process.env.site_name || '',
+    titleTemplate: '%s - ',
+    title: process.env.site_name || 'Mua hàng giá tốt nhất',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

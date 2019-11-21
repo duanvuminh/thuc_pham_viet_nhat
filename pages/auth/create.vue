@@ -76,6 +76,7 @@ const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
 const indexAlgolia = client.initIndex("GaoNhat_algolia");
 
 export default {
+  layout:"blank",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {

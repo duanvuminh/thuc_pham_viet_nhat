@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-col xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12" sm="8" md="4">
       <v-card class="elevation-12">
         <v-toolbar color="primary" dark flat>
           <v-toolbar-title>{{isLoggingIn ?"Đăng nhập":"Đăng kí"}}</v-toolbar-title>
@@ -62,7 +62,7 @@
 
         <v-card-text>
           {{message}}
-          <br>
+          <br />
           <nuxt-link
             to="/support"
             v-if="isLoggingIn"
@@ -75,11 +75,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
+  </v-row>
 </template>
 <script>
 import firebase from "firebase";
 export default {
+  layout: "blank",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {
@@ -171,7 +172,7 @@ export default {
         });
     }
   },
-  mounted(){
+  mounted() {
     this.$store.commit("setshowPlus", false);
   }
 };
