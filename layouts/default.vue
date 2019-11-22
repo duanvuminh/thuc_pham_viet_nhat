@@ -14,7 +14,7 @@
             <img src="/vuetify.png" alt="Vuetify.js" height="200" />
             <h1 class="white--text mb-2 display-1 text-center">Thu mua các mặt hàng đa dạng</h1>
             <div class="subheading mb-4 text-center">Sản phẩm từ giấy, sản phẩm phá dỡ công trình...</div>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/buyItem">Chi tiết</v-btn>
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Chi tiết</v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -28,7 +28,7 @@
           <v-layout column align-center justify-center>
             <div class="headline white--text mb-4 text-center">Đồng thời có rất nhiều sản phẩm</div>
             <em>Giá cả phải chăng chất lượng tốt</em>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/pre-made-themes">Chi tiết</v-btn>
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Chi tiết</v-btn>
           </v-layout>
         </v-parallax>
       </section>

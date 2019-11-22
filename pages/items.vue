@@ -1,72 +1,116 @@
 <template>
-  <v-container fluid>
+  <ais-instant-search-ssr>
     <v-row>
-      <v-col cols="12" v-if="card.image_url1">
-        <v-carousel>
-          <v-carousel-item
-            v-for="(item,i) in arrayImage"
-            :key="i"
-            :src="item"
-            reverse-transition="fade-transition"
-            transition="fade-transition"
-          ></v-carousel-item>
-        </v-carousel>
-      </v-col>
       <v-col cols="12">
-        <v-list class="mb-5 mt-5">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Tên</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action style="max-width:80%">
-              <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Địa chỉ</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action style="max-width:80%">
-              <v-list-item-action-text v-text="card.address"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Ngày viết</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action style="max-width:80%">
-              <v-list-item-action-text v-text="iso8601Time(card.date_edit)"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>By</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action style="max-width:80%">
-              <v-list-item-action-text v-text="card.creator_id"></v-list-item-action-text>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
+        <v-toolbar color="orange accent-1">
+          <v-icon class="pr-5" color="purple  accent-3">pets</v-icon>
+          <ais-search-box style="flex:1" />
+          <!-- <template v-slot:extension>
+        <v-spacer></v-spacer>
+        <v-btn text>Địa điểm</v-btn>
+        <v-btn text>Giá cả</v-btn>
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+          </template>-->
+        </v-toolbar>
       </v-col>
-      <v-col cols="12" justify="center">
-        <div v-html="$md.render(card.description)"></div>
+      <v-col cols="12" md="3">
+        <ais-refinement-list attribute="type" :limit="100" />
+      </v-col>
+      <v-col cols="12" md="8">
+        <ais-hits class="mb-5">
+          <template slot-scope="{ items }">
+            <v-row>
+              <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md="3" lg="3" xl="3">
+                <v-card class="mx-auto" max-width="400">
+                  <v-img
+                    v-if="item.image_url1"
+                    class="orange--text align-end"
+                    height="200px"
+                    :src="item.image_url1"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    height="5px"
+                  ></v-img>
+                  <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
+                    <v-col>
+                      <v-card-text>
+                        <div class="text--primary" style="height: 175px!important;line-height: 25px;overflow: hidden;">
+                          {{item.description}}
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
+                  <v-card-title>
+                    <ais-highlight
+                      attribute="name"
+                      :hit="item"
+                      class="d-inline-block text-truncate"
+                      style="max-width:100%"
+                    />
+                  </v-card-title>
+                  <v-card-subtitle class="pb-0">
+                    <ais-highlight
+                      attribute="seo"
+                      :hit="item"
+                      class="d-inline-block text-truncate"
+                      style="max-width:100%"
+                    />
+                  </v-card-subtitle>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="orange" text :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">Chi tiết</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </template>
+        </ais-hits>
+
+        <ais-pagination :total-pages="5"/>
       </v-col>
     </v-row>
-  </v-container>
+  </ais-instant-search-ssr>
 </template>
 <script>
 import firebase from "firebase";
+import getAppRoutes from '~/utils/getRoutes.js';
+
+import {
+  AisInstantSearchSsr,
+  AisRefinementList,
+  AisHits,
+  AisHighlight,
+  AisSearchBox,
+  AisPagination,
+  AisPoweredBy,
+  createInstantSearch
+} from "vue-instantsearch";
+import algoliasearch from "algoliasearch/lite";
+const searchClient = algoliasearch(
+  "N7UFARQ48L",
+  "8d219c45506c851ab82563e0297891dd"
+);
+const { instantsearch, rootMixin } = createInstantSearch({
+  searchClient,
+  indexName: "muaban_phuquoc"
+});
+
 export default {
-  async asyncData({ params }) {
-    let item = firebase
-      .app()
-      .firestore()
-      .collection("Goods")
-      .doc(params.id);
-    const rs = await item.get();
-    let card = rs.data();
-    console.log(card);
-    return { card };
+  asyncData({ params }) {
+    return instantsearch
+      .findResultsState({
+        // find out which parameters to use here using ais-state-results
+        query: "",
+        hitsPerPage: 20,
+        disjunctiveFacets: ["type"],
+        //disjunctiveFacetsRefinements: { type }
+      })
+      .then(() => ({
+        instantSearchState: instantsearch.getState()
+      }));
   },
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
@@ -78,47 +122,37 @@ export default {
       }
     });
   },
-  computed: {
-    arrayImage(){
-      let ar=[];
-      if(this.card.image_url1){
-        ar=[this.card.image_url1]
-      }
-      if(this.card.image_url2){
-        ar=[this.card.image_url1,this.card.image_url2]
-      }
-      if(this.card.image_url3){
-        ar=[this.card.image_url1,this.card.image_url2,this.card.image_url3]
-      }
-      return ar;
-    }
+  beforeMount() {
+    instantsearch.hydrate(this.instantSearchState);
+  },
+  components: {
+    AisInstantSearchSsr,
+    AisRefinementList,
+    AisHits,
+    AisHighlight,
+    AisSearchBox,
+    AisPoweredBy,
+    AisPagination
   },
   data() {
-    return {
-      tab: -1,
-      checkbox: true,
-      card: {}
-    };
+    return {};
   },
   head() {
     return {
-      titleTemplate: `%s - ${this.card.name}`,
-      title: process.env.site_name || "",
-      meta: [
-        { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      link: [
         {
-          hid: "description",
-          name: "description",
-          content: this.card.seo || ""
+          rel: "stylesheet",
+          href:
+            "https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/algolia-min.css"
         }
       ]
     };
   },
+  layout:"normal",
+  mixins: [rootMixin],
   methods: {
-    iso8601Time(timestamp) {
-      // console.log(timestamp);
-      return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+    nonAccentVietnamese(text){
+      return getAppRoutes.nonAccentVietnamese(text);
     }
   },
   mounted() {

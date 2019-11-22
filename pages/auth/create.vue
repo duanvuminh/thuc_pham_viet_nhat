@@ -1,75 +1,77 @@
 <template>
-  <v-form v-model="valid" ref="form" class="ma-2">
-    <v-row class="md" align="start" justify="start" align-content="space-around">
-      <v-col cols="12">
-        <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
-      </v-col>
-      <v-col cols="12">
-         <v-select
-          :items="items"
-          label="Tag, phân loại bài viết"
-          v-model="type"
-          :rules="rules.typeRules"
-        ></v-select>
-      </v-col>
-      <v-col cols="12">
-        <v-file-input
-          v-model="files"
-          placeholder="Upload ảnh bài viết"
-          label="Ảnh bài viết"
-          multiple
-          prepend-icon="mdi-paperclip"
-          accept="image/png, image/jpeg, image/bmp"
-        >
-          <template v-slot:selection="{ text }">
-            <v-chip small label color="primary">{{ text }}</v-chip>
-          </template>
-        </v-file-input>
-      </v-col>
-      <v-col cols="12">
-        <v-textarea
-          outlined
-          auto-grow
-          no-resize
-          label="Tóm tắt"
-          placeholder="Thông tin cơ bản"
-          v-model="seo"
-        ></v-textarea>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-textarea
-          outlined
-          no-resize
-          auto-grow
-          name="input-7-4"
-          placeholder="Nội dung bài viết"
-          label="Nội dung"
-          v-model="content"
-          :rules="rules.contentRules"
-        ></v-textarea>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card class="elevation-1">
-          <div v-html="$md.render(content)" class="pa-2"></div>
-        </v-card>
-      </v-col>
-      <v-col class="text-center" cols="12">
-        <div class="my-2">
-          <v-btn large color="primary" @click="save">Tạo mới</v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </v-form>
+  <v-row align="center" justify="center">
+    <v-form v-model="valid" ref="form" class="ma-2">
+      <v-row class="md" align="start" justify="start" align-content="space-around">
+        <v-col cols="12">
+          <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="items"
+            label="Tag, phân loại bài viết"
+            v-model="type"
+            :rules="rules.typeRules"
+          ></v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-file-input
+            v-model="files"
+            placeholder="Upload ảnh bài viết"
+            label="Ảnh bài viết"
+            multiple
+            prepend-icon="mdi-paperclip"
+            accept="image/png, image/jpeg, image/bmp"
+          >
+            <template v-slot:selection="{ text }">
+              <v-chip small label color="primary">{{ text }}</v-chip>
+            </template>
+          </v-file-input>
+        </v-col>
+        <v-col cols="12">
+          <v-textarea
+            outlined
+            auto-grow
+            no-resize
+            label="Tóm tắt"
+            placeholder="Thông tin cơ bản"
+            v-model="seo"
+          ></v-textarea>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-textarea
+            outlined
+            no-resize
+            auto-grow
+            name="input-7-4"
+            placeholder="Nội dung bài viết"
+            label="Nội dung"
+            v-model="content"
+            :rules="rules.contentRules"
+          ></v-textarea>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card class="elevation-1">
+            <div v-html="$md.render(content)" class="pa-2"></div>
+          </v-card>
+        </v-col>
+        <v-col class="text-center" cols="12">
+          <div class="my-2">
+            <v-btn large color="primary" @click="save">Tạo mới</v-btn>
+          </div>
+        </v-col>
+      </v-row>
+    </v-form>
+  </v-row>
 </template>
 <script>
 import firebase from "firebase";
 const algoliasearch = require("algoliasearch");
 
 const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("GaoNhat_algolia");
+const indexAlgolia = client.initIndex("muaban_phuquoc");
 
 export default {
-  layout:"admin",
+  layout: "admin",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {
@@ -109,16 +111,12 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
       seo: "",
       type: "",
       valid: true,
-      items:[
-        "Hàng bán",
-        "Hàng mua",
-        "Tổng hợp",
-      ]
+      items: ["Hàng bán", "Hàng mua", "Tổng hợp"]
     };
   },
   methods: {
     save() {
-      if(this.email!="duanvuminh@gmail.com"){
+      if (this.email != "duanvuminh@gmail.com") {
         return;
       }
       if (!this.$refs.form.validate()) {
@@ -130,10 +128,9 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
           // Array of "Promises"
           files.map(item => {
             var ref = firebase.storage().ref(this.email + "/" + item.name);
-            return ref.put(item).then(r=>{
+            return ref.put(item).then(r => {
               return ref.getDownloadURL();
             });
-            
           })
         )
           .then(url => {
@@ -143,7 +140,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
             url.push("");
             firebase
               .firestore()
-              .collection("Goods")
+              .collection("muaban_phuquoc")
               .add({
                 creator_id: this.email,
                 date_create: new Date(),
@@ -154,7 +151,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                 image_url3: url[2],
                 name: this.name,
                 type: this.type,
-                seo:this.seo
+                seo: this.seo
               })
               .then(r => {
                 const objects = [
@@ -169,13 +166,13 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                     image_url3: url[2],
                     name: this.name,
                     type: this.type,
-                    seo:this.seo
+                    seo: this.seo
                   }
                 ];
 
                 indexAlgolia.addObjects(objects, (err, content) => {
                   // console.log(content);
-                  this.$router.push("/");
+                  this.$router.push("/auth/");
                 });
               });
           })
@@ -185,7 +182,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
       } else {
         firebase
           .firestore()
-          .collection("Goods")
+          .collection("muaban_phuquoc")
           .add({
             creator_id: this.email,
             date_create: new Date(),
@@ -196,7 +193,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
             image_url3: "",
             name: this.name,
             type: this.type,
-            seo:this.seo
+            seo: this.seo
           })
           .then(r => {
             const objects = [
@@ -211,7 +208,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                 image_url3: "",
                 name: this.name,
                 type: this.type,
-                seo:this.seo
+                seo: this.seo
               }
             ];
 

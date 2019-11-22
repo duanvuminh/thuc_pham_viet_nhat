@@ -5,7 +5,7 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn text href="/auth">Sản phẩm</v-btn>
+      <v-btn text href="/items">Sản phẩm</v-btn>
       <v-btn text href="/auth/create">Tạo mới</v-btn>
       <v-btn text @click="dialog=!dialog">Hướng dẫn viết</v-btn>
     </v-app-bar>

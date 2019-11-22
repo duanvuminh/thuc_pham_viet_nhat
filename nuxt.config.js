@@ -1,6 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
-const getAppRoutes = require('./utils/getRoutes.js');
+import getAppRoutes from './utils/getRoutes.js';
 
 export default {
   mode: 'universal',
@@ -58,7 +58,7 @@ export default {
     gzip: true,
     generate: false,
     routes: () => { 
-      return getAppRoutes() 
+      return getAppRoutes.url() 
     },
     exclude: ['/auth/', '/auth/**']
   },
@@ -108,12 +108,6 @@ export default {
   router: {
     // middleware: 'auth'
     extendRoutes(routes, resolve) {
-      routes.push({
-        path: '/items/:id',
-        components: {
-          default: resolve(__dirname, 'pages/items')
-        }
-      })
     }
   },
 
