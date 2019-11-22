@@ -15,7 +15,6 @@
 export default {
   data() {
     return {
-      title: process.env.site_name
     };
   }
 };

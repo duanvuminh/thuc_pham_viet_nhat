@@ -1,20 +1,18 @@
 <template>
-  <v-form v-model="valid" ref="form">
+  <v-form v-model="valid" ref="form" class="ma-2">
     <v-row class="md" align="start" justify="start" align-content="space-around">
-      <v-col cols="12" md="6">
+      <v-col cols="12">
         <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-text-field label="Địa điểm" v-model="address"></v-text-field>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-text-field
+      <v-col cols="12">
+         <v-select
+          :items="items"
           label="Tag, phân loại bài viết"
           v-model="type"
           :rules="rules.typeRules"
-        ></v-text-field>
+        ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12">
         <v-file-input
           v-model="files"
           placeholder="Upload ảnh bài viết"
@@ -33,9 +31,8 @@
           outlined
           auto-grow
           no-resize
-          label="SEO"
-          placeholder="Từ khoá cho SEO"
-          hint="Bạn nghĩ rằng mọi người sẽ tìm kiếm bài viết của bạn bằng từ khoá nào(Ngăn cách bằng dấu phảy)"
+          label="Tóm tắt"
+          placeholder="Thông tin cơ bản"
           v-model="seo"
         ></v-textarea>
       </v-col>
@@ -53,10 +50,6 @@
       </v-col>
       <v-col cols="12" md="6">
         <v-card class="elevation-1">
-          <v-card-title>Preview</v-card-title>
-          <v-card-subtitle>
-            <a href="https://miaolz123.github.io/vue-markdown/">Cách viết tại đây</a>
-          </v-card-subtitle>
           <div v-html="$md.render(content)" class="pa-2"></div>
         </v-card>
       </v-col>
@@ -76,7 +69,7 @@ const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
 const indexAlgolia = client.initIndex("GaoNhat_algolia");
 
 export default {
-  layout:"blank",
+  layout:"admin",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase.auth().onAuthStateChanged(user => {
@@ -92,25 +85,16 @@ export default {
   },
   data() {
     return {
-      address: "",
       email: "",
-      content: `**Đây là template**
+      content: `Bàn ghế học sinh
+===
 
-# Tên sản phẩm
-Mô tả chi tiết về sản phẩm
+## Giá bán
+200K VND
 
-Xuống dòng
-
-* Đây là danh sách 1
-* Đây là danh sách 2
-      
-# Link
-[google](https://google.com)
-
-# Các icon
-[Toàn bộ icon](https://gist.github.com/rxaviers/7360908)
-
-🌲 🐈
+## Mô tả sản phẩm
+Sản phẩm dùng được 3 tháng nhưng do mình chuyển công tác vào Hồ Chí Minh lên bán lại.  
+Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
       `,
       files: [],
       name: "",
@@ -124,7 +108,12 @@ Xuống dòng
       },
       seo: "",
       type: "",
-      valid: true
+      valid: true,
+      items:[
+        "Hàng bán",
+        "Hàng mua",
+        "Tổng hợp",
+      ]
     };
   },
   methods: {
@@ -156,7 +145,6 @@ Xuống dòng
               .firestore()
               .collection("Goods")
               .add({
-                address: this.address,
                 creator_id: this.email,
                 date_create: new Date(),
                 date_edit: new Date(),
@@ -172,7 +160,6 @@ Xuống dòng
                 const objects = [
                   {
                     id: r.id,
-                    address: this.address,
                     creator_id: this.email,
                     date_create: new Date(),
                     date_edit: new Date(),
@@ -200,7 +187,6 @@ Xuống dòng
           .firestore()
           .collection("Goods")
           .add({
-            address: this.address,
             creator_id: this.email,
             date_create: new Date(),
             date_edit: new Date(),
@@ -216,7 +202,6 @@ Xuống dòng
             const objects = [
               {
                 id: r.id,
-                address: this.address,
                 creator_id: this.email,
                 date_create: new Date(),
                 date_edit: new Date(),
@@ -232,7 +217,7 @@ Xuống dòng
 
             indexAlgolia.addObjects(objects, (err, content) => {
               // console.log(content);
-              this.$router.push("/");
+              this.$router.push("/auth/");
             });
           });
       }
