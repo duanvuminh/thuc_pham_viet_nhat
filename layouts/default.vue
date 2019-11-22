@@ -1,6 +1,12 @@
 <template>
   <v-app>
     <v-content color="white">
+      <v-toolbar color="white">
+        <v-toolbar-title v-text="$t('welcome')"></v-toolbar-title>
+        <v-spacer />
+        <nuxt-link :to="switchLocalePath('vi')">Tiếng Việt</nuxt-link>|
+        <nuxt-link :to="switchLocalePath('ja')">日本語</nuxt-link>
+      </v-toolbar>
       <v-container>
         <nuxt />
       </v-container>
@@ -31,8 +37,7 @@ export default {
         ...i18nSeo.meta
       ],
       link: [
-              { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-,
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
         ...i18nSeo.link
       ]
     };

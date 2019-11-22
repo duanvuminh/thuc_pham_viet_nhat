@@ -1,9 +1,5 @@
 <template>
-  <v-row class="ma-5">
-    <h1 class="pr-5">{{ $t('welcome') }}</h1>
-    <v-spacer />
-    <nuxt-link :to="switchLocalePath('vi')">Tiếng Việt</nuxt-link>|
-    <nuxt-link :to="switchLocalePath('ja')">日本語</nuxt-link>
+  <v-row>
     <v-col cols="12" style="position:relative">
       <v-textarea
         ref="textarea1"
