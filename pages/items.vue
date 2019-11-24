@@ -29,6 +29,7 @@
                     class="orange--text align-end"
                     height="200px"
                     :src="item.image_url1"
+                    contain
                   ></v-img>
                   <v-img
                     v-else
@@ -106,6 +107,7 @@ export default {
         query: "",
         hitsPerPage: 20,
         disjunctiveFacets: ["type"],
+        filters: `display=1`
         //disjunctiveFacetsRefinements: { type }
       })
       .then(() => ({
@@ -156,7 +158,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit("setshowPlus", false);
   }
 };
 </script>

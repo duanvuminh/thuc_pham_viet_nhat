@@ -4,10 +4,13 @@
       <v-btn icon href="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
       <v-btn text href="/auth">Sản phẩm</v-btn>
       <v-btn text href="/auth/create">Tạo mới</v-btn>
-      <v-btn text @click="dialog=!dialog">Hướng dẫn viết</v-btn>
+      <v-spacer/>
+      <v-btn icon @click="dialog=!dialog">
+        <v-icon>info</v-icon>
+      </v-btn>
+      <v-btn text href="/logout">Logout</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid>

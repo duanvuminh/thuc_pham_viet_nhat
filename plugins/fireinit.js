@@ -12,9 +12,8 @@ var config = {
   // Optionally pass in properties for database, authentication and cloud messaging,
   // see their respective docs.
 }
-
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
-// firebase.analytics()
+
 export default firebase

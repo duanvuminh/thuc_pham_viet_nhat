@@ -79,18 +79,20 @@
 </template>
 <script>
 import firebase from "firebase";
+import Cookie from "js-cookie";
+
 export default {
   layout: "blank",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.$store.commit("setLoginState", true);
-        this.$router.push("/");
-      } else {
-        this.$store.commit("setLoginState", false);
-      }
-    });
+    // firebase.auth().onAuthStateChanged(user => {
+    //   if (user) {
+    //     this.$store.commit("setLoginState", true);
+    //     this.$router.push("/");
+    //   } else {
+    //     this.$store.commit("setLoginState", false);
+    //   }
+    // });
   },
   data() {
     return {
@@ -141,8 +143,20 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
-          this.processing = false;
-          this.$router.push("/");
+          // console.log(data)
+          firebase
+            .auth()
+            .currentUser.getIdToken()
+            .then(idToken => {
+              const token = idToken;
+              const { email, uid } =  firebase.auth().currentUser;
+              this.$store.commit("setUser", { email, uid });
+              this.$store.commit("setLoginState", true);
+              // Set JWT to the cookie
+              Cookie.set("access_token", token);
+              this.processing = false;
+              this.$router.push("/");
+            });
         })
         .catch(error => {
           // Handle Errors here.
@@ -158,6 +172,13 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
+          // console.log(data)
+          const token = data.user.refreshToken;
+          const { email, uid } = data.user;
+          this.$store.commit("setUser", { email, uid });
+          this.$store.commit("setLoginState", true);
+          // Set JWT to the cookie
+          Cookie.set("access_token", token);
           this.processing = false;
           this.$router.push("/");
         })
@@ -172,8 +193,6 @@ export default {
         });
     }
   },
-  mounted() {
-    this.$store.commit("setshowPlus", false);
-  }
+  mounted() {}
 };
 </script>

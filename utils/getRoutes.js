@@ -1,6 +1,6 @@
 const algoliasearch = require("algoliasearch");
 const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("GaoNhat_algolia");
+const indexAlgolia = client.initIndex("muaban_phuquoc");
 
 
 // [

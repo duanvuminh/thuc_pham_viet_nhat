@@ -97,7 +97,7 @@ export default {
       ]
     };
   },
-  layout: "normal",
+  layout: "admin",
   methods: {
     iso8601Time(timestamp) {
       // console.log(timestamp);

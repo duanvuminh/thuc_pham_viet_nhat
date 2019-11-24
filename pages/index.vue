@@ -2,15 +2,15 @@
   <v-layout column wrap class="my-12" align-center>
     <v-flex xs12 sm4 class="my-4">
       <div class="text-center">
-        <h2 class="headline">Cửa hàng có sự hỗ trợ nhiệt tình nhất</h2>
-        <span class="subheading">Các bài viết gần đây</span>
+        <h2 class="headline">Các bạn có thể bán trực tiếp cho cửa hàng</h2>
+        <span class="subheading">Hoặc đăng nhập và giao bán</span>
       </div>
     </v-flex>
     <v-flex xs12>
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
           <v-flex xs12 md4 v-for="(item,i) in cards" :key="i">
-            <v-card flat class="transparent">
+            <v-card flat class="transparent" :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">
               <v-card-title primary-title class="layout justify-center">
                 <div class="headline text-center">{{item.name}}</div>
               </v-card-title>
@@ -29,7 +29,7 @@
     <v-flex xs12>
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
-          <v-flex xs12 md4 v-for="(item,i) in items" :key="i">
+          <v-flex xs12 md4 v-for="(item,i) in items" :key="i" class="align-self-start">
             <v-card color="#1F7087" dark :href="item.url">
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
@@ -51,6 +51,7 @@
 </template>
 <script>
 import firebase from "firebase";
+import getAppRoutes from '~/utils/getRoutes.js';
 const googleTrends = require("google-trends-api");
 
 export default {
@@ -65,6 +66,7 @@ export default {
       .app()
       .firestore()
       .collection("muaban_phuquoc")
+      .where("display", "==", true)
       .orderBy("date_edit")
       .limit(3)
       .get();
@@ -89,21 +91,13 @@ export default {
         trending = trending.slice(0, 9);
       }
       items = trending;
-      console.log(items);
+      // console.log(items);
     } catch (err) {
       console.log(err);
     }
     return { cards, items };
   },
   beforeCreate() {
-    // ここでローディングのインジケータアニメーションを表示すると良い
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.$store.commit("setLoginState", true);
-      } else {
-        this.$store.commit("setLoginState", false);
-      }
-    });
   },
   computed: {
     arrayImage() {
@@ -131,10 +125,13 @@ export default {
     iso8601Time(timestamp) {
       // console.log(timestamp);
       return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+    },
+    nonAccentVietnamese(text){
+      return getAppRoutes.nonAccentVietnamese(text);
     }
   },
   mounted() {
-    console.log(this.items);
+    // console.log(this.items);
   }
 };
 </script>

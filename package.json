@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest",
-    "deploy": "nuxt build && gcloud app deploy app.yaml --project gaonhat-1b0c8"
+    "deploy": "nuxt build && gcloud app deploy app.yaml --project phuquoc-259813"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
@@ -21,8 +21,11 @@
     "@nuxtjs/sitemap": "^2.0.1",
     "@nuxtjs/vuetify": "^1.0.0",
     "algoliasearch": "^3.35.1",
+    "cookieparser": "^0.1.0",
     "firebase": "^7.2.3",
     "google-trends-api": "^4.9.0",
+    "js-cookie": "^2.2.1",
+    "jwt-decode": "^2.2.0",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
     "vue-instantsearch": "^2.6.0"

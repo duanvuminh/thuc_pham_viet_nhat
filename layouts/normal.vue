@@ -4,10 +4,11 @@
       <v-btn icon href="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
       <v-btn text href="/items">Sản phẩm</v-btn>
-      <v-btn text href="/auth/create">Tạo mới</v-btn>
-      <v-btn text @click="dialog=!dialog">Hướng dẫn viết</v-btn>
+      <v-btn v-if="loggedIn" text href="/auth">My Page</v-btn>
+      <v-spacer/>
+      <v-btn v-if="loggedIn" text href="/logout">Logout</v-btn>
+      <v-btn v-else text href="/login">Login</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid>
@@ -77,6 +78,11 @@ Tạo danh sách với + - hoặc * phía sau là dấu cách
 > Các icon từ điện thoại
  `
     };
+  },
+  computed: {
+    loggedIn () {
+      return this.$store.state.loggedIn
+    }
   }
 };
 </script>

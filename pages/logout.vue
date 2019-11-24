@@ -45,7 +45,6 @@ export default {
     };
   },
   mounted(){
-    this.$store.commit("setshowPlus", false);
   }
 };
 </script>

@@ -15,10 +15,9 @@
         </v-col>
         <v-col cols="12">
           <v-file-input
-            v-model="files"
+            v-model="file"
             placeholder="Upload ảnh bài viết"
             label="Ảnh bài viết"
-            multiple
             prepend-icon="mdi-paperclip"
             accept="image/png, image/jpeg, image/bmp"
           >
@@ -45,18 +44,18 @@
             name="input-7-4"
             placeholder="Nội dung bài viết"
             label="Nội dung"
-            v-model="content"
+            v-model="description"
             :rules="rules.contentRules"
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="6">
           <v-card class="elevation-1">
-            <div v-html="$md.render(content)" class="pa-2"></div>
+            <div v-html="$md.render(description)" class="pa-2"></div>
           </v-card>
         </v-col>
         <v-col class="text-center" cols="12">
           <div class="my-2">
-            <v-btn large color="primary" @click="save">Tạo mới</v-btn>
+            <v-btn large color="primary">Lưu</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -65,45 +64,32 @@
 </template>
 <script>
 import firebase from "firebase";
-const algoliasearch = require("algoliasearch");
-
-const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("muaban_phuquoc");
-
 export default {
-  layout: "admin",
-  beforeCreate() {
-    this.email = this.$store.state.user.email;
-    firebase
+  async asyncData({ params }) {
+    let pieces = params.id.split("-");
+    let id = pieces[pieces.length - 1];
+    let item = firebase
       .app()
       .firestore()
-      .collection("Users")
-      .where("email", "==", this.email)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          this.role = doc.data().role;
-        });
-      });
+      .collection("muaban_phuquoc")
+      .doc(id);
+    const rs = await item.get();
+    let card = rs.data();
+    let {
+      name,
+      type,
+      seo,
+      description,
+      image_url1,
+      image_url2,
+      image_url3
+    } = card;
+    return { id, name, type, seo, description, image_url1, image_url2, image_url3 };
   },
+  beforeCreate() {},
+  computed: {},
   data() {
     return {
-      email: "",
-      role: "",
-      content: `Bàn ghế học sinh
-===
-
-## Giá bán
-200K VND
-
-## Mô tả sản phẩm
-Sản phẩm dùng được 3 tháng nhưng do mình chuyển công tác vào Hồ Chí Minh lên bán lại.  
-Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
-      `,
-      files: [],
-      name: "",
       rules: {
         nameRules: [
           v =>
@@ -112,18 +98,40 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
         typeRules: [v => !!v || "Phân loại không được trống"],
         contentRules: [v => !!v || "Nội dung không được trống"]
       },
-      seo: "",
+      name: "",
       type: "",
+      seo: "",
+      description: "",
+      image_url1: "",
+      image_url2: "",
+      image_url3: "",
+      file,
       valid: true,
       items: ["Hàng bán", "Hàng mua", "Tổng hợp"]
     };
   },
+  head() {
+    return {
+      titleTemplate: `%s - ${this.name}`,
+      title: process.env.site_name || "",
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          hid: "description",
+          name: "description",
+          content: this.seo || ""
+        }
+      ]
+    };
+  },
+  layout: "admin",
   methods: {
     save() {
       if (!this.$refs.form.validate()) {
         return;
       }
-      var files = this.files;
+      var files = this.file;
       if (files.length > 0) {
         Promise.all(
           // Array of "Promises"
@@ -142,7 +150,8 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
             firebase
               .firestore()
               .collection("muaban_phuquoc")
-              .add({
+              .doc(this.id)
+              .set({
                 creator_id: this.email,
                 date_create: new Date(),
                 date_edit: new Date(),
@@ -160,9 +169,8 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                   {
                     id: r.id,
                     creator_id: this.email,
-                    date_create: new Date(),
                     date_edit: new Date(),
-                    description: this.content,
+                    description: this.description,
                     image_url1: url[0],
                     image_url2: url[1],
                     image_url3: url[2],
@@ -191,9 +199,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
             date_create: new Date(),
             date_edit: new Date(),
             description: this.content,
-            image_url1: "",
-            image_url2: "",
-            image_url3: "",
             name: this.name,
             type: this.type,
             seo: this.seo,
@@ -204,12 +209,8 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
               {
                 id: r.id,
                 creator_id: this.email,
-                date_create: new Date(),
                 date_edit: new Date(),
                 description: this.content,
-                image_url1: "",
-                image_url2: "",
-                image_url3: "",
                 name: this.name,
                 type: this.type,
                 seo: this.seo,
@@ -229,15 +230,11 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
       return;
     }
   },
-  mounted() {
-    console.log(this.email)
-  }
+  mounted() {}
 };
 </script>
 <style>
-.md code {
-  background-color: unset;
-  color: inherit;
-  box-shadow: none;
+.v-image__image {
+  background-size: contain;
 }
 </style>

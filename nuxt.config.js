@@ -106,7 +106,7 @@ export default {
   ** router
   */
   router: {
-    // middleware: 'auth'
+    middleware: "router-auth",
     extendRoutes(routes, resolve) {
     }
   },
