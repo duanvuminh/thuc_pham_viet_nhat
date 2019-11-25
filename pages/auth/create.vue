@@ -85,13 +85,12 @@ export default {
           // doc.data() is never undefined for query doc snapshots
           //console.log(doc.id, " => ", doc.data());
           this.role = doc.data().role;
+          console.log(this.role)
         });
       });
   },
   data() {
     return {
-      email: "",
-      role: "",
       content: `Bàn ghế học sinh
 ===
 
@@ -158,6 +157,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
               .then(r => {
                 const objects = [
                   {
+                    objectID: r.id,
                     id: r.id,
                     creator_id: this.email,
                     date_create: new Date(),
@@ -202,6 +202,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
           .then(r => {
             const objects = [
               {
+                objectID: r.id,
                 id: r.id,
                 creator_id: this.email,
                 date_create: new Date(),
@@ -230,7 +231,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
     }
   },
   mounted() {
-    console.log(this.email)
   }
 };
 </script>

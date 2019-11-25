@@ -115,14 +115,6 @@ export default {
       }));
   },
   beforeCreate() {
-    // ここでローディングのインジケータアニメーションを表示すると良い
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.$store.commit("setLoginState", true);
-      } else {
-        this.$store.commit("setLoginState", false);
-      }
-    });
   },
   beforeMount() {
     instantsearch.hydrate(this.instantSearchState);

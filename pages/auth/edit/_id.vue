@@ -55,7 +55,7 @@
         </v-col>
         <v-col class="text-center" cols="12">
           <div class="my-2">
-            <v-btn large color="primary">Lưu</v-btn>
+            <v-btn large color="primary" @click="save">Lưu</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -64,6 +64,11 @@
 </template>
 <script>
 import firebase from "firebase";
+const algoliasearch = require("algoliasearch");
+
+const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
+const indexAlgolia = client.initIndex("muaban_phuquoc");
+
 export default {
   async asyncData({ params }) {
     let pieces = params.id.split("-");
@@ -84,9 +89,33 @@ export default {
       image_url2,
       image_url3
     } = card;
-    return { id, name, type, seo, description, image_url1, image_url2, image_url3 };
+    return {
+      id,
+      name,
+      type,
+      seo,
+      description,
+      image_url1,
+      image_url2,
+      image_url3
+    };
   },
-  beforeCreate() {},
+  beforeCreate() {
+    this.email = this.$store.state.user.email;
+    firebase
+      .app()
+      .firestore()
+      .collection("Users")
+      .where("email", "==", this.email)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          this.role = doc.data().role;
+        });
+      });
+  },
   computed: {},
   data() {
     return {
@@ -105,7 +134,7 @@ export default {
       image_url1: "",
       image_url2: "",
       image_url3: "",
-      file,
+      file: [],
       valid: true,
       items: ["Hàng bán", "Hàng mua", "Tổng hợp"]
     };
@@ -127,7 +156,7 @@ export default {
   },
   layout: "admin",
   methods: {
-    save() {
+    save({ redirect }) {
       if (!this.$refs.form.validate()) {
         return;
       }
@@ -136,7 +165,9 @@ export default {
         Promise.all(
           // Array of "Promises"
           files.map(item => {
-            var ref = firebase.storage().ref(this.email + "/" + item.name);
+            var ref = firebase
+              .storage()
+              .ref(this.$store.state.user.email + "/" + item.name);
             return ref.put(item).then(r => {
               return ref.getDownloadURL();
             });
@@ -151,39 +182,39 @@ export default {
               .firestore()
               .collection("muaban_phuquoc")
               .doc(this.id)
-              .set({
-                creator_id: this.email,
-                date_create: new Date(),
-                date_edit: new Date(),
-                description: this.content,
-                image_url1: url[0],
-                image_url2: url[1],
-                image_url3: url[2],
-                name: this.name,
-                type: this.type,
-                seo: this.seo,
-                display: this.role == "admin" ? true : false
-              })
+              .set(
+                {
+                  date_edit: new Date(),
+                  description: this.content,
+                  image_url1: url[0],
+                  image_url2: url[1],
+                  image_url3: url[2],
+                  name: this.name,
+                  type: this.type,
+                  seo: this.seo,
+                  display: this.role == "admin" ? true : false
+                },
+                { merge: true }
+              )
               .then(r => {
-                const objects = [
-                  {
-                    id: r.id,
-                    creator_id: this.email,
-                    date_edit: new Date(),
-                    description: this.description,
-                    image_url1: url[0],
-                    image_url2: url[1],
-                    image_url3: url[2],
-                    name: this.name,
-                    type: this.type,
-                    seo: this.seo,
-                    display: this.role == "admin" ? true : false
-                  }
-                ];
-
-                indexAlgolia.addObjects(objects, (err, content) => {
+                const objects = {
+                  objectID: r.id,
+                  date_edit: new Date(),
+                  description: this.description,
+                  image_url1: url[0],
+                  image_url2: url[1],
+                  image_url3: url[2],
+                  name: this.name,
+                  type: this.type,
+                  seo: this.seo,
+                  display: this.role == "admin" ? true : false
+                };
+                indexAlgolia.partialUpdateObject(objects, (err, { taskID, objectID }) => {
                   // console.log(content);
-                  this.$router.push("/auth/");
+                  // console.log(content);
+                  indexAlgolia.waitTask(taskID, () => {
+                    this.$router.push("/auth/");
+                  });
                 });
               });
           })
@@ -194,33 +225,34 @@ export default {
         firebase
           .firestore()
           .collection("muaban_phuquoc")
-          .add({
-            creator_id: this.email,
-            date_create: new Date(),
-            date_edit: new Date(),
-            description: this.content,
-            name: this.name,
-            type: this.type,
-            seo: this.seo,
-            display: this.role == "admin" ? true : false
-          })
+          .doc(this.id)
+          .set(
+            {
+              date_edit: new Date(),
+              description: this.description,
+              name: this.name,
+              type: this.type,
+              seo: this.seo,
+              display: this.role == "admin" ? true : false
+            },
+            { merge: true }
+          )
           .then(r => {
-            const objects = [
-              {
-                id: r.id,
-                creator_id: this.email,
-                date_edit: new Date(),
-                description: this.content,
-                name: this.name,
-                type: this.type,
-                seo: this.seo,
-                display: this.role == "admin" ? true : false
-              }
-            ];
-
-            indexAlgolia.addObjects(objects, (err, content) => {
+            const objects = {
+              objectID: this.id,
+              date_edit: new Date(),
+              description: this.description,
+              name: this.name,
+              type: this.type,
+              seo: this.seo,
+              display: this.role == "admin" ? true : false
+            };
+            console.log(objects);
+            indexAlgolia.partialUpdateObject(objects, (err, { taskID, objectID }) => {
               // console.log(content);
-              this.$router.push("/auth/");
+              indexAlgolia.waitTask(taskID, () => {
+                this.$router.push("/auth/");
+              });
             });
           });
       }
@@ -230,7 +262,9 @@ export default {
       return;
     }
   },
-  mounted() {}
+  mounted() {
+    // console.log(indexAlgolia)
+  }
 };
 </script>
 <style>

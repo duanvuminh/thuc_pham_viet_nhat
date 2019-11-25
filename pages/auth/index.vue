@@ -13,9 +13,6 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
           </template>-->
-          <v-btn icon @click="dialog=!dialog">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="3">
@@ -62,9 +59,17 @@
                       style="max-width:100%"
                     />
                   </v-card-subtitle>
-                  <v-card-actions>
+                  <v-card-actions class="flex-wrap">
                     <v-spacer></v-spacer>
-                    <v-btn color="orange" text :href="`/auth/edit/${nonAccentVietnamese(item.name)}-${item.id}`">Sửa</v-btn>
+                    <template v-if="role=='admin'">
+                    <v-switch label="Show" v-model="item.display" @change="tonggleItem(item)"></v-switch>
+                    <v-btn color="orange" text @click="deleteItem(item)">Xoá</v-btn>
+                    </template>
+                    <v-btn
+                      color="orange"
+                      text
+                      :href="`/auth/edit/${nonAccentVietnamese(item.name)}-${item.id}`"
+                    >Sửa</v-btn>
                     <v-btn
                       color="orange"
                       text
@@ -80,50 +85,6 @@
         <ais-pagination :total-pages="5" />
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-menu
-                  ref="menu1"
-                  v-model="menu1"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="dateFormatted"
-                      label="Ngày tạo"
-                      persistent-hint
-                      prepend-icon="event"
-                      @blur="date = parseDate(dateFormatted)"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </ais-instant-search-ssr>
 </template>
 <script>
@@ -150,22 +111,57 @@ const { instantsearch, rootMixin } = createInstantSearch({
   indexName: "muaban_phuquoc"
 });
 
+const algoliaAdmin = require("algoliasearch");
+
+const client = algoliaAdmin("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
+const indexAlgolia = client.initIndex("muaban_phuquoc");
+
 export default {
-  asyncData({ params, store }) {
+  async asyncData({ params, store }) {
+    let email = store.state.user.email;
+    let role="";
+    await firebase
+      .app()
+      .firestore()
+      .collection("Users")
+      .where("email", "==", email)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          role = doc.data().role;
+        });
+      });
     return instantsearch
       .findResultsState({
         // find out which parameters to use here using ais-state-results
         query: "",
         hitsPerPage: 20,
-        disjunctiveFacets: ["type","display"],
-        filters: `creator_id:${store.state.user.email}`
+        disjunctiveFacets: ["type", "display"],
+        filters: role == "admin"?"":`creator_id:${store.state.user.email}`
         //disjunctiveFacetsRefinements: { type }
       })
       .then(() => ({
         instantSearchState: instantsearch.getState()
       }));
   },
-  beforeCreate() {},
+  beforeCreate() {
+    this.email = this.$store.state.user.email;
+    firebase
+      .app()
+      .firestore()
+      .collection("Users")
+      .where("email", "==", this.email)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          this.role = doc.data().role;
+        });
+      });
+  },
   beforeMount() {
     instantsearch.hydrate(this.instantSearchState);
   },
@@ -181,11 +177,7 @@ export default {
   data() {
     return {
       email: "",
-      dialog: false,
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
-      menu1: false,
-      menu2: false
+      role:""
     };
   },
   head() {
@@ -205,24 +197,49 @@ export default {
     nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
     },
-    parseDate(date) {
-      if (!date) return null;
+    tonggleItem(item){
+      firebase
+          .firestore()
+          .collection("muaban_phuquoc")
+          .doc(item.id)
+          .set(
+            {
+              display: item.display
+            },
+            { merge: true }
+          )
+          .then(r => {
+            const objects = 
+              {
+                objectID: item.id,
+                date_edit: new Date(),
+                display: item.display
+              }
+            ;
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+            indexAlgolia.partialUpdateObject(objects, (err, content) => {
+              // console.log(content);
+            });
+          });
     },
-    formatDate(date) {
-      if (!date) return null;
-
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+    deleteItem(item){
+      firebase
+          .firestore()
+          .collection("muaban_phuquoc")
+          .doc(item.id)
+          .delete(
+          )
+          .then(r => {
+            indexAlgolia.deleteObject(item.id, (err, {taskID}) => {
+              indexAlgolia.waitTask(taskID, () => {
+                window.location.reload(true);
+              });
+            });
+          });
     }
   },
-  mounted() {},
-  watch: {
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date);
-    }
-  }
+  mounted() {
+  },
+  watch: {}
 };
 </script>
