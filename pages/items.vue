@@ -29,7 +29,6 @@
                     class="orange--text align-end"
                     height="200px"
                     :src="item.image_url1"
-                    contain
                   ></v-img>
                   <v-img
                     v-else

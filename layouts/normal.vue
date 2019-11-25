@@ -4,8 +4,6 @@
       <v-btn icon href="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-btn text href="/items">Sản phẩm</v-btn>
-      <v-btn v-if="loggedIn" text href="/auth">My Page</v-btn>
       <v-spacer/>
       <v-btn v-if="loggedIn" text href="/logout">Logout</v-btn>
       <v-btn v-else text href="/login">Login</v-btn>

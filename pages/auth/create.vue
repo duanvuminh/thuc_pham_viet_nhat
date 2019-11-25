@@ -2,10 +2,10 @@
   <v-row align="center" justify="center">
     <v-form v-model="valid" ref="form" class="ma-2">
       <v-row class="md" align="start" justify="start" align-content="space-around">
-        <v-col cols="12">
+        <v-col cols="12" sm="4">
           <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" sm="4">
           <v-select
             :items="items"
             label="Tag, phân loại bài viết"
@@ -13,7 +13,7 @@
             :rules="rules.typeRules"
           ></v-select>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" sm="4">
           <v-file-input
             v-model="files"
             placeholder="Upload ảnh bài viết"
@@ -28,14 +28,11 @@
           </v-file-input>
         </v-col>
         <v-col cols="12">
-          <v-textarea
-            outlined
-            auto-grow
-            no-resize
-            label="Tóm tắt"
-            placeholder="Thông tin cơ bản"
-            v-model="seo"
-          ></v-textarea>
+          <v-layout row wrap align-center>
+            <v-flex xs6 md3 v-for="(item,i) in fileUrls" :key="i" class="align-self-start pa-1">
+              <v-img :src="item" aspect-ratio="2" class="grey lighten-2" max-height="200"></v-img>
+            </v-flex>
+          </v-layout>
         </v-col>
         <v-col cols="12" md="6">
           <v-textarea
@@ -85,7 +82,7 @@ export default {
           // doc.data() is never undefined for query doc snapshots
           //console.log(doc.id, " => ", doc.data());
           this.role = doc.data().role;
-          console.log(this.role)
+          console.log(this.role);
         });
       });
   },
@@ -98,8 +95,10 @@ export default {
 200K VND
 
 ## Mô tả sản phẩm
-Sản phẩm dùng được 3 tháng nhưng do mình chuyển công tác vào Hồ Chí Minh lên bán lại.  
-Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
+Sản phẩm ...
+
+## Liên hệ
+Anh Abc...
       `,
       files: [],
       name: "",
@@ -111,11 +110,17 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
         typeRules: [v => !!v || "Phân loại không được trống"],
         contentRules: [v => !!v || "Nội dung không được trống"]
       },
-      seo: "",
       type: "",
       valid: true,
       items: ["Hàng bán", "Hàng mua", "Tổng hợp"]
     };
+  },
+  computed: {
+    fileUrls() {
+      return this.files.map(file => {
+        return URL.createObjectURL(file);
+      });
+    }
   },
   methods: {
     save() {
@@ -151,7 +156,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                 image_url3: url[2],
                 name: this.name,
                 type: this.type,
-                seo: this.seo,
                 display: this.role == "admin" ? true : false
               })
               .then(r => {
@@ -168,7 +172,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                     image_url3: url[2],
                     name: this.name,
                     type: this.type,
-                    seo: this.seo,
                     display: this.role == "admin" ? true : false
                   }
                 ];
@@ -196,7 +199,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
             image_url3: "",
             name: this.name,
             type: this.type,
-            seo: this.seo,
             display: this.role == "admin" ? true : false
           })
           .then(r => {
@@ -213,7 +215,6 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
                 image_url3: "",
                 name: this.name,
                 type: this.type,
-                seo: this.seo,
                 display: this.role == "admin" ? true : false
               }
             ];
@@ -230,8 +231,7 @@ Dài 2m rộng 1m, làm bằng gỗ lim rất chắc chắn.
       return;
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style>

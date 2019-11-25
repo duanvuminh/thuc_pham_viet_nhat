@@ -10,7 +10,11 @@
       <v-container grid-list-xl>
         <v-layout row wrap align-center>
           <v-flex xs12 md4 v-for="(item,i) in cards" :key="i">
-            <v-card flat class="transparent" :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">
+            <v-card
+              flat
+              class="transparent"
+              :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
+            >
               <v-card-title primary-title class="layout justify-center">
                 <div class="headline text-center">{{item.name}}</div>
               </v-card-title>
@@ -51,7 +55,7 @@
 </template>
 <script>
 import firebase from "firebase";
-import getAppRoutes from '~/utils/getRoutes.js';
+import getAppRoutes from "~/utils/getRoutes.js";
 const googleTrends = require("google-trends-api");
 
 export default {
@@ -79,13 +83,18 @@ export default {
     try {
       let gg = await googleTrends.dailyTrends({ keyword: "", geo: "VN" });
       gg = JSON.parse(gg);
-      // console.log(gg.default.trendingSearchesDays[1].trendingSearches.map(x => x.articles[0]));
-      let trendToday = gg.default.trendingSearchesDays[0].trendingSearches.map(
-        x => x.articles[0]
-      );
-      let trendYestoday = gg.default.trendingSearchesDays[1].trendingSearches.map(
-        x => x.articles[0]
-      );
+      // console.log(gg.default.trendingSearchesDays[0].trendingSearches.map(x => x.articles[0]));
+      let trendToday = gg.default.trendingSearchesDays[0]
+        ? gg.default.trendingSearchesDays[0].trendingSearches.map(
+            x => x.articles[0]
+          )
+        : [];
+      let trendYestoday = gg.default.trendingSearchesDays[1]
+        ? gg.default.trendingSearchesDays[1].trendingSearches.map(
+            x => x.articles[0]
+          )
+        : [];
+
       let trending = trendToday.concat(trendYestoday);
       if (trending.length > 9) {
         trending = trending.slice(0, 9);
@@ -97,8 +106,7 @@ export default {
     }
     return { cards, items };
   },
-  beforeCreate() {
-  },
+  beforeCreate() {},
   computed: {
     arrayImage() {
       let ar = [];
@@ -126,7 +134,7 @@ export default {
       // console.log(timestamp);
       return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
     },
-    nonAccentVietnamese(text){
+    nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
     }
   },

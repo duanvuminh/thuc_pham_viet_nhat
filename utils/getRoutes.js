@@ -1,7 +1,4 @@
-const algoliasearch = require("algoliasearch");
-const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("muaban_phuquoc");
-
+import firebase from "firebase";
 
 // [
 //     {
@@ -40,16 +37,21 @@ function nonAccentVietnamese(str) {
     return str;
 };
 async function url() {
-    let result = await indexAlgolia
-        .search({
-
-        })
-        .then(function (responses) {
-            // Response from Algolia:
-            // https://www.algolia.com/doc/api-reference/api-methods/search/#response-format
-            //console.log(responses.hits);
-            return responses.hits;
+    let result = await firebase
+        .app()
+        .firestore()
+        .collection("muaban_phuquoc")
+        .get()
+        .then((querySnapshot) => {
+            let docs = [];
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                //console.log(doc.id, " => ", doc.data());
+                docs.push({ id: doc.id, ...doc.data() })
+            });
+            return docs;
         });
+
     let routes = result.map(x => {
         return `/detail/${nonAccentVietnamese(x.name)}-${x.id}`;
     })

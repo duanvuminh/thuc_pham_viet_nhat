@@ -2,10 +2,10 @@
   <v-row align="center" justify="center">
     <v-form v-model="valid" ref="form" class="ma-2">
       <v-row class="md" align="start" justify="start" align-content="space-around">
-        <v-col cols="12">
+        <v-col cols="12" sm="4">
           <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" sm="4">
           <v-select
             :items="items"
             label="Tag, phân loại bài viết"
@@ -14,6 +14,13 @@
           ></v-select>
         </v-col>
         <v-col cols="12">
+          <v-layout row wrap align-center>
+            <v-flex xs6 md3 v-for="(item,i) in fileUrls" :key="i" class="align-self-start pa-1">
+              <v-img :src="item" aspect-ratio="2" class="grey lighten-2" max-height="200"></v-img>
+            </v-flex>
+          </v-layout>
+        </v-col>
+        <v-col cols="12" sm="4">
           <v-file-input
             v-model="file"
             placeholder="Upload ảnh bài viết"
@@ -25,16 +32,6 @@
               <v-chip small label color="primary">{{ text }}</v-chip>
             </template>
           </v-file-input>
-        </v-col>
-        <v-col cols="12">
-          <v-textarea
-            outlined
-            auto-grow
-            no-resize
-            label="Tóm tắt"
-            placeholder="Thông tin cơ bản"
-            v-model="seo"
-          ></v-textarea>
         </v-col>
         <v-col cols="12" md="6">
           <v-textarea
@@ -83,7 +80,6 @@ export default {
     let {
       name,
       type,
-      seo,
       description,
       image_url1,
       image_url2,
@@ -93,7 +89,6 @@ export default {
       id,
       name,
       type,
-      seo,
       description,
       image_url1,
       image_url2,
@@ -116,7 +111,16 @@ export default {
         });
       });
   },
-  computed: {},
+  computed: {
+    fileUrls() {
+      if(this.files.length==0){
+        return [this.image_url1,this.image_url2,this.image_url3];
+      }
+      return this.files.map(file => {
+        return URL.createObjectURL(file);
+      });
+    }
+  },
   data() {
     return {
       rules: {
@@ -129,7 +133,6 @@ export default {
       },
       name: "",
       type: "",
-      seo: "",
       description: "",
       image_url1: "",
       image_url2: "",
@@ -149,7 +152,7 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: this.seo || ""
+          content: this.description || ""
         }
       ]
     };
@@ -191,7 +194,6 @@ export default {
                   image_url3: url[2],
                   name: this.name,
                   type: this.type,
-                  seo: this.seo,
                   display: this.role == "admin" ? true : false
                 },
                 { merge: true }
@@ -206,7 +208,6 @@ export default {
                   image_url3: url[2],
                   name: this.name,
                   type: this.type,
-                  seo: this.seo,
                   display: this.role == "admin" ? true : false
                 };
                 indexAlgolia.partialUpdateObject(objects, (err, { taskID, objectID }) => {
@@ -232,7 +233,6 @@ export default {
               description: this.description,
               name: this.name,
               type: this.type,
-              seo: this.seo,
               display: this.role == "admin" ? true : false
             },
             { merge: true }
@@ -244,7 +244,6 @@ export default {
               description: this.description,
               name: this.name,
               type: this.type,
-              seo: this.seo,
               display: this.role == "admin" ? true : false
             };
             console.log(objects);

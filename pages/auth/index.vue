@@ -15,22 +15,21 @@
           </template>-->
         </v-toolbar>
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="2">
         <ais-refinement-list attribute="type" :limit="100" />
         <ais-refinement-list attribute="display" :limit="100" />
       </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="10">
         <ais-hits class="mb-5">
           <template slot-scope="{ items }">
             <v-row>
-              <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md="3" lg="3" xl="3">
-                <v-card class="mx-auto" max-width="400">
+              <v-col v-for="item in items" :key="item.title" cols="12" sm="4">
+                <v-card class="mx-auto" max-width="350">
                   <v-img
                     v-if="item.image_url1"
                     class="orange--text align-end"
                     height="200px"
                     :src="item.image_url1"
-                    contain
                   ></v-img>
                   <v-img v-else height="5px"></v-img>
                   <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
@@ -62,7 +61,7 @@
                   <v-card-actions class="flex-wrap">
                     <v-spacer></v-spacer>
                     <template v-if="role=='admin'">
-                    <v-switch label="Show" v-model="item.display" @change="tonggleItem(item)"></v-switch>
+                    <v-switch label="Show" v-model="item.display" @change="tonggleItem(item)" class="pt-3"></v-switch>
                     <v-btn color="orange" text @click="deleteItem(item)">Xoá</v-btn>
                     </template>
                     <v-btn

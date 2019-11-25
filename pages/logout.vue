@@ -13,7 +13,9 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <nuxt-link to="/"><v-btn color="green darken-1" text @click="dialog = false">Đã hiểu</v-btn></nuxt-link>
+          <nuxt-link to="/">
+            <v-btn color="green darken-1" text @click="dialog = false">Đã hiểu</v-btn>
+          </nuxt-link>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -21,13 +23,16 @@
 </template>
 <script>
 import firebase from "firebase";
+import Cookie from "js-cookie";
 export default {
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     firebase
       .auth()
       .signOut()
-      .then(()=> {
+      .then(() => {
+        Cookie.remove("access_token");
+        this.$store.commit("setUser", {});
         this.$store.commit("setLoginState", false);
         this.$router.push("/");
       })
@@ -44,7 +49,6 @@ export default {
       message: ""
     };
   },
-  mounted(){
-  }
+  mounted() {}
 };
 </script>
