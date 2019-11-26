@@ -58,6 +58,7 @@
             slot-scope="{items, refine, isShowingMore,toggleShowMore,canToggleShowMore,searchForItems}"
           >
             <v-text-field
+              v-if="items.length>10"
               hide-details
               v-model="searhType"
               solo

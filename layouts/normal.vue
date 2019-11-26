@@ -9,7 +9,7 @@
       <v-btn v-else text href="/login">Login</v-btn>
     </v-app-bar>
     <v-content>
-      <v-container fluid>
+      <v-container>
         <nuxt />
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <v-card>

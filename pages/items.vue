@@ -16,7 +16,44 @@
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="3">
-        <ais-refinement-list attribute="type" :limit="100" />
+        <v-toolbar-title>Phân loại</v-toolbar-title>
+        <ais-refinement-list
+          attribute="type"
+          :limit="10"
+          searchable
+          show-more
+          :show-more-limit="50000"
+        >
+          <template
+            slot-scope="{items, refine, isShowingMore,toggleShowMore,canToggleShowMore,searchForItems}"
+          >
+            <v-text-field
+              v-if="items.length>10"
+              hide-details
+              v-model="searhType"
+              solo
+              label="Tìm loại bài viết"
+              prepend-inner-icon="search"
+              @input="searchForItems(searhType)"
+            ></v-text-field>
+            <v-row v-for="item in items" :key="item.value">
+              <v-checkbox
+                hide-details
+                @change="refine(item.value)"
+                :label="item.label"
+                :value="item.value"
+              ></v-checkbox>
+              <v-badge style="top:30px" class="pr-1">
+                <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
+              </v-badge>
+            </v-row>
+            <v-btn
+              text
+              @click="toggleShowMore"
+              :disabled="!canToggleShowMore"
+            >{{ !isShowingMore ? 'Show more' : 'Show less'}}</v-btn>
+          </template>
+        </ais-refinement-list>
       </v-col>
       <v-col cols="12" md="8">
         <ais-hits class="mb-5">
@@ -30,16 +67,14 @@
                     height="200px"
                     :src="item.image_url1"
                   ></v-img>
-                  <v-img
-                    v-else
-                    height="5px"
-                  ></v-img>
+                  <v-img v-else height="5px"></v-img>
                   <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
                     <v-col>
                       <v-card-text>
-                        <div class="text--primary" style="height: 175px!important;line-height: 25px;overflow: hidden;">
-                          {{item.description}}
-                        </div>
+                        <div
+                          class="text--primary"
+                          style="height: 175px!important;line-height: 25px;overflow: hidden;"
+                        >{{item.description}}</div>
                       </v-card-text>
                     </v-col>
                   </v-row>
@@ -61,7 +96,11 @@
                   </v-card-subtitle>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="orange" text :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">Chi tiết</v-btn>
+                    <v-btn
+                      color="orange"
+                      text
+                      :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
+                    >Chi tiết</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -69,14 +108,14 @@
           </template>
         </ais-hits>
 
-        <ais-pagination :total-pages="5"/>
+        <ais-pagination :total-pages="5" />
       </v-col>
     </v-row>
   </ais-instant-search-ssr>
 </template>
 <script>
 import firebase from "firebase";
-import getAppRoutes from '~/utils/getRoutes.js';
+import getAppRoutes from "~/utils/getRoutes.js";
 
 import {
   AisInstantSearchSsr,
@@ -113,8 +152,7 @@ export default {
         instantSearchState: instantsearch.getState()
       }));
   },
-  beforeCreate() {
-  },
+  beforeCreate() {},
   beforeMount() {
     instantsearch.hydrate(this.instantSearchState);
   },
@@ -141,14 +179,13 @@ export default {
       ]
     };
   },
-  layout:"normal",
+  layout: "normal",
   mixins: [rootMixin],
   methods: {
-    nonAccentVietnamese(text){
+    nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>

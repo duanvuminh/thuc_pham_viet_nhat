@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col class="flex-sm-grow-0 flex-grow-1">
-      <v-carousel v-if="card.image_url1">
+      <v-carousel v-if="card.image_url1" height="250">
         <v-carousel-item
           v-for="(item,i) in arrayImage"
           :key="i"
@@ -37,8 +37,68 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
-
       <div v-html="$md.render(card.description)"></div>
+      <v-textarea label="Comment" auto-grow :rows="1" @keypress="addComment" v-model="comment">
+        <template slot="prepend">
+          <v-avatar color="teal" size="48">
+            <span class="white--text headline">48</span>
+          </v-avatar>
+        </template>
+      </v-textarea>
+      <template v-for="(item,i) in comments">
+        <v-row :key="i" class="pb-5">
+          <v-col cols="12" class="pb-0">
+            <div class="d-flex flex-no-wrap">
+              <v-avatar color="teal" class="ma-3" size="48">
+                <span class="white--text headline">{{item.userId}}</span>
+              </v-avatar>
+              <div>
+                <div>
+                  <span>
+                    <b>{{item.userName}}</b>
+                  </span>
+                  <small>{{item.editDate}}</small>
+                </div>
+                <div>{{item.text}}</div>
+              </div>
+            </div>
+          </v-col>
+          <v-col class="d-flex flex-no-wrap pt-0">
+            <v-btn text>Reply</v-btn>
+            <v-btn text icon>
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="11" offset="1">
+            <template v-for="(item1,i) in item.commentSub">
+              <v-row :key="i" class="pb-1">
+                <v-col cols="12" class="pb-0">
+                  <div class="d-flex flex-no-wrap">
+                    <v-avatar color="teal" class="ma-3" size="48">
+                      <span class="white--text headline">{{item1.userId}}</span>
+                    </v-avatar>
+                    <div>
+                      <div>
+                        <span>
+                          <b>{{item1.userName}}</b>
+                        </span>
+                        <small>{{item1.editDate}}</small>
+                      </div>
+                      <div>{{item1.text}}</div>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col class="d-flex flex-no-wrap pt-0">
+                  <v-btn text>Reply</v-btn>
+                  <v-btn text icon>
+                    <v-icon>mdi-thumb-up</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </template>
+          </v-col>
+        </v-row>
+      </template>
     </v-col>
   </v-row>
 </template>
@@ -55,11 +115,9 @@ export default {
       .doc(id);
     const rs = await item.get();
     let card = rs.data();
-    console.log(card);
     return { card };
   },
-  beforeCreate() {
-  },
+  beforeCreate() {},
   computed: {
     arrayImage() {
       let ar = [];
@@ -77,9 +135,40 @@ export default {
   },
   data() {
     return {
-      tab: -1,
+      comment: "",
       checkbox: true,
-      card: {}
+      card: {},
+      comments: [
+        {
+          id: 1,
+          userId: 1,
+          userName: "duanvuminh@gmail.com",
+          text:
+            "duan dep trai bien thai, duan dep trai bien thai, duan dep trai bien thai",
+          editDate: "2019/11/26 15:36",
+          commentSub: [
+            {
+              id: 1,
+              userId: 1,
+              text: "subtext",
+              editDate: "2019/11/26 15:36"
+            },
+            {
+              id: 1,
+              userId: 1,
+              text: "subtext",
+              editDate: "2019/11/26 15:36"
+            }
+          ],
+          liked: [1, 2]
+        },
+        {
+          id: 1,
+          userId: 1,
+          text: "duan",
+          editDate: "2019/11/26 15:36"
+        }
+      ]
     };
   },
   head() {
@@ -102,12 +191,14 @@ export default {
     iso8601Time(timestamp) {
       // console.log(timestamp);
       return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
-    }
+    },
+    addComment() {}
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style>
-.v-image__image{ background-size: contain }
+.v-image__image {
+  background-size: contain;
+}
 </style>
