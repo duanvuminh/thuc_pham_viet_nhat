@@ -108,8 +108,8 @@ export default {
   },
   computed: {
     fileUrls() {
-      if(this.files.length==0){
-        return [this.image_url1,this.image_url2,this.image_url3];
+      if(!this.files || this.files.length==0){
+        return [this.image_url1,this.image_url2,this.image_url3].filter(x=>x!="");
       }
       return this.files.map(file => {
         return URL.createObjectURL(file);
