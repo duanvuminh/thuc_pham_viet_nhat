@@ -16,10 +16,73 @@
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="2">
-        <ais-refinement-list attribute="type" :limit="10" searchable show-more show-more-limit="11">
+        <v-toolbar-title>Bài viết đợi duyệt</v-toolbar-title>
+        <ais-refinement-list attribute="display" class="pb-3">
+          <!-- <a
+            slot="item"
+            slot-scope="{ item, refine, createURL }"
+            :href="createURL(item.value)"
+            :style="{ fontWeight: item.isRefined ? 'bold' : '' }"
+            @click.prevent="refine(item.value)"
+          >
+            <ais-highlight attribute="item" :hit="item" />
+            ({{ item.count.toLocaleString() }})
+          </a>-->
+          <template slot-scope="{ items, refine }">
+            <v-row v-for="item in items" :key="item.value">
+              <v-checkbox
+                hide-details
+                @change="refine(item.value)"
+                :label="transformItems(item)"
+                :value="item.value"
+              ></v-checkbox>
+              <v-badge v-if="item.label=='false'" style="top:20px" color="orange">
+                <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
+                <v-icon>mdi-bell</v-icon>
+              </v-badge>
+              <v-badge v-else style="top:30px">
+                <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
+              </v-badge>
+            </v-row>
+          </template>
         </ais-refinement-list>
-        <v-subheader>Bài viết đợi duyệt</v-subheader>
-        <ais-refinement-list attribute="display" :limit="100" />
+        <v-toolbar-title>Phân loại</v-toolbar-title>
+        <ais-refinement-list
+          attribute="type"
+          :limit="10"
+          searchable
+          show-more
+          :show-more-limit="50000"
+        >
+          <template
+            slot-scope="{items, refine, isShowingMore,toggleShowMore,canToggleShowMore,searchForItems}"
+          >
+            <v-text-field
+              hide-details
+              v-model="searhType"
+              solo
+              label="Tìm loại bài viết"
+              prepend-inner-icon="search"
+              @input="searchForItems(searhType)"
+            ></v-text-field>
+            <v-row v-for="item in items" :key="item.value">
+              <v-checkbox
+                hide-details
+                @change="refine(item.value)"
+                :label="item.label"
+                :value="item.value"
+              ></v-checkbox>
+              <v-badge style="top:30px" class="pr-1">
+                <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
+              </v-badge>
+            </v-row>
+            <v-btn
+              text
+              @click="toggleShowMore"
+              :disabled="!canToggleShowMore"
+            >{{ !isShowingMore ? 'Show more' : 'Show less'}}</v-btn>
+          </template>
+        </ais-refinement-list>
       </v-col>
       <v-col cols="12" md="10">
         <ais-hits class="mb-5">
@@ -183,7 +246,8 @@ export default {
   data() {
     return {
       email: "",
-      role: ""
+      role: "",
+      searhType: ""
     };
   },
   head() {
@@ -200,6 +264,10 @@ export default {
   layout: "admin",
   mixins: [rootMixin],
   methods: {
+    transformItems(item) {
+      console.log(item);
+      return item.label == "true" ? "Đã duyệt" : "Chưa duyệt";
+    },
     nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
     },
