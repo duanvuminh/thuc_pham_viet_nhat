@@ -55,7 +55,6 @@ export default {
       .doc(id);
     const rs = await item.get();
     let card = rs.data();
-    console.log(card);
     return { card };
   },
   beforeCreate() {

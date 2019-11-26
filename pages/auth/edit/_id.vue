@@ -6,12 +6,7 @@
           <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
         </v-col>
         <v-col cols="12" sm="4">
-          <v-select
-            :items="items"
-            label="Tag, phân loại bài viết"
-            v-model="type"
-            :rules="rules.typeRules"
-          ></v-select>
+          <v-text-field label="Tag, phân loại bài viết" v-model="type" :rules="rules.typeRules"></v-text-field>
         </v-col>
         <v-col cols="12">
           <v-layout row wrap align-center>
@@ -138,8 +133,7 @@ export default {
       image_url2: "",
       image_url3: "",
       file: [],
-      valid: true,
-      items: ["Hàng bán", "Hàng mua", "Tổng hợp"]
+      valid: true
     };
   },
   head() {

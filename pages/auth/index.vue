@@ -16,7 +16,9 @@
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="2">
-        <ais-refinement-list attribute="type" :limit="100" />
+        <ais-refinement-list attribute="type" :limit="10" searchable show-more show-more-limit="11">
+        </ais-refinement-list>
+        <v-subheader>Bài viết đợi duyệt</v-subheader>
         <ais-refinement-list attribute="display" :limit="100" />
       </v-col>
       <v-col cols="12" md="10">
@@ -61,8 +63,13 @@
                   <v-card-actions class="flex-wrap">
                     <v-spacer></v-spacer>
                     <template v-if="role=='admin'">
-                    <v-switch label="Show" v-model="item.display" @change="tonggleItem(item)" class="pt-3"></v-switch>
-                    <v-btn color="orange" text @click="deleteItem(item)">Xoá</v-btn>
+                      <v-switch
+                        label="Show"
+                        v-model="item.display"
+                        @change="tonggleItem(item)"
+                        class="pt-3"
+                      ></v-switch>
+                      <v-btn color="orange" text @click="deleteItem(item)">Xoá</v-btn>
                     </template>
                     <v-btn
                       color="orange"
@@ -118,7 +125,7 @@ const indexAlgolia = client.initIndex("muaban_phuquoc");
 export default {
   async asyncData({ params, store }) {
     let email = store.state.user.email;
-    let role="";
+    let role = "";
     await firebase
       .app()
       .firestore()
@@ -138,7 +145,7 @@ export default {
         query: "",
         hitsPerPage: 20,
         disjunctiveFacets: ["type", "display"],
-        filters: role == "admin"?"":`creator_id:${store.state.user.email}`
+        filters: role == "admin" ? "" : `creator_id:${store.state.user.email}`
         //disjunctiveFacetsRefinements: { type }
       })
       .then(() => ({
@@ -176,7 +183,7 @@ export default {
   data() {
     return {
       email: "",
-      role:""
+      role: ""
     };
   },
   head() {
@@ -196,49 +203,44 @@ export default {
     nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
     },
-    tonggleItem(item){
+    tonggleItem(item) {
       firebase
-          .firestore()
-          .collection("muaban_phuquoc")
-          .doc(item.id)
-          .set(
-            {
-              display: item.display
-            },
-            { merge: true }
-          )
-          .then(r => {
-            const objects = 
-              {
-                objectID: item.id,
-                date_edit: new Date(),
-                display: item.display
-              }
-            ;
-
-            indexAlgolia.partialUpdateObject(objects, (err, content) => {
-              // console.log(content);
-            });
+        .firestore()
+        .collection("muaban_phuquoc")
+        .doc(item.id)
+        .set(
+          {
+            display: item.display
+          },
+          { merge: true }
+        )
+        .then(r => {
+          const objects = {
+            objectID: item.id,
+            date_edit: new Date(),
+            display: item.display
+          };
+          indexAlgolia.partialUpdateObject(objects, (err, content) => {
+            // console.log(content);
           });
+        });
     },
-    deleteItem(item){
+    deleteItem(item) {
       firebase
-          .firestore()
-          .collection("muaban_phuquoc")
-          .doc(item.id)
-          .delete(
-          )
-          .then(r => {
-            indexAlgolia.deleteObject(item.id, (err, {taskID}) => {
-              indexAlgolia.waitTask(taskID, () => {
-                window.location.reload(true);
-              });
+        .firestore()
+        .collection("muaban_phuquoc")
+        .doc(item.id)
+        .delete()
+        .then(r => {
+          indexAlgolia.deleteObject(item.id, (err, { taskID }) => {
+            indexAlgolia.waitTask(taskID, () => {
+              window.location.reload(true);
             });
           });
+        });
     }
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {}
 };
 </script>
