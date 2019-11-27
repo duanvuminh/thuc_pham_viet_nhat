@@ -50,7 +50,11 @@ export default {
     '@nuxtjs/sitemap'
   ],
   markdownit: {
-    injected: true
+    injected: true,
+    use:[
+      ['markdown-it-video',{youtube: { width: "100%", height: 390}}]
+    ],
+    
   },
   sitemap:
   {

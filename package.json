@@ -26,6 +26,7 @@
     "google-trends-api": "^4.9.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
+    "markdown-it-video": "^0.6.3",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
     "vue-instantsearch": "^2.6.0"

@@ -4,6 +4,7 @@
       <v-btn icon href="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
+      <v-btn text href="/items">View</v-btn>
       <v-spacer/>
       <v-btn v-if="loggedIn" text href="/logout">Logout</v-btn>
       <v-btn v-else text href="/login">Login</v-btn>
