@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest",
-    "deploy": "nuxt build && gcloud app deploy app.yaml --project phuquoc-259813"
+    "deploy": "nuxt build && gcloud app deploy app.yaml --project gaonhat-1b0c8"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
@@ -25,6 +25,8 @@
     "firebase": "^7.2.3",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
+    "markdown-it-attrs": "^3.0.1",
+    "markdown-it-div": "^1.1.0",
     "markdown-it-video": "^0.6.3",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",

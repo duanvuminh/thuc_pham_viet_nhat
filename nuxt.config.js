@@ -51,10 +51,14 @@ export default {
   ],
   markdownit: {
     injected: true,
-    use:[
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    use: [
+      'markdown-it-div',
+      'markdown-it-attrs',
       ['markdown-it-video',{youtube: { width: "100%", height: 390}}]
-    ],
-    
+    ]
   },
   sitemap:
   {

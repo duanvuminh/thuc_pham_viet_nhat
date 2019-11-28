@@ -10,9 +10,10 @@
       <section>
         <v-parallax src="/hero.jpeg" height="600">
           <v-layout column align-center justify-center class="white--text">
-            <h1 class="white--text mb-2 display-1 text-center">{{quote}}</h1>
-            <div class="subheading mb-0 text-center">Nhập tên địa điểm và bắt đầu khám phá...</div>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Chi tiết</v-btn>
+            <h2 class="white--text mb-4 text-center">{{quote}}</h2>
+            <div class="subheading mb-0 text-center">--quotes--</div>
+            <div class="subheading text-center">Nhập tên địa điểm và bắt đầu khám phá...</div>
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Bắt đầu</v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -26,9 +27,9 @@
           <v-layout column align-center justify-center>
             <div
               class="headline white--text mb-4 text-center"
-            >Cửa hàng chúng tôi cũng có bán các sản phẩm về xây dựng</div>
-            <em>Giá cả phải chăng chất lượng tốt</em>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Chi tiết</v-btn>
+            >Rất mong nhận được sự đóng góp của cộng đồng</div>
+            <em>Đăng nhập và viết bài</em>
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/howto">Chi tiết</v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -39,13 +40,13 @@
             <v-flex xs12 sm4>
               <v-card flat class="transparent">
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="headline">Company info</div>
+                  <div class="headline">Site info</div>
                 </v-card-title>
                 <v-card-text>
-                  Vựa Tiến Liêm
-                  <br />- Chuyên thu mua phế liệu công trình... giá cao
-                  <br />- Nhận cẩu thuê
-                  <br />- Cung cấp ống nước cho công trình số lượng nhiều giá hấp dẫn
+                  Review du lịch Nhật Bản và Việt Nam
+                  <br />- Các địa điểm ở Nhật Bản
+                  <br />- Các quán ăn
+                  <br />- Các mặt hàng ở Nhật được ưa chuộng
                 </v-card-text>
               </v-card>
             </v-flex>
@@ -54,7 +55,7 @@
                 <v-card-title primary-title class="layout justify-center">
                   <div class="headline">Contact us</div>
                 </v-card-title>
-                <v-card-text>Đừng ngại ngùng hãy gọi ngay cho chúng tôi</v-card-text>
+                <v-card-text>Có bất cứ câu hỏi nào hãy gửi mail theo địa chỉ bên dưới</v-card-text>
                 <v-list class="transparent">
                   <v-list-item>
                     <v-list-item-action>
@@ -63,31 +64,7 @@
                       </v-btn>
                     </v-list-item-action>
                     <v-list-item-content>
-                      <v-list-item-title>0975-184-820</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-action>
-                      <v-btn
-                        text
-                        icon
-                        href="https://www.google.com/maps/place/Khu+d%C3%A2n+c%C6%B0+B%E1%BA%BFn+Tr%C3%A0m/@10.2425873,104.0082674,17z/data=!3m1!4b1!4m5!3m4!1s0x31a7895e53fa7141:0x4ca1c93acdb9795a!8m2!3d10.2425873!4d104.0104561"
-                      >
-                        <v-icon class="blue--text text--lighten-2">mdi-map-marker</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>Cầu lớn Bến Tràm, xã cửa Dương, Phú Quốc</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-action>
-                      <v-btn text icon href="https://www.facebook.com/thumuathanhlyphelieuphuquoc">
-                        <v-icon class="blue--text text--lighten-2">mdi-web</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>https://www.facebook.com/thumuathanhlyphelieuphuquoc</v-list-item-title>
+                      <v-list-item-title>080-2360-7047</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -129,7 +106,7 @@ export default {
   data() {
     return {
       title: process.env.site_name,
-      quote: ""
+      quote: "In any moment of decision, the best thing you can do is the right thing, the next best thing is the wrong thing, and the worst thing you can do is nothing"
     };
   },
   computed: {
@@ -166,9 +143,10 @@ export default {
       .where("random", ">=", random)
       .orderBy("random")
       .limit(1)
+      .get()
       .then(snapshot => {
         if (snapshot.empty) {
-          this.quote="No pain no gain"
+          this.quote=`In any moment of decision, the best thing you can do is the right thing, the next best thing is the wrong thing, and the worst thing you can do is nothing`
           return;
         }  
         snapshot.forEach(doc => {

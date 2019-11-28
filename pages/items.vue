@@ -22,7 +22,8 @@
           :limit="10"
           searchable
           show-more
-          :show-more-limit="50000"
+          :show-more-limit="50"
+          class="ml-2"
         >
           <template
             slot-scope="{items, refine, isShowingMore,toggleShowMore,canToggleShowMore,searchForItems}"
@@ -50,7 +51,7 @@
             <v-btn
               text
               @click="toggleShowMore"
-              :disabled="!canToggleShowMore"
+              v-show="canToggleShowMore"
             >{{ !isShowingMore ? 'Show more' : 'Show less'}}</v-btn>
           </template>
         </ais-refinement-list>
@@ -134,7 +135,7 @@ const searchClient = algoliasearch(
 );
 const { instantsearch, rootMixin } = createInstantSearch({
   searchClient,
-  indexName: "muaban_phuquoc"
+  indexName: "dulich"
 });
 
 export default {

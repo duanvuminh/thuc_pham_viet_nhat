@@ -8,18 +8,12 @@
         <v-col cols="12" sm="4">
           <v-text-field label="Tag, phân loại bài viết" v-model="type" :rules="rules.typeRules"></v-text-field>
         </v-col>
-        <v-col cols="12">
-          <v-layout row wrap align-center>
-            <v-flex xs6 md3 v-for="(item,i) in fileUrls" :key="i" class="align-self-start pa-1">
-              <v-img :src="item" aspect-ratio="2" class="grey lighten-2" max-height="200"></v-img>
-            </v-flex>
-          </v-layout>
-        </v-col>
         <v-col cols="12" sm="4">
           <v-file-input
-            v-model="file"
+            v-model="files"
             placeholder="Upload ảnh bài viết"
             label="Ảnh bài viết"
+            multiple
             prepend-icon="mdi-paperclip"
             accept="image/png, image/jpeg, image/bmp"
           >
@@ -27,6 +21,13 @@
               <v-chip small label color="primary">{{ text }}</v-chip>
             </template>
           </v-file-input>
+        </v-col>
+                <v-col cols="12">
+          <v-layout row wrap align-center>
+            <v-flex xs6 md3 v-for="(item,i) in fileUrls" :key="i" class="align-self-start pa-1">
+              <v-img :src="item" aspect-ratio="2" class="grey lighten-2" max-height="200"></v-img>
+            </v-flex>
+          </v-layout>
         </v-col>
         <v-col cols="12" md="6">
           <v-textarea
@@ -59,7 +60,7 @@ import firebase from "firebase";
 const algoliasearch = require("algoliasearch");
 
 const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("muaban_phuquoc");
+const indexAlgolia = client.initIndex("dulich");
 
 export default {
   async asyncData({ params }) {
@@ -68,7 +69,7 @@ export default {
     let item = firebase
       .app()
       .firestore()
-      .collection("muaban_phuquoc")
+      .collection("dulich")
       .doc(id);
     const rs = await item.get();
     let card = rs.data();
@@ -132,7 +133,7 @@ export default {
       image_url1: "",
       image_url2: "",
       image_url3: "",
-      file: [],
+      files: [],
       valid: true
     };
   },
@@ -157,7 +158,7 @@ export default {
       if (!this.$refs.form.validate()) {
         return;
       }
-      var files = this.file;
+      var files = this.files;
       if (files.length > 0) {
         Promise.all(
           // Array of "Promises"
@@ -177,12 +178,12 @@ export default {
             url.push("");
             firebase
               .firestore()
-              .collection("muaban_phuquoc")
+              .collection("dulich")
               .doc(this.id)
               .set(
                 {
                   date_edit: new Date(),
-                  description: this.content,
+                  description: this.description,
                   image_url1: url[0],
                   image_url2: url[1],
                   image_url3: url[2],
@@ -194,7 +195,7 @@ export default {
               )
               .then(r => {
                 const objects = {
-                  objectID: r.id,
+                  objectID: this.id,
                   date_edit: new Date(),
                   description: this.description,
                   image_url1: url[0],
@@ -219,7 +220,7 @@ export default {
       } else {
         firebase
           .firestore()
-          .collection("muaban_phuquoc")
+          .collection("dulich")
           .doc(this.id)
           .set(
             {
@@ -263,5 +264,8 @@ export default {
 <style>
 .v-image__image {
   background-size: contain;
+}
+img{
+  max-width:100%
 }
 </style>

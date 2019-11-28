@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col class="flex-sm-grow-0 flex-grow-1">
-      <v-carousel v-if="card.image_url1">
+      <v-carousel v-if="card.image_url1" height="300">
         <v-carousel-item
           v-for="(item,i) in arrayImage"
           :key="i"
@@ -10,34 +10,7 @@
           transition="fade-transition"
         ></v-carousel-item>
       </v-carousel>
-
-      <v-list class="mb-5 mt-5">
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>Tên</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action style="max-width:80%">
-            <v-list-item-action-text v-text="card.name"></v-list-item-action-text>
-          </v-list-item-action>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>Ngày viết</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action style="max-width:80%">
-            <v-list-item-action-text v-text="iso8601Time(card.date_edit)"></v-list-item-action-text>
-          </v-list-item-action>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>By</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action style="max-width:80%">
-            <v-list-item-action-text v-text="card.creator_id"></v-list-item-action-text>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-
+      <h1>{{card.name}}</h1>
       <div v-html="$md.render(card.description)"></div>
       <v-textarea
         label="Comment"
@@ -92,7 +65,7 @@ export default {
     let item = firebase
       .app()
       .firestore()
-      .collection("muaban_phuquoc")
+      .collection("dulich")
       .doc(id);
     //
     let joker = await item
@@ -156,7 +129,7 @@ export default {
     // });
     // return { id, card, comments };
   },
-   components: {
+  components: {
     Comment
   },
   beforeCreate() {},
@@ -185,7 +158,7 @@ export default {
     }
   },
   data() {
-     return {
+    return {
       user: {},
       comment: "",
       checkbox: true,
@@ -231,7 +204,7 @@ export default {
         this.loading = true;
         firebase
           .firestore()
-          .collection("muaban_phuquoc")
+          .collection("dulich")
           .doc(this.id)
           .collection("commentsAdmin")
           .add({
@@ -264,7 +237,7 @@ export default {
     addCommentSub(value) {
       firebase
         .firestore()
-        .collection("muaban_phuquoc")
+        .collection("dulich")
         .doc(this.id)
         .collection("commentsAdmin")
         .doc(value.parentCommentId)
@@ -300,7 +273,7 @@ export default {
 };
 </script>
 <style>
-.v-image__image {
-  background-size: contain;
+img{
+  max-width:100%
 }
 </style>

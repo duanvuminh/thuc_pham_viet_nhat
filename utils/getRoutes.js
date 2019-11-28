@@ -40,7 +40,7 @@ async function url() {
     let result = await firebase
         .app()
         .firestore()
-        .collection("muaban_phuquoc")
+        .collection("dulich")
         .get()
         .then((querySnapshot) => {
             let docs = [];

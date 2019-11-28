@@ -17,7 +17,7 @@
       </v-col>
       <v-col cols="12" md="2">
         <v-toolbar-title>Bài viết đợi duyệt</v-toolbar-title>
-        <ais-refinement-list attribute="display" class="pb-3">
+        <ais-refinement-list attribute="display" class="pb-5 ml-2">
           <!-- <a
             slot="item"
             slot-scope="{ item, refine, createURL }"
@@ -52,7 +52,8 @@
           :limit="10"
           searchable
           show-more
-          :show-more-limit="50000"
+          :show-more-limit="50"
+          class="ml-2"
         >
           <template
             slot-scope="{items, refine, isShowingMore,toggleShowMore,canToggleShowMore,searchForItems}"
@@ -80,7 +81,7 @@
             <v-btn
               text
               @click="toggleShowMore"
-              :disabled="!canToggleShowMore"
+              v-show="canToggleShowMore"
             >{{ !isShowingMore ? 'Show more' : 'Show less'}}</v-btn>
           </template>
         </ais-refinement-list>
@@ -90,7 +91,7 @@
           <template slot-scope="{ items }">
             <v-row>
               <v-col v-for="item in items" :key="item.title" cols="12" sm="4">
-                <v-card class="mx-auto" max-width="350">
+                <v-card class="mx-auto" max-width="400">
                   <v-img
                     v-if="item.image_url1"
                     class="orange--text align-end"
@@ -178,13 +179,13 @@ const searchClient = algoliasearch(
 );
 const { instantsearch, rootMixin } = createInstantSearch({
   searchClient,
-  indexName: "muaban_phuquoc"
+  indexName: "dulich"
 });
 
 const algoliaAdmin = require("algoliasearch");
 
 const client = algoliaAdmin("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("muaban_phuquoc");
+const indexAlgolia = client.initIndex("dulich");
 
 export default {
   async asyncData({ params, store }) {
@@ -275,7 +276,7 @@ export default {
     tonggleItem(item) {
       firebase
         .firestore()
-        .collection("muaban_phuquoc")
+        .collection("dulich")
         .doc(item.id)
         .set(
           {
@@ -297,7 +298,7 @@ export default {
     deleteItem(item) {
       firebase
         .firestore()
-        .collection("muaban_phuquoc")
+        .collection("dulich")
         .doc(item.id)
         .delete()
         .then(r => {

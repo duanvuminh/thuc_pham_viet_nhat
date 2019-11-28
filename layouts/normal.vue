@@ -1,13 +1,17 @@
 <template>
   <v-app light>
-    <v-app-bar color="deep-purple accent-4" dark app>
-      <v-btn icon href="/">
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
-      <v-btn text href="/items">View</v-btn>
-      <v-spacer/>
-      <v-btn v-if="loggedIn" text href="/logout">Logout</v-btn>
-      <v-btn v-else text href="/login">Login</v-btn>
+    <v-app-bar flat app>
+      <v-container>
+        <v-layout>
+          <v-btn icon href="/" class="align-self-center">
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
+          <v-btn text href="/items" class="align-self-center">View</v-btn>
+          <v-spacer />
+          <v-btn v-if="loggedIn" text href="/logout" class="align-self-center">Logout</v-btn>
+          <v-btn v-else text href="/login" class="align-self-center">Login</v-btn>
+        </v-layout>
+      </v-container>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -79,8 +83,8 @@ Tạo danh sách với + - hoặc * phía sau là dấu cách
     };
   },
   computed: {
-    loggedIn () {
-      return this.$store.state.loggedIn
+    loggedIn() {
+      return this.$store.state.loggedIn;
     }
   }
 };

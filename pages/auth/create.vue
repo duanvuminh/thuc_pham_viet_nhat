@@ -60,7 +60,7 @@ import firebase from "firebase";
 const algoliasearch = require("algoliasearch");
 
 const client = algoliasearch("N7UFARQ48L", "8d219c45506c851ab82563e0297891dd");
-const indexAlgolia = client.initIndex("muaban_phuquoc");
+const indexAlgolia = client.initIndex("dulich");
 
 export default {
   layout: "admin",
@@ -139,7 +139,7 @@ Anh Abc...
             url.push("");
             firebase
               .firestore()
-              .collection("muaban_phuquoc")
+              .collection("dulich")
               .add({
                 creator_id: this.email,
                 date_create: new Date(),
@@ -182,7 +182,7 @@ Anh Abc...
       } else {
         firebase
           .firestore()
-          .collection("muaban_phuquoc")
+          .collection("dulich")
           .add({
             creator_id: this.email,
             date_create: new Date(),
@@ -233,5 +233,8 @@ Anh Abc...
   background-color: unset;
   color: inherit;
   box-shadow: none;
+}
+img{
+  max-width:100%
 }
 </style>
