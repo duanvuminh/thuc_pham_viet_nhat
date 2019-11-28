@@ -37,7 +37,7 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
-      <div v-html="$md.render(card.description)"></div>
+      <div v-html="$md.render(card?card.description:'')"></div>
       <v-textarea
         label="Comment"
         auto-grow
@@ -61,6 +61,7 @@
           @updateMe="addCommentSub"
           :parentCommentId="item.id"
           :forCommentId="item.id"
+          :showname="false"
         >
           <v-col cols="10" offset="2" :key="i" class="pt-0">
             <template v-for="(item1,i) in item.comments">
@@ -70,6 +71,7 @@
                 @updateMe="addCommentSub"
                 :parentCommentId="item.id"
                 :forCommentId="item1.id"
+                :showname="true"
               ></Comment>
             </template>
           </v-col>
@@ -90,27 +92,67 @@ export default {
       .firestore()
       .collection("muaban_phuquoc")
       .doc(id);
-    const rs = await item.get();
-    let card = rs.data();
-    let commentsCollection = await item.collection("comments").get();
-    let comments = [];
-    commentsCollection.forEach(async doc => {
-      // doc.data() is never undefined for query doc snapshots
-      //console.log(doc.id, " => ", doc.data());
-      let commentsubCollection = await item
-        .collection("comments")
-        .doc(doc.id)
-        .collection("comments")
-        .get();
-      let commentsSub = [];
-      commentsubCollection.forEach(doc => {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
-        commentsSub.push({ id: doc.id, ...doc.data() });
-      });
-      comments.push({ id: doc.id, comments: commentsSub, ...doc.data() });
-    });
-    return { id, card, comments };
+    //
+    let joker = await item
+      .get()
+      .then(rs => {
+        let card = rs.data();
+        return item
+          .collection("comments")
+          .orderBy("date_edit",'desc')
+          .get()
+          .then(snapshot => {
+            let promises = [];
+            snapshot.forEach(doc => {
+              let commentSubs = [];
+              promises.push(
+                item
+                  .collection("comments")
+                  .doc(doc.id)
+                  .collection("comments")
+                  .orderBy("date_edit",'desc')
+                  .get()
+                  .then(snapshotSub => {
+                    snapshotSub.forEach(docsub => {
+                      commentSubs.push({ id: docsub.id, ...docsub.data() });
+                    });
+                    return {
+                      id: doc.id,
+                      comments: commentSubs,
+                      ...doc.data()
+                    };
+                  })
+              );
+            });
+            return Promise.all(promises).then(comments => {
+              return { id, card, comments };
+            });
+          });
+      })
+      .then();
+    return { ...joker };
+    //
+    // const rs = await item.get();
+    // let card = rs.data();
+    // let commentsCollection = await item.collection("comments").get();
+    // let comments = [];
+    // commentsCollection.forEach(async doc => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   //console.log(doc.id, " => ", doc.data());
+    //   let commentsubCollection = await item
+    //     .collection("comments")
+    //     .doc(doc.id)
+    //     .collection("comments")
+    //     .get();
+    //   let commentsSub = [];
+    //   commentsubCollection.forEach(doc => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     //console.log(doc.id, " => ", doc.data());
+    //     commentsSub.push({ id: doc.id, ...doc.data() });
+    //   });
+    //   comments.push({ id: doc.id, comments: commentsSub, ...doc.data() });
+    // });
+    // return { id, card, comments };
   },
   components: {
     Comment
@@ -169,8 +211,12 @@ export default {
   layout: "normal",
   methods: {
     iso8601Time(timestamp) {
-      console.log(timestamp);
-      return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+      // console.log(timestamp);
+      try {
+        return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+      } catch (e) {
+        return new timestamp.toISOString().slice(0, -5);
+      }
     },
     addComment(e) {
       if (!this.$store.state.loggedIn) {
@@ -195,16 +241,18 @@ export default {
             ...this.user
           })
           .then(r => {
-            // this.loading = false;
-            // this.comments.unshift({
-            //   id: r.id,
-            //   text: this.comment,
-            //   date_create: new Date(),
-            //   date_edit: new Date(),
-            //   ...this.user
-            // });
-            // this.comment = "";
-            // this.rows = 1;
+            this.loading = false;
+            this.comments.unshift({
+              id: r.id,
+              text: this.comment,
+              date_create: new Date(),
+              date_edit: new Date(),
+              forCommentId: "",
+              parentCommentId: "",
+              ...this.user
+            });
+            this.comment = "";
+            this.rows = 1;
           })
           .catch(function(error) {
             console.error("Error writing document: ", error);
@@ -221,15 +269,23 @@ export default {
         .collection("comments")
         .add(value)
         .then(r => {
-          // this.comments.unshift({
-          //   id: r.id,
-          //   text: this.comment,
-          //   date_create: new Date(),
-          //   date_edit: new Date(),
-          //   ...this.user
-          // });
-          // this.comment = "";
-          // this.rows = 1;
+          this.loading = false;
+          let parent = this.comments.filter(x => x.id == value.parentCommentId);
+          if (value.forCommentId == value.parentCommentId) {
+            parent[0].comments.unshift({
+              id: r.id,
+              ...value
+            });
+          } else {
+            let index =
+              parent[0].comments.findIndex(x => x.id == value.forCommentId) + 1;
+            parent[0].comments.splice(index, 0, {
+              id: r.id,
+              ...value
+            });
+          }
+          this.comment = "";
+          this.rows = 1;
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
@@ -237,7 +293,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.comments);
     this.user = this.$store.state.user;
   }
 };

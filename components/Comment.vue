@@ -8,9 +8,9 @@
         <div class="flex-grow-1">
           <div>
             <span>
-              <b>{{item.userName}}</b>
+              <b>{{item.email}}</b>
             </span>
-            <small>{{item.editDate}}</small>
+            <small>{{iso8601Time(item.date_edit)}}</small>
           </div>
           <v-textarea
             :value="item.text"
@@ -50,7 +50,7 @@
         <v-btn text icon>
           <v-icon>mdi-thumb-up</v-icon>
         </v-btn>
-        <v-btn text icon @click="showComment=true">
+        <v-btn text icon @click="notify">
           <v-icon>mdi-message</v-icon>
         </v-btn>
         <v-col class="flex-grow-1" v-if="showComment">
@@ -77,7 +77,7 @@
 </template>
 <script>
 export default {
-  props: ["item","parentCommentId","forCommentId"],
+  props: ["item", "parentCommentId", "forCommentId","showname"],
   data() {
     return {
       show: false,
@@ -104,11 +104,30 @@ export default {
     }
   },
   methods: {
+    notify(){
+      this.showComment=true;
+      console.log(this.parentCommentId)
+      if(this.showname){
+        this.comment = `@${this.item.email.split('@')[0]}`
+      }
+    },
+    iso8601Time(timestamp) {
+      // console.log(timestamp);
+      // console.log(timestamp);
+      try {
+        return new Date(timestamp.seconds * 1e3).toISOString().slice(0, -5);
+      } catch (e) {
+        return new Date(timestamp).toISOString().slice(0, -5);
+      }
+    },
     addComment(e) {
       if (!this.$store.state.loggedIn) {
         return;
       }
-      if (e.key == "Enter" && this.comment.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+      if (
+        e.key == "Enter" &&
+        this.comment.replace(/(\r\n|\n|\r)/gm, "").trim()
+      ) {
         // this.comments.unshift({
         //   text: this.comment,
         //   date_create: new Date(),

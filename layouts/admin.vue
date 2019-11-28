@@ -6,7 +6,7 @@
       </v-btn>
       <v-btn text href="/auth">View</v-btn>
       <v-btn text href="/auth/create">Tạo mới</v-btn>
-      <v-spacer/>
+      <v-spacer />
       <v-btn text href="/logout">Logout</v-btn>
       <v-btn icon @click="dialog=!dialog">
         <v-icon>info</v-icon>
@@ -41,6 +41,7 @@
 </template> 
 
 <script>
+import firebase from "firebase";
 export default {
   data() {
     return {
@@ -80,6 +81,7 @@ Tạo danh sách với + - hoặc * phía sau là dấu cách
 Các icon từ điện thoại
  `
     };
-  }
+  },
+  mounted() {}
 };
 </script>
