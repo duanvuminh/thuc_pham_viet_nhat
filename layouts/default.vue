@@ -10,8 +10,8 @@
       <section>
         <v-parallax src="/hero.jpeg" height="600">
           <v-layout column align-center justify-center class="white--text">
-            <h1 class="white--text mb-2 display-1 text-center">Thu mua các mặt hàng đa dạng</h1>
-            <div class="subheading mb-4 text-center">Sản phẩm từ giấy, sản phẩm phá dỡ công trình...</div>
+            <h1 class="white--text mb-2 display-1 text-center">{{quote}}</h1>
+            <div class="subheading mb-0 text-center">Nhập tên địa điểm và bắt đầu khám phá...</div>
             <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Chi tiết</v-btn>
           </v-layout>
         </v-parallax>
@@ -122,16 +122,59 @@
 </template> 
 
 <script>
+import firebase from "firebase";
+
 export default {
+  async asyncData({ params }) {},
   data() {
     return {
-      title: process.env.site_name
+      title: process.env.site_name,
+      quote: ""
     };
   },
-  computed:{
-    loggedIn () {
-      return this.$store.state.loggedIn
+  computed: {
+    loggedIn() {
+      return this.$store.state.loggedIn;
     }
+  },
+  mounted() {
+    // take care to clone data
+    // this.$axios.setHeader(
+    //   "Authorization",
+    //   "Token fbb27296d0ff08daced608f1bafa867f42373c31"
+    // );
+    // this.$axios
+    //   .$get(
+    //     "https://cors-anywhere.herokuapp.com/https://api.paperquotes.com/apiv1/quotes/?tags=travel&random=random&curated=1&limit=10000"
+    //   )
+    //   .then(r => {
+    //     for(let i=0;i<r.results.length;i++){
+    //        firebase
+    //         .firestore()
+    //         .collection("Quotes")
+    //         .add({
+    //           pk:r.results[i].pk,
+    //           quote:r.results[i].quote,
+    //           random: i+2
+    //         })
+    //     }
+    //   });
+    let random = Math.random() * 100
+    firebase
+      .firestore()
+      .collection("Quotes")
+      .where("random", ">=", random)
+      .orderBy("random")
+      .limit(1)
+      .then(snapshot => {
+        if (snapshot.empty) {
+          this.quote="No pain no gain"
+          return;
+        }  
+        snapshot.forEach(doc => {
+          this.quote = doc.data().quote;
+        });
+      });
   }
 };
 </script>

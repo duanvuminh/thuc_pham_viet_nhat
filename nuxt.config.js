@@ -8,8 +8,8 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - ',
-    title: process.env.site_name || 'Mua hàng giá tốt nhất',
+    titleTemplate: '%s - Du lịch Nhật Bản, Việt Nam',
+    title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
