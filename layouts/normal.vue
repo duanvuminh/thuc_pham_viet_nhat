@@ -6,7 +6,9 @@
           <v-btn icon to="/" class="align-self-center">
             <v-icon>mdi-home</v-icon>
           </v-btn>
-          <v-btn text to="/items" class="align-self-center">View</v-btn>
+          <v-btn text to="/items" class="align-self-center" icon>
+           <v-icon>mdi-magnify</v-icon>
+          </v-btn>
           <v-spacer />
           <v-btn v-if="loggedIn" text to="/logout" class="align-self-center">Logout</v-btn>
           <v-btn v-else text to="/login" class="align-self-center">Login</v-btn>

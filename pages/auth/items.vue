@@ -16,7 +16,10 @@
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="2">
-        <v-toolbar-title>Bài viết đợi duyệt</v-toolbar-title>
+        <ais-powered-by
+        theme="string"
+        />
+        <v-toolbar-title  class="pt-5">Bài viết đợi duyệt</v-toolbar-title>
         <ais-refinement-list attribute="display" class="pb-5 ml-2">
           <!-- <a
             slot="item"
@@ -31,17 +34,18 @@
           <template slot-scope="{ items, refine }">
             <v-row v-for="item in items" :key="item.value">
               <v-checkbox
+                v-if="item.label=='false'"
                 hide-details
                 @change="refine(item.value)"
                 :label="transformItems(item)"
                 :value="item.value"
               ></v-checkbox>
+              <template v-else>
+                <v-icon small color="blue lighten-2" class="ma-1">mdi-thumb-up</v-icon>OK! Đã duyệt hết
+              </template>
               <v-badge v-if="item.label=='false'" style="top:20px" color="orange">
                 <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
                 <v-icon>mdi-bell</v-icon>
-              </v-badge>
-              <v-badge v-else style="top:30px">
-                <template v-slot:badge>{{ item.count.toLocaleString() }}</template>
               </v-badge>
             </v-row>
           </template>

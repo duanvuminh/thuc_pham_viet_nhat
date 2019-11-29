@@ -3,7 +3,7 @@
     <v-toolbar>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="loggedIn" text to="/auth">My Page</v-btn>
+      <v-btn v-if="loggedIn" text to="/auth/items">My Page</v-btn>
       <v-btn v-else text to="/login">Login</v-btn>
     </v-toolbar>
     <v-content>

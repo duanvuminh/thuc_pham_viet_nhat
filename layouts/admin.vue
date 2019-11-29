@@ -4,7 +4,7 @@
       <v-btn icon to="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-btn text to="/auth">View</v-btn>
+      <v-btn text to="/auth/items" icon><v-icon>mdi-magnify</v-icon></v-btn>
       <v-btn text to="/auth/create">Tạo mới</v-btn>
       <v-spacer />
       <v-btn text to="/logout">Logout</v-btn>
