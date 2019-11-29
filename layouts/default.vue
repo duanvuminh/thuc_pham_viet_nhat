@@ -8,7 +8,7 @@
     </v-toolbar>
     <v-content>
       <section>
-        <v-parallax src="/hero.jpeg" height="600">
+        <v-parallax src="/hero.jpeg" height="600" class="parallax">
           <v-layout column align-center justify-center class="white--text">
             <h2 class="white--text mb-4 text-center">{{quote}}</h2>
             <div class="subheading mb-0 text-center">--quotes--</div>
@@ -23,7 +23,7 @@
       </section>
 
       <section>
-        <v-parallax src="/section.jpg" height="380">
+        <v-parallax src="/section.jpg" height="380" class="parallax">
           <v-layout column align-center justify-center>
             <div
               class="headline white--text mb-4 text-center"
@@ -156,3 +156,8 @@ export default {
   }
 };
 </script>
+<style>
+.parallax img{
+  max-width: none;
+}
+</style>

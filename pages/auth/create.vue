@@ -234,8 +234,6 @@ Anh Abc...
   color: inherit;
   box-shadow: none;
 }
-</style>
-<style scoped>
 img{
   max-width:100%
 }
