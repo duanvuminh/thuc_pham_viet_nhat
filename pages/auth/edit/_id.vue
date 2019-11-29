@@ -48,7 +48,7 @@
         </v-col>
         <v-col class="text-center" cols="12">
           <div class="my-2">
-            <v-btn large color="primary" @click="save">Lưu</v-btn>
+            <v-btn large color="primary" @click="save" :disabled="disabled">Lưu</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -134,7 +134,8 @@ export default {
       image_url2: "",
       image_url3: "",
       files: [],
-      valid: true
+      valid: true,
+      disabled: false
     };
   },
   head() {
@@ -158,6 +159,7 @@ export default {
       if (!this.$refs.form.validate()) {
         return;
       }
+      this.disabled = true;
       var files = this.files;
       if (files.length > 0) {
         Promise.all(
@@ -184,9 +186,9 @@ export default {
                 {
                   date_edit: new Date(),
                   description: this.description,
-                  image_url1: url[0],
-                  image_url2: url[1],
-                  image_url3: url[2],
+                  image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
                   name: this.name,
                   type: this.type,
                   display: this.role == "admin" ? true : false
@@ -198,9 +200,9 @@ export default {
                   objectID: this.id,
                   date_edit: new Date(),
                   description: this.description,
-                  image_url1: url[0],
-                  image_url2: url[1],
-                  image_url3: url[2],
+                  image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
                   name: this.name,
                   type: this.type,
                   display: this.role == "admin" ? true : false
@@ -209,7 +211,8 @@ export default {
                   // console.log(content);
                   // console.log(content);
                   indexAlgolia.waitTask(taskID, () => {
-                    this.$router.push("/auth/");
+                    this.disabled = false
+                    this.$router.push("/auth/items");
                   });
                 });
               });
@@ -245,7 +248,8 @@ export default {
             indexAlgolia.partialUpdateObject(objects, (err, { taskID, objectID }) => {
               // console.log(content);
               indexAlgolia.waitTask(taskID, () => {
-                this.$router.push("/auth/");
+                this.disabled = false;
+                this.$router.push("/auth/items");
               });
             });
           });

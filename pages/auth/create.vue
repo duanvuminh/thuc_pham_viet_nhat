@@ -48,7 +48,7 @@
         </v-col>
         <v-col class="text-center" cols="12">
           <div class="my-2">
-            <v-btn large color="primary" @click="save">Tạo mới</v-btn>
+            <v-btn :disabled="disabled" large color="primary" @click="save">Tạo mới</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -83,18 +83,7 @@ export default {
   },
   data() {
     return {
-      content: `Bàn ghế học sinh
-===
-
-## Giá bán
-200K VND
-
-## Mô tả sản phẩm
-Sản phẩm ...
-
-## Liên hệ
-Anh Abc...
-      `,
+      content: "",
       files: [],
       name: "",
       rules: {
@@ -106,7 +95,8 @@ Anh Abc...
         contentRules: [v => !!v || "Nội dung không được trống"]
       },
       type: "",
-      valid: true
+      valid: true,
+      disable:false
     };
   },
   computed: {
@@ -122,6 +112,7 @@ Anh Abc...
         return;
       }
       var files = this.files;
+      this.disabled = true;
       if (files.length > 0) {
         Promise.all(
           // Array of "Promises"
@@ -145,9 +136,9 @@ Anh Abc...
                 date_create: new Date(),
                 date_edit: new Date(),
                 description: this.content,
-                image_url1: url[0],
-                image_url2: url[1],
-                image_url3: url[2],
+                image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
                 name: this.name,
                 type: this.type,
                 display: this.role == "admin" ? true : false
@@ -161,9 +152,9 @@ Anh Abc...
                     date_create: new Date(),
                     date_edit: new Date(),
                     description: this.content,
-                    image_url1: url[0],
-                    image_url2: url[1],
-                    image_url3: url[2],
+                    image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                    image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                    image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
                     name: this.name,
                     type: this.type,
                     display: this.role == "admin" ? true : false
@@ -172,11 +163,13 @@ Anh Abc...
 
                 indexAlgolia.addObjects(objects, (err, content) => {
                   // console.log(content);
-                  this.$router.push("/auth/");
+                  this.disabled = false;
+                  this.$router.push("/auth/items");
                 });
               });
           })
           .catch(error => {
+            this.disabled = false;
             console.log(`Some failed: `, error.message);
           });
       } else {
@@ -215,7 +208,8 @@ Anh Abc...
 
             indexAlgolia.addObjects(objects, (err, content) => {
               // console.log(content);
-              this.$router.push("/auth/");
+              this.disable= false;
+              this.$router.push("/auth/items");
             });
           });
       }
