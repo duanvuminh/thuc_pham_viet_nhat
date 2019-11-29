@@ -186,9 +186,9 @@ export default {
                 {
                   date_edit: new Date(),
                   description: this.description,
-                  image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
-                  image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
-                  image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url1: url[0],
+                  image_url2: url[1],
+                  image_url3: url[2],
                   name: this.name,
                   type: this.type,
                   display: this.role == "admin" ? true : false
@@ -200,9 +200,9 @@ export default {
                   objectID: this.id,
                   date_edit: new Date(),
                   description: this.description,
-                  image_url1: url[0].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
-                  image_url2: url[1].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
-                  image_url3: url[2].replace(".jpg", "_400x200.jpg").replace(".jpeg", "_400x200.jpeg").replace(".png", "_400x200.png").replace(".jpeg", "_400x200.jpeg"),
+                  image_url1: url[0],
+                  image_url2: url[1],
+                  image_url3: url[2],
                   name: this.name,
                   type: this.type,
                   display: this.role == "admin" ? true : false
