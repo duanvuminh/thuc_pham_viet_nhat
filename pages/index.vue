@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap align-center class="pa-4">
-    <v-flex xs12 md4 v-for="(item,i) in cards" :key="i" class="justify-content alined">
+    <v-flex xs12 md4 v-for="(item,i) in cards" :key="i" class="justify-content alined pa-1">
       <v-img
         :src="item.image_url1"
         aspect-ratio="2"
@@ -11,7 +11,7 @@
         <v-row align="end" class="lightbox pa-2 fill-height">
           <v-col>
             <div class="body-1">
-              <v-btn dark text :to="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">{{item.name}}</v-btn>
+              <v-btn dark text :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">{{item.name}}</v-btn>
             </div>
           </v-col>
         </v-row>
