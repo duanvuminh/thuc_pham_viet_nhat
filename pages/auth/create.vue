@@ -96,7 +96,7 @@ export default {
       },
       type: "",
       valid: true,
-      disable:false
+      disabled:false
     };
   },
   computed: {
