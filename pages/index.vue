@@ -11,7 +11,12 @@
         <v-row align="end" class="lightbox pa-2 fill-height">
           <v-col>
             <div class="body-1">
-              <v-btn dark text :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`">{{item.name}}</v-btn>
+              <v-btn
+                dark
+                text
+                :nuxt="false"
+                :to="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
+              >{{item.name}}</v-btn>
             </div>
           </v-col>
         </v-row>

@@ -261,10 +261,7 @@ export default {
   }
 };
 </script>
-<style>
-.v-image__image {
-  background-size: contain;
-}
+<style scoped>
 img{
   max-width:100%
 }
