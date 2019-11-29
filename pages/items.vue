@@ -100,7 +100,7 @@
                     <v-btn
                       color="orange"
                       text
-                      :href="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
+                      :to="`/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
                     >Chi tiết</v-btn>
                   </v-card-actions>
                 </v-card>

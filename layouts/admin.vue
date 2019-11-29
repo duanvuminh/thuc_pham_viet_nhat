@@ -1,13 +1,13 @@
 <template>
   <v-app light>
     <v-app-bar color="black accent-3" dark app>
-      <v-btn icon href="/">
+      <v-btn icon to="/">
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-btn text href="/auth">View</v-btn>
-      <v-btn text href="/auth/create">Tạo mới</v-btn>
+      <v-btn text to="/auth">View</v-btn>
+      <v-btn text to="/auth/create">Tạo mới</v-btn>
       <v-spacer />
-      <v-btn text href="/logout">Logout</v-btn>
+      <v-btn text to="/logout">Logout</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid>

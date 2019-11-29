@@ -3,8 +3,8 @@
     <v-toolbar>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="loggedIn" text href="/auth">My Page</v-btn>
-      <v-btn v-else text href="/login">Login</v-btn>
+      <v-btn v-if="loggedIn" text to="/auth">My Page</v-btn>
+      <v-btn v-else text to="/login">Login</v-btn>
     </v-toolbar>
     <v-content>
       <section>
@@ -13,7 +13,7 @@
             <h2 class="white--text mb-4 text-center">{{quote}}</h2>
             <div class="subheading mb-0 text-center">--quotes--</div>
             <div class="subheading text-center">Nhập tên địa điểm và bắt đầu khám phá...</div>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/items">Bắt đầu</v-btn>
+            <v-btn class="mt-12" color="blue lighten-2" dark large to="/items">Bắt đầu</v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -29,7 +29,7 @@
               class="headline white--text mb-4 text-center"
             >Rất mong nhận được sự đóng góp của cộng đồng</div>
             <em>Đăng nhập và viết bài</em>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/howto">Chi tiết</v-btn>
+            <v-btn class="mt-12" color="blue lighten-2" dark large to="/howto">Chi tiết</v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -89,7 +89,7 @@
           <v-flex xs12>
             <div class="white--text ml-4">
               <v-icon class="red--text">mdi-heart</v-icon>
-              <a class="white--text" href="https://lithong.com" target="_blank">Love Japan</a>
+              <a class="white--text" href="https://typing.lithong.com/" target="_blank">Love Japan</a>
             </div>
           </v-flex>
         </v-layout>

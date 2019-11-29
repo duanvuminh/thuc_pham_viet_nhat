@@ -139,12 +139,12 @@
                     <v-btn
                       color="orange"
                       text
-                      :href="`/auth/edit/${nonAccentVietnamese(item.name)}-${item.id}`"
+                      :to="`/auth/edit/${nonAccentVietnamese(item.name)}-${item.id}`"
                     >Sửa</v-btn>
                     <v-btn
                       color="orange"
                       text
-                      :href="`/auth/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
+                      :to="`/auth/detail/${nonAccentVietnamese(item.name)}-${item.id}`"
                     >Chi tiết</v-btn>
                   </v-card-actions>
                 </v-card>

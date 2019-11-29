@@ -3,13 +3,13 @@
     <v-app-bar flat app>
       <v-container>
         <v-layout>
-          <v-btn icon href="/" class="align-self-center">
+          <v-btn icon to="/" class="align-self-center">
             <v-icon>mdi-home</v-icon>
           </v-btn>
-          <v-btn text href="/items" class="align-self-center">View</v-btn>
+          <v-btn text to="/items" class="align-self-center">View</v-btn>
           <v-spacer />
-          <v-btn v-if="loggedIn" text href="/logout" class="align-self-center">Logout</v-btn>
-          <v-btn v-else text href="/login" class="align-self-center">Login</v-btn>
+          <v-btn v-if="loggedIn" text to="/logout" class="align-self-center">Logout</v-btn>
+          <v-btn v-else text to="/login" class="align-self-center">Login</v-btn>
         </v-layout>
       </v-container>
     </v-app-bar>
