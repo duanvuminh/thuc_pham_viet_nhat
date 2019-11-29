@@ -37,7 +37,7 @@ export default {
       .firestore()
       .collection("dulich")
       .where("display", "==", true)
-      .orderBy("date_edit")
+      .orderBy("date_edit","desc")
       .limit(3)
       .get();
     //console.log(item)
