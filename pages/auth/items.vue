@@ -16,9 +16,6 @@
         </v-toolbar>
       </v-col>
       <v-col cols="12" md="2">
-        <ais-powered-by
-        theme="string"
-        />
         <v-toolbar-title  class="pt-5">Bài viết đợi duyệt</v-toolbar-title>
         <ais-refinement-list attribute="display" class="pb-5 ml-2">
           <!-- <a
