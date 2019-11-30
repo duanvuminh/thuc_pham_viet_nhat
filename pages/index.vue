@@ -3,7 +3,7 @@
     <v-layout row wrap align-center class="pa-4">
       <v-flex xs12 md4 v-for="(item,i) in cards" :key="i" class="justify-content alined pa-1">
         <v-img
-          :src="item.image_url1"
+          :src="getUrl(item)"
           aspect-ratio="2"
           class="grey lighten-2"
           max-width="100%"
@@ -29,6 +29,7 @@
 <script>
 import firebase from "firebase";
 import getAppRoutes from "~/utils/getRoutes.js";
+const isImageUrl = require("is-image-url");
 
 export default {
   async asyncData({ params }) {
@@ -37,8 +38,8 @@ export default {
       .firestore()
       .collection("dulich")
       .where("display", "==", true)
-      .orderBy("date_edit","desc")
-      .limit(3)
+      .orderBy("date_edit", "desc")
+      .limit(5)
       .get();
     //console.log(item)
     let cards = item.docs.map(x => {
@@ -56,6 +57,25 @@ export default {
   methods: {
     nonAccentVietnamese(text) {
       return getAppRoutes.nonAccentVietnamese(text);
+    },
+    getUrl(item) {
+      if (item.image_url1) {
+        return item.image_url1;
+      } else {
+        let links = item.description.match(/(https?:\/\/[^\s)]+)/g);
+        if (links && links.length > 0) {
+          links = links.filter(x => {
+            return isImageUrl(x);
+          });
+          if(links && links.length > 0){
+          return links[0];
+          }else{
+            return "/plane.jpg";
+          }
+        } else {
+          return "/plane.jpg";
+        }
+      }
     }
   },
   mounted() {}

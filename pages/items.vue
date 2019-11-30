@@ -60,7 +60,7 @@
         <ais-hits class="mb-5">
           <template slot-scope="{ items }">
             <v-row>
-              <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md="3" lg="3" xl="3">
+              <v-col v-for="item in items" :key="item.title" cols="12" sm="4" md=" 4" lg="3" xl="3">
                 <v-card class="mx-auto" max-width="400">
                   <v-img
                     v-if="item.image_url1"
