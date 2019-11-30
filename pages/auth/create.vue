@@ -6,7 +6,12 @@
           <v-text-field label="Tiêu đề bài viết" v-model="name" :rules="rules.nameRules"></v-text-field>
         </v-col>
         <v-col cols="12" sm="4">
-          <v-text-field label="Tag, phân loại bài viết" v-model="type" :rules="rules.typeRules"></v-text-field>
+          <v-combobox
+            v-model="type"
+            :items="items"
+            label="Tag, phân loại bài viết"
+            :rules="rules.typeRules"
+          ></v-combobox>
         </v-col>
         <v-col cols="12" sm="4">
           <v-file-input
@@ -96,7 +101,8 @@ export default {
       },
       type: "",
       valid: true,
-      disabled:false
+      disabled: false,
+      items: []
     };
   },
   computed: {
@@ -209,7 +215,7 @@ export default {
 
             indexAlgolia.addObjects(objects, (err, content) => {
               // console.log(content);
-              this.disable= false;
+              this.disable = false;
               this.$router.push("/auth/items");
             });
           });
@@ -220,7 +226,22 @@ export default {
       return;
     }
   },
-  mounted() {}
+  mounted() {
+    let items = [];
+    firebase
+      .app()
+      .firestore()
+      .collection("dulich")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          items.push(doc.data().type);
+        });
+        this.items = [...new Set(items)];
+      });
+  }
 };
 </script>
 <style>
@@ -229,7 +250,7 @@ export default {
   color: inherit;
   box-shadow: none;
 }
-img{
-  max-width:100%
+img {
+  max-width: 100%;
 }
 </style>
