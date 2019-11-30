@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col class="flex-sm-grow-0 flex-grow-1">
+    <v-col>
       <v-carousel v-if="card.image_url1" height="300">
         <v-carousel-item
           v-for="(item,i) in arrayImage"

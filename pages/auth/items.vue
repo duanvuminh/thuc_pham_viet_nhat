@@ -94,12 +94,11 @@
               <v-col v-for="item in items" :key="item.title" cols="12" sm="4">
                 <v-card class="mx-auto" max-width="400">
                   <v-img
-                    v-if="item.image_url1"
                     class="orange--text align-end"
                     height="200px"
-                    :src="item.image_url1"
+                    :src="getUrl(item)"
                   ></v-img>
-                  <v-img v-else height="5px"></v-img>
+                  <!-- <v-img v-else height="5px"></v-img>
                   <v-row v-if="!item.image_url1" style="height:200px;overflow: hidden;" align="end">
                     <v-col>
                       <v-card-text>
@@ -109,7 +108,7 @@
                         >{{item.description}}</div>
                       </v-card-text>
                     </v-col>
-                  </v-row>
+                  </v-row> -->
                   <v-card-title>
                     <ais-highlight
                       attribute="name"
@@ -162,6 +161,7 @@
 <script>
 import firebase from "firebase";
 import getAppRoutes from "~/utils/getRoutes.js";
+const isImageUrl = require("is-image-url");
 
 import {
   AisInstantSearchSsr,
@@ -292,7 +292,7 @@ export default {
             display: item.display
           };
           indexAlgolia.partialUpdateObject(objects, (err, content) => {
-            // console.log(content);
+           window.location.reload(true);
           });
         });
     },
@@ -309,6 +309,25 @@ export default {
             });
           });
         });
+    },
+    getUrl(item) {
+      if (item.image_url1) {
+        return item.image_url1;
+      } else {
+        let links = item.description.match(/(https?:\/\/[^\s)]+)/g);
+        if (links && links.length > 0) {
+          links = links.filter(x => {
+            return isImageUrl(x);
+          });
+          if(links && links.length > 0){
+          return links[0];
+          }else{
+            return "/plane.jpg";
+          }
+        } else {
+          return "/plane.jpg";
+        }
+      }
     }
   },
   mounted() {},
