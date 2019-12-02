@@ -1,12 +1,13 @@
 <template>
   <v-app light>
-    <v-app-bar flat app color="transparent">
+    <v-app-bar flat app color="transparent" dense>
       <v-container>
-        <v-layout>
+        <v-row>
+          <v-btn text to="/logout" class="align-self-center">Home</v-btn>
           <v-spacer />
           <v-btn v-if="loggedIn" text to="/logout" class="align-self-center">Logout</v-btn>
           <v-btn v-else text to="/login" class="align-self-center">Login</v-btn>
-        </v-layout>
+        </v-row>
       </v-container>
     </v-app-bar>
     <v-content>
