@@ -8,7 +8,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - Du lịch Nhật Bản, Việt Nam',
+    titleTemplate: '%s - Cách học thuộc Kanji, nhớ kanji',
     title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },

@@ -55,14 +55,14 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6">
                   <v-text-field
                     v-model="basename"
                     label="Tên bộ *"
                     :rules="[v => !!v || 'Không được trống',v => v.length < 2 || '1 kí tự',]"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6">
                   <v-text-field
                     v-model="basecomment"
                     label="Giải thích *"
