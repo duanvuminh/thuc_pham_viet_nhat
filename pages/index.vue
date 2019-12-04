@@ -25,6 +25,8 @@ export default {
 [Google input tool](https://www.google.com/inputtools/chrome/)
 * Join oboe Team
 [Online support](https://lovejapanworkspace.slack.com)
+* How to edit with markdown
+[markdown](https://lithong.com/howto)
 * Hỗ trợ đánh tiếng nhật online
 [Gõ tiếng Nhật](https://typing.lithong.com/)
 * Q&A

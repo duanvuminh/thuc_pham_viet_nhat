@@ -6,7 +6,6 @@
           <v-btn text to="/" class="align-self-center">Home</v-btn>
           <v-btn text class="align-self-center" @click="openBo">Bộ con</v-btn>
           <v-spacer />
-          <v-btn text to="/howto" class="align-self-center">How</v-btn>
           <v-btn v-if="loggedIn" text to="/logout" class="align-self-center">Logout</v-btn>
           <v-btn v-else text to="/login" class="align-self-center">Login</v-btn>
         </v-row>
