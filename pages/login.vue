@@ -155,7 +155,7 @@ export default {
               // Set JWT to the cookie
               Cookie.set("access_token", token);
               this.processing = false;
-              this.$router.push("/oboe");
+              this.$router.push("/");
             });
         })
         .catch(error => {
@@ -180,7 +180,7 @@ export default {
           // Set JWT to the cookie
           Cookie.set("access_token", token);
           this.processing = false;
-          this.$router.push("/oboe");
+          this.$router.push("/");
         })
         .catch(error => {
           // Handle Errors here.

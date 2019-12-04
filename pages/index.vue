@@ -10,13 +10,24 @@
         v-model="searchkey"
       ></v-text-field>
     </v-col>
+    <v-col cols="12">
+      <div v-html="$md.render(introdue)"></div>
+    </v-col>
   </v-row>
 </template>
 <script>
 export default {
   data() {
     return {
-      searchkey: ""
+      searchkey: "",
+      introdue:`
+* Join oboe Team
+[Online support](https://lovejapanworkspace.slack.com)
+* Hỗ trợ đánh tiếng nhật online
+[Gõ tiếng Nhật](https://typing.lithong.com/)
+* Q&A
+Comming soon...
+      `
     };
   },
   layout: "oboe",

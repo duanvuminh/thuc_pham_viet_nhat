@@ -156,12 +156,14 @@ export default {
         .doc(this.email)
         .set(
           {
+            couter:999999,
             en: this.commenten,
             vi: this.commentvi
           },
           { merge: true }
         )
         .then(r => {
+          
           this.loading = false;
         });
     },

@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest",
-    "deploy": "nuxt build && gcloud app deploy app.yaml --project gaonhat-1b0c8"
+    "deploy": "nuxt build && gcloud app deploy app.yaml --project oboe-261003"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",

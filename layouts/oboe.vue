@@ -3,7 +3,7 @@
     <v-app-bar flat app dense>
       <v-container>
         <v-row>
-          <v-btn text to="/oboe" class="align-self-center">Home</v-btn>
+          <v-btn text to="/" class="align-self-center">Home</v-btn>
           <v-btn text class="align-self-center" @click="openBo">Bộ con</v-btn>
           <v-spacer />
           <v-btn v-if="loggedIn" text to="/logout" class="align-self-center">Logout</v-btn>
@@ -22,7 +22,7 @@
           <v-row class="d-flex justify-space-around">
             <v-col v-for="(item,i) in items" class="flex-grow-0 flex-shrink-1" :key="i">
               <v-card>
-                <div class="display-4 nihongo">{{item.id}}</div>
+                <div class="display-3 nihongo">{{item.id}}</div>
                 <v-card-actions>
                   <v-spacer />
                   <v-menu left bottom>

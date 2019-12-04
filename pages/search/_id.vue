@@ -40,26 +40,14 @@
       </v-row>
     </v-col>
     <v-col cols="12" v-for="(item,i) in items" :key="i">
-      <v-card class="mx-auto">
-        <v-card-text v-html="$md.render(item.vi)"></v-card-text>
-
-        <v-card-actions>
-          <v-btn v-if="item.id=='duanvuminh@gmail.com'" text color="deep-purple accent-4">
-            <v-icon left>mdi-star-outline</v-icon>Offical
-          </v-btn>
-          <v-btn v-else color="orange" text dark>{{item.id}}</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn :color="color" text icon @click="like(item)">
-            <v-icon>mdi-thumb-up</v-icon>
-          </v-btn>
-          <!-- color="blue lighten-2" -->
-        </v-card-actions>
-      </v-card>
+      <Ocard :item="item" :searchkey="searchkey" :email="email"></Ocard>
     </v-col>
   </v-row>
 </template>
 <script>
 import firebase from "firebase";
+import Ocard from "@/components/Oboecard";
+
 export default {
   async asyncData({ params, store }) {
     let email = store.state.user.email ? store.state.user.email : "undefined";
@@ -77,6 +65,7 @@ export default {
       .collection("kanji")
       .doc(params.id)
       .collection("oboe")
+      .orderBy("couter","desc")
       .get();
     let items = [];
     docs.forEach(function(doc) {
@@ -101,6 +90,9 @@ export default {
     }
   },
   beforeCreate() {},
+  components: {
+    Ocard
+  },
   computed: {
     readonly() {
       return !this.$store.state.loggedIn;
@@ -124,7 +116,7 @@ export default {
       basename: "",
       basecomment: "",
       commentvi: "",
-      color:"",
+      color: "",
       email: "",
       items: [],
       loading: false,
