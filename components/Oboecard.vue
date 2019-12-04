@@ -11,7 +11,7 @@
       <v-btn v-if="this.$store.state.loggedIn" text icon @click="like(item)">
         <v-icon :color="color">mdi-thumb-up</v-icon>
       </v-btn>
-      <small v-if="couter>0">{{couter}}</small>
+      <small v-if="couter>0&&this.$store.state.loggedIn">{{couter}}</small>
       <!-- color="blue lighten-2" -->
     </v-card-actions>
   </v-card>
@@ -57,7 +57,10 @@ export default {
               .doc(this.item.id)
               .set(
                 {
-                  couter: this.item.id=="duanvuminh@gmail.com"?this.couter+999999:this.couter
+                  couter:
+                    this.item.id == "duanvuminh@gmail.com"
+                      ? this.couter + 999999
+                      : this.couter
                 },
                 { merge: true }
               );
@@ -86,7 +89,10 @@ export default {
               .doc(this.item.id)
               .set(
                 {
-                  couter: this.item.id=="duanvuminh@gmail.com"?this.couter+999999:this.couter
+                  couter:
+                    this.item.id == "duanvuminh@gmail.com"
+                      ? this.couter + 999999
+                      : this.couter
                 },
                 { merge: true }
               );
