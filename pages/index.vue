@@ -21,6 +21,10 @@ export default {
     return {
       searchkey: "",
       introdue:`
+## Cách sử dụng
+Nhập từ kanji mà bạn muốn xem. Ví dụ "四" (cách nhớ dựa trên kanji primitive)
+Để sửa đổi cần đăng nhập. 
+## Các nguồn khác
 * Best recommended input extension
 [Google input tool](https://www.google.com/inputtools/chrome/)
 * Join oboe Team
