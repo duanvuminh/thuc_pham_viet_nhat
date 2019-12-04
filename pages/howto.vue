@@ -126,7 +126,7 @@ Hiển thị
 
 <script>
 export default {
-  layout: "normal"
+  layout: "oboe"
 };
 </script>
 <style>

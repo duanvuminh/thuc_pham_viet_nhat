@@ -135,7 +135,7 @@ export default {
       .get()
       .then(r => {
         this.couter = r.data().couter;
-        if ((this.item.id = "duanvuminh@gmail.com")) {
+        if ((this.item.id == "duanvuminh@gmail.com")) {
           this.couter -= 999999;
         }
       });
