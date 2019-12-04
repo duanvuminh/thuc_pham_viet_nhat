@@ -8,7 +8,7 @@
       </v-btn>
       <v-btn v-else color="orange" text dark>{{item.id}}</v-btn>
       <v-spacer></v-spacer>
-      <v-btn text icon @click="like(item)">
+      <v-btn v-if="this.$store.state.loggedIn" text icon @click="like(item)">
         <v-icon :color="color">mdi-thumb-up</v-icon>
       </v-btn>
       <small v-if="couter>0">{{couter}}</small>
