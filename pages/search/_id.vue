@@ -180,4 +180,7 @@ export default {
   font-family: Hiragino Mincho Pro, ヒラギノ明朝 Pro W3, ＭＳ 明朝, ＭＳ Ｐ明朝,
     serif !important;
 }
+img{
+  max-width:100%
+}
 </style>
