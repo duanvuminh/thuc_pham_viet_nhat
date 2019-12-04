@@ -21,6 +21,8 @@ export default {
     return {
       searchkey: "",
       introdue:`
+* Best recommended input extension
+[Google input tool](https://www.google.com/inputtools/chrome/)
 * Join oboe Team
 [Online support](https://lovejapanworkspace.slack.com)
 * Hỗ trợ đánh tiếng nhật online
