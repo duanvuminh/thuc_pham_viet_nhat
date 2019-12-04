@@ -1,7 +1,7 @@
 {
-  "name": "Oboe",
+  "name": "oboe",
   "version": "1.0.0",
-  "description": "Review hàng Nhật",
+  "description": "Remember kanji",
   "author": "duanvuminh",
   "private": true,
   "scripts": {
