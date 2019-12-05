@@ -55,19 +55,33 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="4">
                   <v-text-field
                     v-model="basename"
                     label="Tên bộ *"
-                    :rules="[v => !!v || 'Không được trống',v => v.length < 2 || '1 kí tự',]"
+                    :rules="[v => !!v || 'Không được trống']"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="4">
                   <v-text-field
                     v-model="basecomment"
                     label="Giải thích *"
                     :rules="[v => !!v || 'Không được trống']"
                   ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-file-input
+                    v-model="files"
+                    placeholder="Upload ảnh bài viết"
+                    label="Ảnh bài viết"
+                    multiple
+                    prepend-icon="mdi-paperclip"
+                    accept="image/png, image/jpeg, image/bmp"
+                  >
+                    <template v-slot:selection="{ text }">
+                      <v-chip small label color="primary">{{ text }}</v-chip>
+                    </template>
+                  </v-file-input>
                 </v-col>
               </v-row>
             </v-container>
@@ -130,6 +144,7 @@ export default {
       commentvi: "",
       dialog: false,
       email: "",
+      files: [],
       show: false,
       searchkey: "",
       valid: true
@@ -156,14 +171,13 @@ export default {
         .doc(this.email)
         .set(
           {
-            couter:999999,
+            couter: 999999,
             en: this.commenten,
             vi: this.commentvi
           },
           { merge: true }
         )
         .then(r => {
-          
           this.loading = false;
         });
     },
@@ -171,17 +185,32 @@ export default {
       if (!this.$refs.form.validate()) {
         return;
       } else {
-        firebase
-          .app()
-          .firestore()
-          .collection("kanjicore")
-          .doc(this.basename)
-          .set(
-            {
-              content: this.basecomment
-            },
-            { merge: true }
-          );
+        Promise.all(
+          // Array of "Promises"
+          this.files.map(item => {
+            var ref = firebase.storage().ref("kanjiMain/" + this.basename);
+            return ref.put(item).then(r => {
+              return ref.getDownloadURL();
+            });
+          })
+        ).then(url => {
+          firebase
+            .app()
+            .firestore()
+            .collection("kanjicore")
+            .doc(this.basename)
+            .set(
+              {
+                en: this.basename,
+                vi: this.basecomment,
+                url: url[0]
+              },
+              { merge: true }
+            );
+        });
+        ///
+        //
+        ///
         this.dialog = false;
       }
     }
@@ -207,19 +236,19 @@ export default {
         });
     },
     basename() {
-      if (this.basename) {
-        firebase
-          .app()
-          .firestore()
-          .collection("kanjicore")
-          .doc(this.basename)
-          .get()
-          .then(r => {
-            if (r.data()) {
-              this.basecomment = r.data().content;
-            }
-          });
-      }
+      this.$axios
+        .$post(
+          "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+          {
+            q: this.basename,
+            source: "en",
+            target: "vi",
+            format: "text"
+          }
+        )
+        .then(r => {
+          this.basecomment = r.data.translations[0].translatedText;
+        });
     }
   },
   commentvi() {
