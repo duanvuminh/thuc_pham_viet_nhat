@@ -58,20 +58,26 @@ export default {
     use: [
       'markdown-it-div',
       'markdown-it-attrs',
-      ['markdown-it-video',{youtube: { width: "100%", height: 390}}]
+      ['markdown-it-video', { youtube: { width: "100%", height: 390 } }]
     ]
   },
   sitemap:
   {
+    hostname:'https://oboe.lithong.com',
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
-    routes: () => { 
-      return getAppRoutes.url() 
+    routes: () => {
+      return getAppRoutes.url()
     },
     exclude: ['/auth/', '/auth/**']
   },
   pwa: {
+    manifest: {
+      name: 'Oboe',
+      lang: 'en',
+      description: "cách nhớ kanji"
+    },
     workbox: {
       runtimeCaching: [
         {
