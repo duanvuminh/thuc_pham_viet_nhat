@@ -13,7 +13,12 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table :headers="headers" :items="desserts" :search="search">
+        <v-data-table
+          :headers="headers"
+          :items="desserts"
+          :search="search"
+          :items-per-page="5"
+        >
           <template v-slot:body="{ items }">
             <tbody>
               <tr v-for="item in items" :key="item.id">
@@ -70,13 +75,11 @@ export default {
         {
           text: "Nghĩa tiếng Anh",
           align: "left",
-          sortable: false,
           value: "en"
         },
         {
           text: "Nghĩa tiếng Việt",
           align: "left",
-          sortable: false,
           value: "vi"
         }
       ],
