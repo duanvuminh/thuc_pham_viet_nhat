@@ -1,8 +1,10 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-text v-html="$md.render(item.vi)"></v-card-text>
+    <v-card-text class="pb-0">
+      <div v-html="$md.render(item.vi)"></div>
+    </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions class="pt-0">
       <v-btn v-if="item.id=='duanvuminh@gmail.com'" text color="deep-purple accent-4">
         <v-icon left>mdi-star-outline</v-icon>Offical
       </v-btn>

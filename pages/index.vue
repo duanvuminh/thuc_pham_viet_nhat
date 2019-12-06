@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="6">
+    <v-col cols="12">
       <v-text-field
         solo
         label="Search"
@@ -9,6 +9,7 @@
         @keypress="search"
         @blur="search1"
         v-model="searchkey"
+        :loading="loading"
       ></v-text-field>
     </v-col>
     <v-col cols="12">
@@ -20,8 +21,9 @@
 export default {
   data() {
     return {
+      loading: false,
       searchkey: "",
-      introdue:`
+      introdue: `
 ## Cách sử dụng
 Nhập từ kanji mà bạn muốn xem. Ví dụ "四" (cách nhớ dựa trên [kanji primitive](https://docs.google.com/document/d/1z-5C_Z1Cpkerrnd2Eo1mCVhMcFpE7cdgDydoLHBLnNQ/edit))
 Để sửa đổi cần đăng nhập. 
@@ -41,8 +43,9 @@ Comming soon...
   },
   layout: "oboe",
   methods: {
-        search1() {
+    search1() {
       if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+        this.loading=true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     },
@@ -51,6 +54,7 @@ Comming soon...
         e.key == "Enter" &&
         this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
       ) {
+        this.loading=true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     }

@@ -10,6 +10,7 @@
         @blur="search1"
         v-model="searchkey"
         hide-details
+        :loading="loading1"
       ></v-text-field>
     </v-col>
     <v-col cols="12">
@@ -121,6 +122,7 @@ export default {
       email: "",
       items: [],
       loading: false,
+      loading1: false,
       show: false,
       searchkey: "",
       valid: true
@@ -134,15 +136,22 @@ export default {
   layout: "oboe",
   methods: {
     search1() {
-      if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+      console.log(this.$route);
+      if (
+        this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim() &&
+        this.$route.params.id != this.searchkey[0]
+      ) {
+        this.loading1 = true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     },
     search(e) {
       if (
         e.key == "Enter" &&
-        this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
+        this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim() &&
+        this.$route.params.id != this.searchkey[0]
       ) {
+        this.loading1 = true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     },
