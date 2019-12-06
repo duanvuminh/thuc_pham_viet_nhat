@@ -25,7 +25,7 @@ export default {
       searchkey: "",
       introdue: `
 ## Cách sử dụng
-Nhập từ kanji mà bạn muốn xem. Ví dụ "四" (cách nhớ dựa trên [kanji primitive](https://docs.google.com/document/d/1z-5C_Z1Cpkerrnd2Eo1mCVhMcFpE7cdgDydoLHBLnNQ/edit))
+Nhập từ kanji mà bạn muốn xem. Ví dụ "四"
 Để sửa đổi cần đăng nhập. 
 ## Các nguồn khác
 * Best recommended input extension
