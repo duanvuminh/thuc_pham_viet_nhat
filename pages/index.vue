@@ -7,6 +7,7 @@
         prepend-inner-icon="mdi-magnify"
         clearable
         @keypress="search"
+        @blur="search1"
         v-model="searchkey"
       ></v-text-field>
     </v-col>
@@ -40,12 +41,17 @@ Comming soon...
   },
   layout: "oboe",
   methods: {
+        search1() {
+      if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+        this.$router.push(`/search/${this.searchkey[0]}`);
+      }
+    },
     search(e) {
       if (
         e.key == "Enter" &&
         this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
       ) {
-        this.$router.push(`/search/${this.searchkey}`);
+        this.$router.push(`/search/${this.searchkey[0]}`);
       }
     }
   },

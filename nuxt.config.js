@@ -96,6 +96,11 @@ export default {
           urlPattern: 'https://cdn.jsdelivr.net/.*',
           method: 'GET',
           strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
+        },
+        {
+          urlPattern: 'https://firebasestorage.googleapis.com/.*',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
         }
       ]
     }

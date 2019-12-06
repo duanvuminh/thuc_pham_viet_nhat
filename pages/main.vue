@@ -2,9 +2,8 @@
   <v-row justify="center">
     <v-col cols="12">
       <v-card>
+        <v-card-subtitle>Kanji: Primitive Elements</v-card-subtitle>
         <v-card-title>
-          Kanji: Primitive Elements
-          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -14,11 +13,15 @@
           ></v-text-field>
         </v-card-title>
         <v-data-table
+          dense
           :headers="headers"
           :items="desserts"
           :search="search"
           :items-per-page="5"
+          :footer-props="footer"
+          hide-default-header
         >
+          
           <template v-slot:body="{ items }">
             <tbody>
               <tr v-for="item in items" :key="item.id">
@@ -27,11 +30,11 @@
                     :src=" item.url"
                     aspect-ratio="1"
                     class="grey lighten-2"
-                    max-width="100"
-                    max-height="100"
+                    width="50"
+                    height="50"
                   ></v-img>
                 </td>
-                <td>{{ item.en }}</td>
+                <td><div v-html="$md.render(item.en)"></div></td>
                 <td>
                   <div v-html="$md.render(item.vi)"></div>
                 </td>
@@ -65,6 +68,9 @@ export default {
   data() {
     return {
       search: "",
+      footer: {
+        itemsPerPageText: ""
+      },
       headers: [
         {
           text: "Bộ",
@@ -73,13 +79,13 @@ export default {
           value: "url"
         },
         {
-          text: "Nghĩa tiếng Anh",
-          align: "left",
+          text: "Key",
+          align: "start",
           value: "en"
         },
         {
           text: "Nghĩa tiếng Việt",
-          align: "left",
+          align: "start",
           value: "vi"
         }
       ],
