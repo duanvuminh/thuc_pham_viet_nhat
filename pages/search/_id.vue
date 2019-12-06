@@ -7,6 +7,7 @@
         prepend-inner-icon="mdi-magnify"
         clearable
         @keypress="search"
+        @blur="search1"
         v-model="searchkey"
         hide-details
       ></v-text-field>
@@ -65,7 +66,7 @@ export default {
       .collection("kanji")
       .doc(params.id)
       .collection("oboe")
-      .orderBy("couter","desc")
+      .orderBy("couter", "desc")
       .get();
     let items = [];
     docs.forEach(function(doc) {
@@ -125,8 +126,18 @@ export default {
       valid: true
     };
   },
+  head() {
+    return {
+      titleTemplate: `%s - cách nhớ ${this.searchkey}`
+    };
+  },
   layout: "oboe",
   methods: {
+    search1() {
+      if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+        this.$router.push(`/auth/search/${this.searchkey[0]}`);
+      }
+    },
     search(e) {
       if (
         e.key == "Enter" &&

@@ -7,6 +7,7 @@
         prepend-inner-icon="mdi-magnify"
         clearable
         @keypress="search"
+        @blur="search1"
         v-model="searchkey"
         hide-details
       ></v-text-field>
@@ -55,21 +56,7 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="basename"
-                    label="Tên bộ *"
-                    :rules="[v => !!v || 'Không được trống']"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="basecomment"
-                    label="Giải thích *"
-                    :rules="[v => !!v || 'Không được trống']"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
+                <v-col cols="12">
                   <v-file-input
                     v-model="files"
                     placeholder="Upload ảnh bài viết"
@@ -82,6 +69,23 @@
                       <v-chip small label color="primary">{{ text }}</v-chip>
                     </template>
                   </v-file-input>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="basename"
+                    label="Tên bộ *"
+                    :rules="[v => !!v || 'Không được trống']"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div v-html="$md.render(basecomment)"></div>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    v-model="basecomment"
+                    label="Giải thích *"
+                    :rules="[v => !!v || 'Không được trống']"
+                  ></v-textarea>
                 </v-col>
               </v-row>
             </v-container>
@@ -152,6 +156,11 @@ export default {
   },
   layout: "oboe",
   methods: {
+    search1() {
+      if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
+        this.$router.push(`/auth/search/${this.searchkey[0]}`);
+      }
+    },
     search(e) {
       if (
         e.key == "Enter" &&
@@ -167,33 +176,62 @@ export default {
         .firestore()
         .collection("kanji")
         .doc(this.searchkey)
-        .collection("oboe")
-        .doc(this.email)
         .set(
           {
-            couter: 999999,
-            en: this.commenten,
-            vi: this.commentvi
+            name: this.searchkey
           },
           { merge: true }
         )
         .then(r => {
-          this.loading = false;
+          firebase
+            .app()
+            .firestore()
+            .collection("kanji")
+            .doc(this.searchkey)
+            .collection("oboe")
+            .doc(this.email)
+            .set(
+              {
+                couter: 999999,
+                en: this.commenten,
+                vi: this.commentvi
+              },
+              { merge: true }
+            )
+            .then(r => {
+              this.loading = false;
+            });
         });
     },
     taobo() {
       if (!this.$refs.form.validate()) {
         return;
       } else {
-        Promise.all(
-          // Array of "Promises"
-          this.files.map(item => {
-            var ref = firebase.storage().ref("kanjiMain/" + this.basename);
-            return ref.put(item).then(r => {
-              return ref.getDownloadURL();
-            });
-          })
-        ).then(url => {
+        if (this.files.length > 0) {
+          Promise.all(
+            // Array of "Promises"
+            this.files.map(item => {
+              var ref = firebase.storage().ref("kanjiMain/" + this.basename);
+              return ref.put(item).then(r => {
+                return ref.getDownloadURL();
+              });
+            })
+          ).then(url => {
+            firebase
+              .app()
+              .firestore()
+              .collection("kanjicore")
+              .doc(this.basename)
+              .set(
+                {
+                  en: this.basename,
+                  vi: this.basecomment,
+                  url: url[0]
+                },
+                { merge: true }
+              );
+          });
+        } else {
           firebase
             .app()
             .firestore()
@@ -202,12 +240,12 @@ export default {
             .set(
               {
                 en: this.basename,
-                vi: this.basecomment,
-                url: url[0]
+                vi: this.basecomment
               },
               { merge: true }
             );
-        });
+        }
+
         ///
         //
         ///
@@ -236,19 +274,33 @@ export default {
         });
     },
     basename() {
-      this.$axios
-        .$post(
-          "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-          {
-            q: this.basename,
-            source: "en",
-            target: "vi",
-            format: "text"
-          }
-        )
-        .then(r => {
-          this.basecomment = r.data.translations[0].translatedText;
-        });
+      if (this.basename) {
+        firebase
+          .app()
+          .firestore()
+          .collection("kanjicore")
+          .doc(this.basename)
+          .get()
+          .then(r => {
+            if (r.data()) {
+              this.basecomment = r.data().vi;
+            } else {
+              this.$axios
+                .$post(
+                  "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+                  {
+                    q: this.basename,
+                    source: "en",
+                    target: "vi",
+                    format: "text"
+                  }
+                )
+                .then(r => {
+                  this.basecomment = r.data.translations[0].translatedText;
+                });
+            }
+          });
+      }
     }
   },
   commentvi() {

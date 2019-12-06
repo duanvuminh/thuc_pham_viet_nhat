@@ -40,7 +40,7 @@ async function url() {
     let result = await firebase
         .app()
         .firestore()
-        .collection("dulich")
+        .collection("kanji")
         .get()
         .then((querySnapshot) => {
             let docs = [];
@@ -53,7 +53,7 @@ async function url() {
         });
 
     let routes = result.map(x => {
-        return `/detail/${nonAccentVietnamese(x.name)}-${x.id}`;
+        return `/search/${x.id}`;
     })
     routes.push('/')
     return routes;

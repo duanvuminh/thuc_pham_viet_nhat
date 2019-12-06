@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
+import getAppRoutes from './utils/getRoutes.js';
 
 export default {
   mode: 'universal',
@@ -66,7 +67,7 @@ export default {
     gzip: true,
     generate: false,
     routes: () => { 
-      return []
+      return getAppRoutes.url() 
     },
     exclude: ['/auth/', '/auth/**']
   },
