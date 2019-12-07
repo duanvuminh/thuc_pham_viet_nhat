@@ -31,7 +31,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/fireinit.js'],
+  plugins: ['~/plugins/fireinit.js','~/plugins/axios.js',],
   /*
   ** Nuxt.js dev-modules
   */

@@ -27,6 +27,7 @@ export default {
 ## Cách sử dụng
 Nhập từ kanji mà bạn muốn xem. Ví dụ "四"
 Để sửa đổi cần đăng nhập. 
+* Trên điện thoại các bạn thêm vào màn hình chính để dùng khi offline nhé
 ## Các nguồn khác
 * Best recommended input extension
 [Google input tool](https://www.google.com/inputtools/chrome/)

@@ -4,7 +4,7 @@ import cookieparser from "cookieparser";
 export const state = () => ({
   count: 0,
   loggedIn: false,
-  user:{}
+  user: {}
 })
 
 export const mutations = {
@@ -22,18 +22,28 @@ export const actions = {
     if (!req.headers.cookie) return;
 
     const parsed = cookieparser.parse(req.headers.cookie);
-    const accessTokenCookie = parsed.access_token;
+    const emailCookie = parsed.email;
+    if (!emailCookie) return;
+    commit("setLoginState", true);
+    commit("setUser", {email: emailCookie});
+  },
+  // nuxtServerInit({ commit }, { req }) {
+  //   if (process.server && process.static) return;
+  //   if (!req.headers.cookie) return;
 
-    if (!accessTokenCookie) return;
+  //   const parsed = cookieparser.parse(req.headers.cookie);
+  //   const accessTokenCookie = parsed.access_token;
 
-    const decoded = JWTDecode(accessTokenCookie);
+  //   if (!accessTokenCookie) return;
 
-    if (decoded) {
-      commit("setUser", {
-        uid: decoded.user_id,
-        email: decoded.email
-      });
-      commit("setLoginState",true);
-    }
-  }
+  //   const decoded = JWTDecode(accessTokenCookie);
+
+  //   if (decoded) {
+  //     commit("setUser", {
+  //       uid: decoded.user_id,
+  //       email: decoded.email
+  //     });
+  //     commit("setLoginState",true);
+  //   }
+  // }
 };

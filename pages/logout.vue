@@ -31,7 +31,7 @@ export default {
       .auth()
       .signOut()
       .then(() => {
-        Cookie.remove("access_token");
+        Cookie.remove("email");
         this.$store.commit("setUser", {});
         this.$store.commit("setLoginState", false);
         this.$router.push("/");

@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="4">
+    <v-col cols="12" sm="8" md="6">
       <v-card class="elevation-12">
         <v-toolbar color="primary" dark flat>
           <v-toolbar-title>{{isLoggingIn ?"Đăng nhập":"Đăng kí"}}</v-toolbar-title>
@@ -38,6 +38,12 @@
               :rules="confirmPasswordRules"
               :disabled="processing"
             />
+            <v-btn @click="googleSignIn" dark color="red darken-1">
+              <v-icon>mdi-google</v-icon>+Login
+            </v-btn>
+            <v-btn @click="facebookSignIn" dark color="primary">
+              <v-icon>mdi-facebook</v-icon>Login
+            </v-btn>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -138,6 +144,68 @@ export default {
         this.register();
       }
     },
+    facebookSignIn() {
+      let provider = new firebase.auth.FacebookAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(result => {
+          console.log(result);
+          // store the user ore wathever
+          // this.$router.push("/home");
+          let token = result.credential.accessToken;
+          // The signed-in user info.
+          let user = result.user;
+
+          const { email, uid } = user;
+          this.$store.commit("setUser", { email, uid });
+          this.$store.commit("setLoginState", true);
+          // Set JWT to the cookie
+          Cookie.set("email", email);
+          this.processing = false;
+          this.$router.push("/");
+        })
+        .catch(error => {
+          // Handle Errors here.
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          this.message = errorCode;
+          this.dialog = true;
+          this.processing = false;
+          // ...
+        });
+    },
+    googleSignIn() {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(result => {
+          console.log(result);
+          // store the user ore wathever
+          // this.$router.push("/home");
+          let token = result.credential.accessToken;
+          // The signed-in user info.
+          let user = result.user;
+
+          const { email, uid } = user;
+          this.$store.commit("setUser", { email, uid });
+          this.$store.commit("setLoginState", true);
+          // Set JWT to the cookie
+          Cookie.set("email", email);
+          this.processing = false;
+          this.$router.push("/");
+        })
+        .catch(error => {
+          // Handle Errors here.
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          this.message = errorCode;
+          this.dialog = true;
+          this.processing = false;
+          // ...
+        });
+    },
     login() {
       firebase
         .auth()
@@ -149,11 +217,11 @@ export default {
             .currentUser.getIdToken()
             .then(idToken => {
               const token = idToken;
-              const { email, uid } =  firebase.auth().currentUser;
+              const { email, uid } = firebase.auth().currentUser;
               this.$store.commit("setUser", { email, uid });
               this.$store.commit("setLoginState", true);
               // Set JWT to the cookie
-              Cookie.set("access_token", token);
+              Cookie.set("email", email);
               this.processing = false;
               this.$router.push("/");
             });
@@ -178,7 +246,7 @@ export default {
           this.$store.commit("setUser", { email, uid });
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
-          Cookie.set("access_token", token);
+          Cookie.set("email", email);
           this.processing = false;
           this.$router.push("/");
         })
