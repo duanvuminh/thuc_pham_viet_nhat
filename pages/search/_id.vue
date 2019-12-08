@@ -162,16 +162,29 @@ export default {
         .firestore()
         .collection("kanji")
         .doc(this.searchkey)
-        .collection("oboe")
-        .doc(this.email)
         .set(
           {
-            vi: this.commentvi
+            name: this.searchkey
           },
           { merge: true }
         )
         .then(r => {
-          this.loading = false;
+          firebase
+            .app()
+            .firestore()
+            .collection("kanji")
+            .doc(this.searchkey)
+            .collection("oboe")
+            .doc(this.email)
+            .set(
+              {
+                vi: this.commentvi
+              },
+              { merge: true }
+            )
+            .then(r => {
+              this.loading = false;
+            });
         });
     }
   },
