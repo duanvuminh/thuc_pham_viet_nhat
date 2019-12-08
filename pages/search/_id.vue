@@ -20,7 +20,7 @@
         </v-col>
 
         <v-col class="flex-grow-1">
-          <div class="elevation-1 pa-2 mb-3" v-if="commentvi!=''" v-html="$md.render(commentvi)"></div>
+          <div v-show="show1" class="elevation-1 pa-2 mb-3" v-if="commentvi!=''" v-html="$md.render(commentvi)"></div>
           <v-textarea
             outlined
             label="Thêm cách nhớ của bạn"
