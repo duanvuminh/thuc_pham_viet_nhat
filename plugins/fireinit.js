@@ -15,7 +15,7 @@ var config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
-firebase.app()
-  .firestore()
-  .enablePersistence({synchronizeTabs:true})
+// firebase.app()
+//   .firestore()
+//   .enablePersistence({synchronizeTabs:true})
 export default firebase

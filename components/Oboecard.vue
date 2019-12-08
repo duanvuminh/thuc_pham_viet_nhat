@@ -15,6 +15,19 @@
       </v-btn>
       <small v-if="couter>0&&this.$store.state.loggedIn">{{couter}}</small>
       <!-- color="blue lighten-2" -->
+      <social-sharing
+        :url="`https://oboe.lithong.com${$route.path}`"
+        :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
+        inline-template
+      >
+        <div>
+          <network network="facebook">
+            <v-btn icon text class="pa-0">
+              <v-icon>mdi-share</v-icon>
+            </v-btn>
+          </network>
+        </div>
+      </social-sharing>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,6 +44,11 @@ export default {
   },
   computed: {},
   methods: {
+    stripHtml(html) {
+      var tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    },
     like(item) {
       if (!this.isliked) {
         this.couter += 1;
@@ -108,6 +126,7 @@ export default {
     }
   },
   mounted() {
+    console.log(`https://oboe.lithong.com/${this.$route.path}`)
     firebase
       .app()
       .firestore()
@@ -137,7 +156,7 @@ export default {
       .get()
       .then(r => {
         this.couter = r.data().couter;
-        if ((this.item.id == "duanvuminh@gmail.com")) {
+        if (this.item.id == "duanvuminh@gmail.com") {
           this.couter -= 999999;
         }
       });

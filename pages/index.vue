@@ -11,23 +11,6 @@
         v-model="searchkey"
         :loading="loading"
       ></v-text-field>
-      <v-spacer/>
-      <social-sharing
-        url="https://oboe.lithong.com/"
-        title="Cách nhớ kanji"
-        description="Giúp bạn nắm bắt cách nhớ kanji dễ rành hơn với những câu chuyện của bạn và mọi người"
-        quote="Cách học kanji"
-        hashtags="oboe"
-        inline-template
-      >
-        <div>
-          <network network="facebook">
-            <v-btn text dense>
-              <v-icon>mdi-share</v-icon>chia sẻ
-            </v-btn>
-          </network>
-        </div>
-      </social-sharing>
     </v-col>
     <v-col cols="12">
       <div v-html="$md.render(introdue)"></div>
