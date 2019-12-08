@@ -11,6 +11,23 @@
         v-model="searchkey"
         :loading="loading"
       ></v-text-field>
+      <v-spacer/>
+      <social-sharing
+        url="https://oboe.lithong.com/"
+        title="Cách nhớ kanji"
+        description="Giúp bạn nắm bắt cách nhớ kanji dễ rành hơn với những câu chuyện của bạn và mọi người"
+        quote="Cách học kanji"
+        hashtags="oboe"
+        inline-template
+      >
+        <div>
+          <network network="facebook">
+            <v-btn text dense>
+              <v-icon>mdi-share</v-icon>chia sẻ
+            </v-btn>
+          </network>
+        </div>
+      </social-sharing>
     </v-col>
     <v-col cols="12">
       <div v-html="$md.render(introdue)"></div>
@@ -25,8 +42,7 @@ export default {
       searchkey: "",
       introdue: `
 ## Cách sử dụng
-Nhập từ kanji mà bạn muốn xem. Ví dụ "四"
-Để sửa đổi cần đăng nhập. 
+Nhập từ kanji mà bạn muốn xem. Ví dụ "四".
 * Trên điện thoại các bạn thêm vào màn hình chính để dùng khi offline nhé
 ## Các nguồn khác
 * Best recommended input extension
@@ -46,7 +62,7 @@ Comming soon...
   methods: {
     search1() {
       if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
-        this.loading=true;
+        this.loading = true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     },
@@ -55,7 +71,7 @@ Comming soon...
         e.key == "Enter" &&
         this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
       ) {
-        this.loading=true;
+        this.loading = true;
         this.$router.push(`/search/${this.searchkey[0]}`);
       }
     }
