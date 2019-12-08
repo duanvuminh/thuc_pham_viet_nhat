@@ -178,6 +178,7 @@ export default {
             .doc(this.email)
             .set(
               {
+                couter:0,
                 vi: this.commentvi
               },
               { merge: true }
