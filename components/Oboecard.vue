@@ -15,19 +15,15 @@
       </v-btn>
       <small v-if="couter>0&&this.$store.state.loggedIn">{{couter}}</small>
       <!-- color="blue lighten-2" -->
-      <client-only>
-        <social-sharing
-          :url="`https://oboe.lithong.com${$route.path}`"
-          :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
-          inline-template
-        >
-          <div>
-            <network network="facebook">
-              share
-            </network>
-          </div>
-        </social-sharing>
-      </client-only>
+      <social-sharing
+        :url="`https://oboe.lithong.com${$route.path}`"
+        :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
+        inline-template
+      >
+        <div>
+          <network network="facebook">share</network>
+        </div>
+      </social-sharing>
     </v-card-actions>
   </v-card>
 </template>
