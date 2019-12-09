@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout row wrap align-center class="pa-4 justify-center">
       <v-flex xs12 md4 v-for="(item,i) in cards" :key="i" class="justify-content alined pa-1">
         <v-img
