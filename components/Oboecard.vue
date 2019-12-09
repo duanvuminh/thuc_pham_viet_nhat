@@ -23,9 +23,7 @@
         >
           <div>
             <network network="facebook">
-              <v-btn icon text class="pa-0">
-                <v-icon>mdi-share</v-icon>
-              </v-btn>
+              share
             </network>
           </div>
         </social-sharing>
