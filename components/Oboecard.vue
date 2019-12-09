@@ -15,19 +15,21 @@
       </v-btn>
       <small v-if="couter>0&&this.$store.state.loggedIn">{{couter}}</small>
       <!-- color="blue lighten-2" -->
-      <social-sharing
-        :url="`https://oboe.lithong.com${$route.path}`"
-        :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
-        inline-template
-      >
-        <div>
-          <network network="facebook">
-            <v-btn icon text class="pa-0">
-              <v-icon>mdi-share</v-icon>
-            </v-btn>
-          </network>
-        </div>
-      </social-sharing>
+      <client-only>
+        <social-sharing
+          :url="`https://oboe.lithong.com${$route.path}`"
+          :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
+          inline-template
+        >
+          <div>
+            <network network="facebook">
+              <v-btn icon text class="pa-0">
+                <v-icon>mdi-share</v-icon>
+              </v-btn>
+            </network>
+          </div>
+        </social-sharing>
+      </client-only>
     </v-card-actions>
   </v-card>
 </template>
@@ -126,7 +128,7 @@ export default {
     }
   },
   mounted() {
-    console.log(`https://oboe.lithong.com/${this.$route.path}`)
+    console.log(`https://oboe.lithong.com/${this.$route.path}`);
     firebase
       .app()
       .firestore()
