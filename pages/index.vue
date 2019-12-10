@@ -72,13 +72,6 @@ Comming soon...
     //     }
     //   )
     //   .then(r => console.log(r));
-    var user = firebase.auth().currentUser;
-
-    if (user != null) {
-      user.providerData.forEach(function(profile) {
-        console.log(profile);
-      });
-    }
   }
 };
 </script>

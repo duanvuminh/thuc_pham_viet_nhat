@@ -156,7 +156,7 @@ export default {
           // this.$router.push("/home");
           let token = result.credential.accessToken;
           // The signed-in user info.
-          let user = result.user;
+          let user = result.user.providerData[0];
 
           const { email, uid } = user;
           this.$store.commit("setUser", { email, uid });
@@ -186,7 +186,7 @@ export default {
           // this.$router.push("/home");
           let token = result.credential.accessToken;
           // The signed-in user info.
-          let user = result.user;
+          let user = result.user.providerData[0];
 
           const { email, uid } = user;
           this.$store.commit("setUser", { email, uid });

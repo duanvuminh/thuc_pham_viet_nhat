@@ -12,11 +12,11 @@ export default function ({ $axios, redirect, app: { store, router } }) {
   // firebase.analytics()
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      Cookie.set("email", user.email);
+      Cookie.set("email", user.providerData[0].email);
       store.commit("setLoginState", true);
       store.commit("setUser", {
-        uid: user.user_id,
-        email: user.email
+        uid: user.providerData[0].user_id,
+        email: user.providerData[0].email
       });
     } else {
       Cookie.remove("email");
