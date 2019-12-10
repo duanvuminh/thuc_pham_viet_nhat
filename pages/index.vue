@@ -18,7 +18,6 @@
   </v-row>
 </template>
 <script>
-import firebase from 'firebase';
 export default {
   data() {
     return {
@@ -47,7 +46,7 @@ Comming soon...
     search1() {
       if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
         this.loading = true;
-        this.$router.push(`/search/${this.searchkey[0]}`);
+        this.$router.push(`/search/${this.searchkey}`);
       }
     },
     search(e) {

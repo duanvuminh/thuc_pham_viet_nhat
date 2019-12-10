@@ -1,4 +1,10 @@
 import firebase from "firebase";
+const Firestore = require('@google-cloud/firestore');
+
+const db = new Firestore({
+  projectId: 'gaonhat-1b0c8',
+  keyFilename: '/path/to/keyfile.json',
+});
 
 // [
 //     {

@@ -141,23 +141,21 @@ export default {
   layout: "oboe",
   methods: {
     search1() {
-      console.log(this.$route);
-      if (
-        this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim() &&
-        this.$route.params.id != this.searchkey[0]
-      ) {
+      this.searchkey = this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (this.searchkey && this.$route.params.id != this.searchkey) {
         this.loading1 = true;
-        this.$router.push(`/search/${this.searchkey[0]}`);
+        this.$router.push(`/search/${this.searchkey}`);
       }
     },
     search(e) {
+      this.searchkey = this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (
         e.key == "Enter" &&
-        this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim() &&
-        this.$route.params.id != this.searchkey[0]
+        this.searchkey &&
+        this.$route.params.id != this.searchkey
       ) {
         this.loading1 = true;
-        this.$router.push(`/search/${this.searchkey[0]}`);
+        this.$router.push(`/search/${this.searchkey}`);
       }
     },
     save() {
@@ -167,30 +165,55 @@ export default {
         .firestore()
         .collection("kanji")
         .doc(this.searchkey)
-        .set(
-          {
-            name: this.searchkey
-          },
-          { merge: true }
-        )
-        .then(r => {
-          firebase
-            .app()
-            .firestore()
-            .collection("kanji")
-            .doc(this.searchkey)
-            .collection("oboe")
-            .doc(this.email)
-            .set(
-              {
-                couter: 0,
-                vi: this.commentvi
-              },
-              { merge: true }
-            )
-            .then(r => {
-              this.loading = false;
-            });
+        .get()
+        .then(docSnapshot => {
+          if (docSnapshot.exists) {
+            firebase
+              .app()
+              .firestore()
+              .collection("kanji")
+              .doc(this.searchkey)
+              .collection("oboe")
+              .doc(this.email)
+              .set(
+                {
+                  couter: 0,
+                  vi: this.commentvi
+                },
+                { merge: true }
+              )
+              .then(r => {
+                this.loading = false;
+              });
+          } else {
+            firebase
+              .app()
+              .firestore()
+              .collection("kanji")
+              .doc(this.searchkey)
+              .add({
+                name: this.searchkey
+              })
+              .then(r => {
+                firebase
+                  .app()
+                  .firestore()
+                  .collection("kanji")
+                  .doc(this.searchkey)
+                  .collection("oboe")
+                  .doc(this.email)
+                  .set(
+                    {
+                      couter: 0,
+                      vi: this.commentvi
+                    },
+                    { merge: true }
+                  )
+                  .then(r => {
+                    this.loading = false;
+                  });
+              });
+          }
         });
     }
   },
