@@ -240,7 +240,7 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
-          // console.log(data)
+          console.log(data)
           const token = data.user.refreshToken;
           const { email, uid } = data.user;
           this.$store.commit("setUser", { email, uid });

@@ -122,7 +122,7 @@ export default {
     }
   },
   mounted() {
-    console.log(`https://oboe.lithong.com/${this.$route.path}`);
+    console.log(`https://oboe.lithong.com${this.$route.path}`);
     firebase
       .app()
       .firestore()
