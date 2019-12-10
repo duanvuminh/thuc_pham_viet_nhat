@@ -146,11 +146,12 @@ export default {
     },
     facebookSignIn() {
       let provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('email');
+      provider.pe
       firebase
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          console.log(result);
           // store the user ore wathever
           // this.$router.push("/home");
           let token = result.credential.accessToken;
@@ -181,7 +182,6 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          console.log(result);
           // store the user ore wathever
           // this.$router.push("/home");
           let token = result.credential.accessToken;
@@ -240,7 +240,7 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
-          console.log(data)
+          //console.log(data)
           const token = data.user.refreshToken;
           const { email, uid } = data.user;
           this.$store.commit("setUser", { email, uid });
