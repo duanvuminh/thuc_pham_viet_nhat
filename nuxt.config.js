@@ -1,6 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
-import getAppRoutes from './utils/getRoutes.js';
+import getAppRoutes from './server/modules/getRoutes';
 
 export default {
   mode: 'universal',
@@ -110,7 +110,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://cors-anywhere.herokuapp.com/https://www.chiikinogennki.soumu.go.jp/k-cloud-api/v001/kanko',
+    baseURL: '/',
     proxyHeaders: false,
     credentials: false
   },
@@ -153,5 +153,5 @@ export default {
     extendRoutes(routes, resolve) {
     }
   },
-
+  serverMiddleware: ["~/server"],
 }

@@ -14,7 +14,6 @@
     "deploy": "nuxt build && gcloud app deploy app.yaml --project oboe-261003"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^2.6.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/markdownit": "^1.2.7",
@@ -24,6 +23,7 @@
     "algoliasearch": "^3.35.1",
     "cookieparser": "^0.1.0",
     "firebase": "^7.2.3",
+    "firebase-admin": "^8.8.0",
     "is-image-url": "^1.1.8",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",

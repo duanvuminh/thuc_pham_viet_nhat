@@ -1,11 +1,4 @@
-import firebase from "firebase";
-const Firestore = require('@google-cloud/firestore');
-
-const db = new Firestore({
-  projectId: 'gaonhat-1b0c8',
-  keyFilename: '/path/to/keyfile.json',
-});
-
+import admin from "./admin"
 // [
 //     {
 //       path: '/sitemap-products.xml',
@@ -43,9 +36,8 @@ function nonAccentVietnamese(str) {
     return str;
 };
 async function url() {
-    let result = await firebase
-        .app()
-        .firestore()
+    let db = admin.firestore();
+    let result = await db
         .collection("kanji")
         .get()
         .then((querySnapshot) => {

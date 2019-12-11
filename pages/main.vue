@@ -21,7 +21,6 @@
           :footer-props="footer"
           hide-default-header
         >
-          
           <template v-slot:body="{ items }">
             <tbody>
               <tr v-for="item in items" :key="item.id">
@@ -34,7 +33,9 @@
                     height="50"
                   ></v-img>
                 </td>
-                <td><div v-html="$md.render(item.en)"></div></td>
+                <td>
+                  <div v-html="$md.render(item.en)"></div>
+                </td>
                 <td>
                   <div v-html="$md.render(item.vi)"></div>
                 </td>
@@ -47,22 +48,18 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 export default {
-  async asyncData({ params, store }) {
+  async asyncData({ params, store, $axios }) {
     let desserts = [];
-    await firebase
-      .app()
-      .firestore()
-      .collection("kanjicore")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          desserts.push({ id: doc.id, ...doc.data() });
-        });
-      });
+    await $axios
+      .$post("/api/get_all_primatives", {
+        firstName: "Fred",
+        lastName: "Flintstone"
+      })
+      .then(r => (desserts = r));
     return { desserts };
   },
   data() {
