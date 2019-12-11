@@ -110,7 +110,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: '/',
+    baseURL: 'https://oboe.lithong.com/',
     proxyHeaders: false,
     credentials: false
   },

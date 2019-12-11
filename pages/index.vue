@@ -55,7 +55,7 @@ Comming soon...
         this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
       ) {
         this.loading = true;
-        this.$router.push(`/search/${this.searchkey[0]}`);
+        this.$router.push(`/search/${this.searchkey}`);
       }
     }
   },

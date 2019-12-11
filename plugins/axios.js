@@ -12,6 +12,12 @@ export default function ({ $axios, redirect, app: { store, router } }) {
   // firebase.analytics()
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+      firebase
+        .auth()
+        .currentUser.getIdToken()
+        .then(idToken => {
+          Cookie.set("access_token", idToken);
+        });
       Cookie.set("email", user.providerData[0].email);
       store.commit("setLoginState", true);
       store.commit("setUser", {
@@ -20,6 +26,7 @@ export default function ({ $axios, redirect, app: { store, router } }) {
       });
     } else {
       Cookie.remove("email");
+      Cookie.remove("access_token");
       store.commit("setUser", {
       });
       store.commit("setLoginState", false);

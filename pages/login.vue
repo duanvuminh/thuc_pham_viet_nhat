@@ -38,10 +38,10 @@
               :rules="confirmPasswordRules"
               :disabled="processing"
             />
-            <v-btn @click="googleSignIn" dark color="red darken-1">
+            <v-btn @click="googleSignIn" dark color="red darken-1" small text>
               <v-icon>mdi-google</v-icon>+Login
             </v-btn>
-            <v-btn @click="facebookSignIn" dark color="primary">
+            <v-btn @click="facebookSignIn" dark color="primary" small text>
               <v-icon>mdi-facebook</v-icon>Login
             </v-btn>
           </v-form>
@@ -146,8 +146,8 @@ export default {
     },
     facebookSignIn() {
       let provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope('email');
-      provider.pe
+      provider.addScope("email");
+      provider.pe;
       firebase
         .auth()
         .signInWithPopup(provider)
@@ -163,8 +163,15 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
+          firebase
+            .auth()
+            .currentUser.getIdToken()
+            .then(idToken => {
+              Cookie.set("access_token", idToken);
+              this.$router.push("/");
+            });
           this.processing = false;
-          this.$router.push("/");
+          
         })
         .catch(error => {
           // Handle Errors here.
@@ -193,8 +200,14 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
+          firebase
+            .auth()
+            .currentUser.getIdToken()
+            .then(idToken => {
+              Cookie.set("access_token", idToken);
+              this.$router.push("/");
+            });
           this.processing = false;
-          this.$router.push("/");
         })
         .catch(error => {
           // Handle Errors here.
@@ -222,6 +235,7 @@ export default {
               this.$store.commit("setLoginState", true);
               // Set JWT to the cookie
               Cookie.set("email", email);
+              Cookie.set("access_token", token);
               this.processing = false;
               this.$router.push("/");
             });
@@ -247,6 +261,12 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
+          firebase
+            .auth()
+            .currentUser.getIdToken()
+            .then(idToken => {
+              Cookie.set("access_token", idToken);
+            });
           this.processing = false;
           this.$router.push("/");
         })

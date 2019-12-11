@@ -48,18 +48,15 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
-
 export default {
   async asyncData({ params, store, $axios }) {
     let desserts = [];
-    await $axios
+    desserts = await $axios
       .$post("/api/get_all_primatives", {
         firstName: "Fred",
         lastName: "Flintstone"
       })
-      .then(r => (desserts = r));
+      .then();
     return { desserts };
   },
   data() {

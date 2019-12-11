@@ -40,10 +40,11 @@
           />
         </v-col>
       </v-row>
-      <v-row v-show="show1">
+      <v-row v-if="show1">
         <v-spacer />
-        <v-btn class="ma-2" color="success" @click="save">Lưu</v-btn>
-        <v-btn class="ma-2" text @click="show=false">Huỷ</v-btn>
+        <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+        <v-btn class="ma-2" color="success" @click="saveandshare" small text>Lưu & chia sẻ</v-btn>
+        <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
       </v-row>
     </v-col>
     <v-col cols="12" v-for="(item,i) in items" :key="i">
@@ -52,34 +53,28 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
 import Ocard from "@/components/Oboecard";
 
 export default {
-  async asyncData({ params, store }) {
+  async asyncData({ params, store, $axios }) {
     let email = store.state.user.email ? store.state.user.email : "undefined";
     let item = await firebase
-      .app()
       .firestore()
       .collection("kanji")
       .doc(params.id)
       .collection("oboe")
       .doc(email)
       .get();
-    let docs = await firebase
-      .app()
-      .firestore()
-      .collection("kanji")
-      .doc(params.id)
-      .collection("oboe")
-      .orderBy("couter", "desc")
-      .get();
-    let items = [];
-    docs.forEach(function(doc) {
-      // doc.data() is never undefined for query doc snapshots
-      //console.log(doc.id, " => ", doc.data());
-      items.push({ id: doc.id, ...doc.data() });
-    });
+    let items = await $axios
+      .$post("/api/get_post_by_id", null, {
+        params: {
+          id: params.id
+        }
+      })
+      .then();
     let searchkey = params.id;
     if (item.data()) {
       return {
@@ -120,7 +115,6 @@ export default {
   },
   data() {
     return {
-      basename: "",
       basecomment: "",
       commentvi: "",
       color: "",
@@ -158,82 +152,30 @@ export default {
         this.$router.push(`/search/${this.searchkey}`);
       }
     },
-    save() {
+    async saveandshare(){
+this.loading = true;
+      let items = await this.$axios
+      .$post("/api/post1", null, {
+        params: {
+          searchkey:this.searchkey,
+          vi: this.commentvi,
+        }
+      })
+      this.loading = false;
+    },
+    async save() {
       this.loading = true;
-      firebase
-        .app()
-        .firestore()
-        .collection("kanji")
-        .doc(this.searchkey)
-        .get()
-        .then(docSnapshot => {
-          if (docSnapshot.exists) {
-            firebase
-              .app()
-              .firestore()
-              .collection("kanji")
-              .doc(this.searchkey)
-              .collection("oboe")
-              .doc(this.email)
-              .set(
-                {
-                  couter: 0,
-                  vi: this.commentvi
-                },
-                { merge: true }
-              )
-              .then(r => {
-                this.loading = false;
-              });
-          } else {
-            firebase
-              .app()
-              .firestore()
-              .collection("kanji")
-              .doc(this.searchkey)
-              .add({
-                name: this.searchkey
-              })
-              .then(r => {
-                firebase
-                  .app()
-                  .firestore()
-                  .collection("kanji")
-                  .doc(this.searchkey)
-                  .collection("oboe")
-                  .doc(this.email)
-                  .set(
-                    {
-                      couter: 0,
-                      vi: this.commentvi
-                    },
-                    { merge: true }
-                  )
-                  .then(r => {
-                    this.loading = false;
-                  });
-              });
-          }
-        });
+      let items = await this.$axios
+      .$post("/api/post", null, {
+        params: {
+          searchkey:this.searchkey,
+          vi: this.commentvi,
+        }
+      })
+      this.loading = false;
     }
   },
   mounted() {},
-  watch: {
-    basename() {
-      if (this.basename) {
-        firebase
-          .app()
-          .firestore()
-          .collection("kanjicore")
-          .doc(this.basename)
-          .get()
-          .then(r => {
-            if (r.data()) {
-              this.basecomment = r.data().content;
-            }
-          });
-      }
-    }
-  }
+  watch: {}
 };
 </script>
