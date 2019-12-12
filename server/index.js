@@ -30,6 +30,24 @@ app.post("/api/get_all_primatives", async (req, res) => {
   res.json(desserts);
 });
 
+app.post("/api/get_random_primatives", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  let db = admin.firestore();
+  let desserts = []
+  await db
+    .collection("kanjicore")
+    .where("random",">=",Math.floor(Math.random() * 300))
+    .limit(3)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        // doc.data() is never undefined for query doc snapshots
+        desserts.push({ id: doc.id, ...doc.data() });
+      });
+    });
+  res.json(desserts);
+});
+
 app.post("/api/get_post_by_id", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   // console.log(util.inspect(req, {showHidden: false, depth: 1}))

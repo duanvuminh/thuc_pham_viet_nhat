@@ -1,22 +1,49 @@
 <template>
-  <v-row class="d-flex flex-nowrap">
-    <v-col class="flex-grow-0 flex-shrink-1">
-      <v-avatar size="100" v-if="!url">
-        <img :src="url" :alt="name" />
-      </v-avatar>
-       <v-avatar size="100" v-else color="indigo">
-        <span class="white--text headline">{{name[0]}}</span>
-      </v-avatar>
-    </v-col>
-    <v-col class="flex-grow-1"></v-col>
-  </v-row>
+  <div>
+    <v-row class="d-flex flex-nowrap">
+      <v-col class="flex-grow-0 flex-shrink-1">
+        <v-avatar size="100" v-if="url" class="ma-2">
+          <img :src="url" :alt="name" />
+        </v-avatar>
+        <v-avatar size="100" v-else color="indigo">
+          <span class="white--text headline">{{name[0]}}</span>
+        </v-avatar>
+      </v-col>
+      <v-col class="flex-grow-1">
+        <p>{{name}}</p>
+        <p>{{email}}</p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-btn text color="orange" @click="getNew" class="ma-3">Tạo mới</v-btn>
+    </v-row>
+    <v-row class="d-flex flex-wrap align-center justify-space-around">
+      <v-card v-for="(random,i) in randoms" :key="i" class="ma-3">
+        <v-img class="orange--text align-end" height="200px" width="200px" :src="random.url">
+          <v-card-title>Nghĩa của kanji này là gì</v-card-title>
+        </v-img>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header>show</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <div v-html="$md.render(random.vi)"></div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card>
+    </v-row>
+  </div>
 </template>
 <script>
 import firebase from "firebase";
 export default {
+  async asyncData({ params, store, $axios }) {
+    let randoms = await $axios.$post("/api/get_random_primatives").then();
+    return { randoms };
+  },
   computed: {
     url() {
-      return this.photoURL+"";
+      return this.photoURL + "";
     }
   },
   data() {
@@ -27,6 +54,11 @@ export default {
     };
   },
   layout: "oboe",
+   methods:{
+    async getNew(){
+      this.randoms = await $axios.$post("/api/get_random_primatives").then();
+    }
+  },
   async mounted() {
     var user = await firebase.auth().currentUser;
     if (user != null) {
