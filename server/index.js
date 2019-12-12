@@ -42,7 +42,6 @@ app.post("/api/get_post_by_id", async (req, res) => {
     .doc(params.id)
     .collection("oboe")
     .where("display", "==", true)
-    .limit(5)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
@@ -105,6 +104,7 @@ app.post("/api/post1", async (req, res) => {
         .collection("kanji")
         .doc(params.searchkey)
         .set({
+          hasRequest:true,
           name: params.searchkey
         }, { merge: true })
         .then(r => {

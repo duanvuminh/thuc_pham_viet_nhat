@@ -18,11 +18,11 @@ export default function ({ $axios, redirect, app: { store, router } }) {
         .then(idToken => {
           Cookie.set("access_token", idToken);
         });
-      Cookie.set("email", user.providerData[0].email);
+      Cookie.set("email", user.email);
       store.commit("setLoginState", true);
       store.commit("setUser", {
-        uid: user.providerData[0].user_id,
-        email: user.providerData[0].email
+        uid: user.user_id,
+        email: user.email
       });
     } else {
       Cookie.remove("email");

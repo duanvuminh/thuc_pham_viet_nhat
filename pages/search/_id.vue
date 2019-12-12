@@ -20,14 +20,10 @@
         </v-col>
 
         <v-col class="flex-grow-1">
-          <div
-            v-show="show1"
-            class="elevation-1 pa-2 mb-3"
-            v-if="commentvi!=''"
-            v-html="$md.render(commentvi)"
-          ></div>
           <v-textarea
-            outlined
+            :outlined="!readonly"
+            :solo="readonly"
+            :flat="readonly"
             label="Thêm cách nhớ của bạn"
             auto-grow
             v-model="commentvi"
@@ -38,13 +34,19 @@
             @focus="show = true"
             hide-details
           />
+          <v-row v-if="show1">
+            <v-spacer />
+            <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+            <v-btn class="ma-2" color="success" @click="saveandshare" small text>Lưu & chia sẻ</v-btn>
+            <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
+          </v-row>
+          <div
+            v-show="show1"
+            class="elevation-1 pa-2 mb-3"
+            v-if="commentvi!=''"
+            v-html="$md.render(commentvi)"
+          ></div>
         </v-col>
-      </v-row>
-      <v-row v-if="show1">
-        <v-spacer />
-        <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-        <v-btn class="ma-2" color="success" @click="saveandshare" small text>Lưu & chia sẻ</v-btn>
-        <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
       </v-row>
     </v-col>
     <v-col cols="12" v-for="(item,i) in items" :key="i">
@@ -152,26 +154,24 @@ export default {
         this.$router.push(`/search/${this.searchkey}`);
       }
     },
-    async saveandshare(){
-this.loading = true;
-      let items = await this.$axios
-      .$post("/api/post1", null, {
+    async saveandshare() {
+      this.loading = true;
+      let items = await this.$axios.$post("/api/post1", null, {
         params: {
-          searchkey:this.searchkey,
-          vi: this.commentvi,
+          searchkey: this.searchkey,
+          vi: this.commentvi
         }
-      })
+      });
       this.loading = false;
     },
     async save() {
       this.loading = true;
-      let items = await this.$axios
-      .$post("/api/post", null, {
+      let items = await this.$axios.$post("/api/post", null, {
         params: {
-          searchkey:this.searchkey,
-          vi: this.commentvi,
+          searchkey: this.searchkey,
+          vi: this.commentvi
         }
-      })
+      });
       this.loading = false;
     }
   },
