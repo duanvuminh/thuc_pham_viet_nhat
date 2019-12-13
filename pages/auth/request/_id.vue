@@ -62,7 +62,7 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
-          items.push({ id: doc.id,done:doc.data().request, ...doc.data() });
+          items.push({ id: doc.id,done:!doc.data().request, ...doc.data() });
         });
       });
     this.items = items;
