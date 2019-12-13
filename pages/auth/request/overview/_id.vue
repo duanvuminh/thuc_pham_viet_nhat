@@ -7,7 +7,7 @@
         </v-card-text>
         <v-card-actions>
           <v-switch v-model="item.display" label="Hiển thị" class="mr-1" @change="commit(item)"></v-switch>
-          <v-checkbox v-model="item.done" label="Đã kiểm tra" @change="commit(item)" :value="!item.request"></v-checkbox>
+          <v-checkbox v-model="item.done" label="Đã kiểm tra" @change="commit(item)"></v-checkbox>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -57,7 +57,7 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
-          items.push({ id: doc.id, ...doc.data() });
+          items.push({ id: doc.id,done:doc.data().request, ...doc.data() });
         });
       });
     this.items = items;
