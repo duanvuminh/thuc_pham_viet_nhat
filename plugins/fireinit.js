@@ -15,10 +15,10 @@ var config = {
 }
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
-  firebase.app()
+}
+firebase.app()
   .firestore()
   .enablePersistence({ synchronizeTabs: true })
-}
 export default ({ store }) => {
   firebase.auth().onAuthStateChanged((user) => {
     console.log("firebase work")
