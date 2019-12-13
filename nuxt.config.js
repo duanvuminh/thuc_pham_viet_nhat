@@ -81,7 +81,7 @@ export default {
     workbox: {
       runtimeCaching: [
         {
-          urlPattern: /\/api\/.*/,
+          urlPattern: /https:\/\/oboe.lithong.com\/api\/.*/,
           handler: 'networkFirst',
           options: {
             cacheName: 'oboe-cache',
@@ -93,7 +93,7 @@ export default {
               statuses: [0, 200]
             }
           }
-        },
+        }
         {
           urlPattern: 'https://fonts.googleapis.com/.*',
           handler: 'cacheFirst',
