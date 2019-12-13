@@ -81,6 +81,20 @@ export default {
     workbox: {
       runtimeCaching: [
         {
+          urlPattern: /\/api\/.*/,
+          handler: 'networkFirst',
+          options: {
+            cacheName: 'oboe-cache',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 300
+            },
+            cacheableResponse: {
+              statuses: [0, 200]
+            }
+          }
+        },
+        {
           urlPattern: 'https://fonts.googleapis.com/.*',
           handler: 'cacheFirst',
           method: 'GET',

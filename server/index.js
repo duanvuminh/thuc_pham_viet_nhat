@@ -36,7 +36,7 @@ app.post("/api/get_random_primatives", async (req, res) => {
   let desserts = []
   await db
     .collection("kanjicore")
-    .where("random",">=",Math.floor(Math.random() * 300))
+    .where("random",">=",Math.floor(Math.random() * 250))
     .limit(3)
     .get()
     .then(querySnapshot => {
@@ -142,56 +142,4 @@ app.post("/api/post1", async (req, res) => {
     })
   res.json({ message: "ok" });
 });
-
-// firebase
-//         .firestore()
-//         .collection("kanji")
-//         .doc(this.searchkey)
-//         .get()
-//         .then(docSnapshot => {
-//           if (docSnapshot.exists) {
-//             firebase
-//               .firestore()
-//               .collection("kanji")
-//               .doc(this.searchkey)
-//               .collection("oboe")
-//               .doc(this.email)
-//               .set(
-//                 {
-//                   couter: 0,
-//                   vi: this.commentvi
-//                 },
-//                 { merge: true }
-//               )
-//               .then(r => {
-//                 this.loading = false;
-//               });
-//           } else {
-//             firebase
-//               .firestore()
-//               .collection("kanji")
-//               .doc(this.searchkey)
-//               .set({
-//                 name: this.searchkey
-//               })
-//               .then(r => {
-//                 firebase
-//                   .firestore()
-//                   .collection("kanji")
-//                   .doc(this.searchkey)
-//                   .collection("oboe")
-//                   .doc(this.email)
-//                   .set(
-//                     {
-//                       couter: 0,
-//                       vi: this.commentvi
-//                     },
-//                     { merge: true }
-//                   )
-//                   .then(r => {
-//                     this.loading = false;
-//                   });
-//               });
-//           }
-//         });
 export default app;
