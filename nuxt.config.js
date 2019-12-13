@@ -93,7 +93,7 @@ export default {
               statuses: [0, 200]
             }
           }
-        }
+        },
         {
           urlPattern: 'https://fonts.googleapis.com/.*',
           handler: 'cacheFirst',
