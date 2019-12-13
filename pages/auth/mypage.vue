@@ -19,7 +19,7 @@
     </v-row>
     <v-row class="d-flex flex-wrap align-center justify-space-around">
       <v-card v-for="(random,i) in randoms" :key="i" class="ma-3">
-        <v-img class="orange--text align-end" height="200px" width="200px" :src="random.url">
+        <v-img class="orange--text align-end" height="200px" width="300px" :src="random.url" contain>
           <v-card-title>Nghĩa của kanji này là gì</v-card-title>
         </v-img>
         <v-expansion-panels>
