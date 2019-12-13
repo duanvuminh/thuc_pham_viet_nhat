@@ -14,13 +14,14 @@ var config = {
   // see their respective docs.
 }
 if (!firebase.apps.length) {
-  firebase.app()
-    .firestore()
-    .enablePersistence({ synchronizeTabs: true })
   firebase.initializeApp(config)
+  firebase.app()
+  .firestore()
+  .enablePersistence({ synchronizeTabs: true })
 }
 export default ({ store }) => {
   firebase.auth().onAuthStateChanged((user) => {
+    console.log("firebase work")
     if (user) {
       firebase
         .auth()
