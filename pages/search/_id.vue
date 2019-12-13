@@ -63,35 +63,19 @@ import Ocard from "@/components/Oboecard";
 export default {
   async asyncData({ params, store, $axios }) {
     let email = store.state.user.email ? store.state.user.email : "undefined";
-    let item = await firebase
-      .firestore()
-      .collection("kanji")
-      .doc(params.id)
-      .collection("oboe")
-      .doc(email)
-      .get();
     let items = await $axios
-      .$get("/api/get_post_by_id",{
+      .$get("/api/get_post_by_id", {
         params: {
           id: params.id
         }
       })
       .then();
     let searchkey = params.id;
-    if (item.data()) {
-      return {
-        searchkey,
-        email,
-        items,
-        commentvi: item.data().vi
-      };
-    } else {
-      return {
-        searchkey,
-        email,
-        items
-      };
-    }
+    return {
+      searchkey,
+      email,
+      items
+    };
   },
   beforeCreate() {},
   components: {
@@ -175,7 +159,16 @@ export default {
       this.loading = false;
     }
   },
-  mounted() {},
+  async mounted() {
+    let item = await firebase
+      .firestore()
+      .collection("kanji")
+      .doc(params.id)
+      .collection("oboe")
+      .doc(email)
+      .get();
+    this.commentvi = item.data().vi;
+  },
   watch: {}
 };
 </script>
