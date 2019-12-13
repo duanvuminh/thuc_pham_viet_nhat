@@ -14,7 +14,7 @@ const app = express();
 //     // Handle error
 //   });
 // select
-app.post("/api/get_all_primatives", async (req, res) => {
+app.get("/api/get_all_primatives", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   let db = admin.firestore();
   let desserts = []
@@ -30,7 +30,7 @@ app.post("/api/get_all_primatives", async (req, res) => {
   res.json(desserts);
 });
 
-app.post("/api/get_random_primatives", async (req, res) => {
+app.get("/api/get_random_primatives", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   let db = admin.firestore();
   let desserts = []
@@ -48,7 +48,7 @@ app.post("/api/get_random_primatives", async (req, res) => {
   res.json(desserts);
 });
 
-app.post("/api/get_post_by_id", async (req, res) => {
+app.get("/api/get_post_by_id", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   // console.log(util.inspect(req, {showHidden: false, depth: 1}))
   // console.log(`/select: ${req.params}`);

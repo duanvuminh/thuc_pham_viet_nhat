@@ -52,7 +52,7 @@ export default {
   async asyncData({ params, store, $axios }) {
     let desserts = [];
     desserts = await $axios
-      .$post("/api/get_all_primatives", {
+      .$get("/api/get_all_primatives", {
         firstName: "Fred",
         lastName: "Flintstone"
       })

@@ -38,7 +38,7 @@
 import firebase from "firebase";
 export default {
   async asyncData({ params, store, $axios }) {
-    let randoms = await $axios.$post("/api/get_random_primatives").then();
+    let randoms = await $axios.$get("/api/get_random_primatives").then();
     return { randoms };
   },
   computed: {

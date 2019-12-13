@@ -70,7 +70,7 @@ export default {
       .collection("oboe")
       .doc(email)
       .get();
-    let items = await $axios
+    let items = await $get
       .$post("/api/get_post_by_id", null, {
         params: {
           id: params.id
