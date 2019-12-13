@@ -92,8 +92,7 @@ export default {
             cacheableResponse: {
               statuses: [0, 200]
             }
-          },
-          strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
+          }
         },
         {
           urlPattern: 'https://fonts.googleapis.com/.*',
