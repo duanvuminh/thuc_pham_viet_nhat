@@ -1,5 +1,8 @@
 import firebase from 'firebase';
 import Cookie from "js-cookie";
+import Vue from 'vue'
+var SocialSharing = require('vue-social-sharing');
+Vue.use(SocialSharing);
 
 var config = {
   apiKey: "AIzaSyCniellt7ZkxGUk6r3ISo476bkwc0ya3OA",
@@ -16,9 +19,9 @@ var config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
-firebase.app()
-  .firestore()
-  .enablePersistence({ synchronizeTabs: true })
+// firebase.app()
+//   .firestore()
+//   .enablePersistence({ synchronizeTabs: true })
 export default ({ store }) => {
   firebase.auth().onAuthStateChanged((user) => {
     console.log("firebase work")

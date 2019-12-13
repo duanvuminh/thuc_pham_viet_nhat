@@ -1,0 +1,62 @@
+<template>
+  <v-col cols="12">
+    <v-text-field
+      solo
+      label="Search"
+      prepend-inner-icon="mdi-magnify"
+      clearable
+      @keypress="search"
+      @blur="search1"
+      v-model="text"
+      :loading="loading"
+    >
+      <template slot="append">
+        <v-btn class="ma-2" color="cyan" icon @click="sheet=!sheet">
+          <v-icon dark>mdi-pencil</v-icon>
+        </v-btn>
+      </template>
+    </v-text-field>
+    <v-bottom-sheet v-model="sheet">
+      <v-sheet class="text-center" height="200px">
+        <Handwriting />
+      </v-sheet>
+    </v-bottom-sheet>
+  </v-col>
+</template>
+<script>
+import Handwriting from "./Handwriting";
+export default {
+  components: {
+    Handwriting
+  },
+  data() {
+    return {
+      sheet: false,
+      text: "",
+      loading: false
+    };
+  },
+  computed: {},
+  methods: {
+    search1() {
+      if (!this.text) return;
+      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (this.text && this.$route.params.id != this.text) {
+        this.loading = true;
+        this.$router.push(`/search/${this.text}`);
+      }
+    },
+    search(e) {
+      if (!this.text) return;
+      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {
+        this.loading = true;
+        this.$router.push(`/search/${this.text}`);
+      }
+    }
+  },
+  mounted() {
+    this.text = this.$route.params.id;
+  }
+};
+</script>

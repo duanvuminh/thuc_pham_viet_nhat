@@ -1,18 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12">
-      <v-text-field
-        solo
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
-        clearable
-        @keypress="search"
-        @blur="search1"
-        v-model="searchkey"
-        hide-details
-        :loading="loading1"
-      ></v-text-field>
-    </v-col>
+    <Search :text="searchkey"/>
     <v-col cols="12">
       <v-row class="d-flex flex-nowrap">
         <v-col class="flex-grow-0 flex-shrink-1">
@@ -59,9 +47,11 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 import Ocard from "@/components/Oboecard";
+import Search from "@/components/Search";
 
 export default {
   async asyncData({ params, store, $axios }) {
+    console.log(params);
     let email = store.state.user.email ? store.state.user.email : "undefined";
     let items = await $axios
       .$get("/api/get_post_by_id", {
@@ -79,7 +69,8 @@ export default {
   },
   beforeCreate() {},
   components: {
-    Ocard
+    Ocard,
+    Search
   },
   computed: {
     readonly() {
@@ -120,24 +111,6 @@ export default {
   },
   layout: "oboe",
   methods: {
-    search1() {
-      this.searchkey = this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (this.searchkey && this.$route.params.id != this.searchkey) {
-        this.loading1 = true;
-        this.$router.push(`/search/${this.searchkey}`);
-      }
-    },
-    search(e) {
-      this.searchkey = this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (
-        e.key == "Enter" &&
-        this.searchkey &&
-        this.$route.params.id != this.searchkey
-      ) {
-        this.loading1 = true;
-        this.$router.push(`/search/${this.searchkey}`);
-      }
-    },
     async saveandshare() {
       this.loading = true;
       let items = await this.$axios.$post("/api/post1", null, {
@@ -163,9 +136,9 @@ export default {
     let item = await firebase
       .firestore()
       .collection("kanji")
-      .doc(params.id)
+      .doc(this.searchkey)
       .collection("oboe")
-      .doc(email)
+      .doc(this.email)
       .get();
     this.commentvi = item.data().vi;
   },
