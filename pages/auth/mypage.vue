@@ -56,7 +56,7 @@ export default {
   layout: "oboe",
    methods:{
     async getNew(){
-      this.randoms = await $axios.$get("/api/get_random_primatives").then();
+      this.randoms = await this.$axios.$get("/api/get_random_primatives").then();
     }
   },
   async mounted() {

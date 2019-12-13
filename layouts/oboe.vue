@@ -21,10 +21,6 @@
         <v-list-item-avatar>
           <img src="/logo.png" alt="oboe" />
         </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title>Trang cá nhân</v-list-item-title>
-        </v-list-item-content>
       </v-list-item>
 
       <v-divider></v-divider>
