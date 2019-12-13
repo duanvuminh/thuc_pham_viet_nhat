@@ -7,7 +7,7 @@
         </v-card-text>
         <v-card-actions>
           <v-switch v-model="item.display" label="Hiển thị" class="mr-1" @change="commit(item)"></v-switch>
-          <v-checkbox v-model="item.done" label="Đã kiểm tra" @change="commit(item)"></v-checkbox>
+          <v-checkbox v-model="item.done" label="Đã kiểm tra" @change="commit(item)" :value="!item.request"></v-checkbox>
         </v-card-actions>
       </v-card>
     </v-col>
