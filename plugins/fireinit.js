@@ -13,30 +13,29 @@ var config = {
   // Optionally pass in properties for database, authentication and cloud messaging,
   // see their respective docs.
 }
+if (!firebase.apps.length) {
+  firebase.app()
+    .firestore()
+    .enablePersistence({ synchronizeTabs: true })
+  firebase.initializeApp(config)
+}
 export default ({ store }) => {
-  if (!firebase.apps.length) {
-    firebase.app()
-      .firestore()
-      .enablePersistence({ synchronizeTabs: true })
-    firebase.initializeApp(config)
-  } else {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        firebase
-          .auth()
-          .currentUser.getIdToken()
-          .then(idToken => {
-            Cookie.set("access_token", idToken);
-          });
-        Cookie.set("email", user.providerData[0].email);
-        store.commit("setUser", { email: user.providerData[0].email, uid: user.providerData[0].uid });
-        store.commit("setLoginState", true);
-      } else {
-        Cookie.remove("email");
-        Cookie.remove("access_token");
-        store.commit("setUser", {});
-        store.commit("setLoginState", false);
-      }
-    })
-  }
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      firebase
+        .auth()
+        .currentUser.getIdToken()
+        .then(idToken => {
+          Cookie.set("access_token", idToken);
+        });
+      Cookie.set("email", user.providerData[0].email);
+      store.commit("setUser", { email: user.providerData[0].email, uid: user.providerData[0].uid });
+      store.commit("setLoginState", true);
+    } else {
+      Cookie.remove("email");
+      Cookie.remove("access_token");
+      store.commit("setUser", {});
+      store.commit("setLoginState", false);
+    }
+  })
 }
