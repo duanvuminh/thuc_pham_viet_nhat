@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <Search :text="searchkey"/>
+    <Search :text="searchkey" />
     <v-col cols="12">
       <v-row class="d-flex flex-nowrap">
         <v-col class="flex-grow-0 flex-shrink-1">
@@ -140,7 +140,9 @@ export default {
       .collection("oboe")
       .doc(this.email)
       .get();
-    this.commentvi = item.data().vi;
+    if (item.exists) {
+      this.commentvi = item.data().vi;
+    }
   },
   watch: {}
 };

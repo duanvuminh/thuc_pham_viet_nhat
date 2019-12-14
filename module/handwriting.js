@@ -15,6 +15,7 @@
 const handwriting = {}
 
 handwriting.Canvas = function (cvs, lineWidth) {
+    this.text = ""
     this.canvas = cvs;
     this.cxt = cvs.getContext("2d");
     this.cxt.lineCap = "round";
@@ -38,6 +39,7 @@ handwriting.Canvas = function (cvs, lineWidth) {
     cvs.addEventListener("touchstart", this.touchStart.bind(this));
     cvs.addEventListener("touchmove", this.touchMove.bind(this));
     cvs.addEventListener("touchend", this.touchEnd.bind(this));
+    cvs.addEventListener("mouseout", this.mouseOut.bind(this));
     this.callback = undefined;
     this.recognize = handwriting.recognize;
 };
@@ -69,6 +71,7 @@ handwriting.Canvas.prototype.setOptions = function (options) {
 
 
 handwriting.Canvas.prototype.mouseDown = function (e) {
+    this.text = "mouseDown"
     // new stroke
     this.cxt.lineWidth = this.lineWidth;
     this.handwritingX = [];
@@ -83,8 +86,20 @@ handwriting.Canvas.prototype.mouseDown = function (e) {
     this.handwritingY.push(y);
 };
 
+handwriting.Canvas.prototype.mouseOut = function (e) {
+    this.text = "mouseOut"
+    var w = [];
+    w.push(this.handwritingX);
+    w.push(this.handwritingY);
+    w.push([]);
+    this.trace.push(w);
+    this.drawing = false;
+    if (this.allowUndo) this.step.push(this.canvas.toDataURL());
+    this.recognize();
+};
 
 handwriting.Canvas.prototype.mouseMove = function (e) {
+    this.text = "mouseMove"
     if (this.drawing) {
         var rect = this.canvas.getBoundingClientRect();
         var x = e.clientX - rect.left;
@@ -97,6 +112,7 @@ handwriting.Canvas.prototype.mouseMove = function (e) {
 };
 
 handwriting.Canvas.prototype.mouseUp = function () {
+    this.text = "mouseUp"
     var w = [];
     w.push(this.handwritingX);
     w.push(this.handwritingY);
@@ -104,10 +120,13 @@ handwriting.Canvas.prototype.mouseUp = function () {
     this.trace.push(w);
     this.drawing = false;
     if (this.allowUndo) this.step.push(this.canvas.toDataURL());
+    this.recognize();
 };
 
 
 handwriting.Canvas.prototype.touchStart = function (e) {
+    this.text = "touchStart"
+    this.drawing = true;
     e.preventDefault();
     this.cxt.lineWidth = this.lineWidth;
     this.handwritingX = [];
@@ -126,7 +145,9 @@ handwriting.Canvas.prototype.touchStart = function (e) {
 };
 
 handwriting.Canvas.prototype.touchMove = function (e) {
+    this.text = "touchMove"
     e.preventDefault();
+    if (this.drawing) {
     var touch = e.targetTouches[0];
     var de = document.documentElement;
     var box = this.canvas.getBoundingClientRect();
@@ -138,15 +159,19 @@ handwriting.Canvas.prototype.touchMove = function (e) {
     this.handwritingY.push(y);
     this.cxt.lineTo(x, y);
     this.cxt.stroke();
+    }
 };
 
 handwriting.Canvas.prototype.touchEnd = function (e) {
+    this.text = "touchEnd"
     var w = [];
     w.push(this.handwritingX);
     w.push(this.handwritingY);
     w.push([]);
     this.trace.push(w);
+    this.drawing = false;
     if (this.allowUndo) this.step.push(this.canvas.toDataURL());
+    this.recognize();
 };
 
 handwriting.Canvas.prototype.undo = function () {
@@ -204,7 +229,7 @@ handwriting.recognize = function (trace, options, callback) {
         "requests": [{
             "writing_guide": {
                 "writing_area_width": options.width || this.width || undefined,
-                "writing_area_height": options.height || this.width || undefined
+                "writing_area_height": options.height || this.height || undefined
             },
             "ink": trace,
             "language": options.language || "zh_TW"

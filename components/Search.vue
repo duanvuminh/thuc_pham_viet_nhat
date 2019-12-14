@@ -9,6 +9,7 @@
       @blur="search1"
       v-model="text"
       :loading="loading"
+      :disabled="disabled"
     >
       <template slot="append">
         <v-btn class="ma-2" color="cyan" icon @click="sheet=!sheet">
@@ -17,8 +18,8 @@
       </template>
     </v-text-field>
     <v-bottom-sheet v-model="sheet">
-      <v-sheet class="text-center" height="200px">
-        <Handwriting />
+      <v-sheet class="text-center" height="300px">
+        <Handwriting @handwriting="handwriting"/>
       </v-sheet>
     </v-bottom-sheet>
   </v-col>
@@ -36,8 +37,17 @@ export default {
       loading: false
     };
   },
-  computed: {},
+  computed: {
+    disabled(){
+      return this.sheet
+    }
+  },
   methods: {
+    handwriting(value){
+      this.text = value;
+      this.sheet = false;
+      this.search1();
+    },
     search1() {
       if (!this.text) return;
       this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
