@@ -10,9 +10,6 @@
           <v-btn icon color="green" @click="reset">
             <v-icon>mdi-autorenew</v-icon>
           </v-btn>
-          <v-btn color="green">
-            {{text}}
-          </v-btn>
         </v-card-actions>
       </v-card>
       <v-card v-for="(kanji,i) in data" :key="i" class="pa-3" outlined tile @click="select(kanji)">{{kanji}}</v-card>
