@@ -95,7 +95,6 @@ handwriting.Canvas.prototype.mouseOut = function (e) {
     this.trace.push(w);
     this.drawing = false;
     if (this.allowUndo) this.step.push(this.canvas.toDataURL());
-    this.recognize();
 };
 
 handwriting.Canvas.prototype.mouseMove = function (e) {
