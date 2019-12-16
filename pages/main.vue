@@ -17,7 +17,7 @@
           :headers="headers"
           :items="desserts"
           :search="search"
-          :items-per-page="5"
+          :items-per-page="10"
           :footer-props="footer"
           hide-default-header
         >
