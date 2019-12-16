@@ -10,8 +10,8 @@
         :key="index"
         class="ma-2"
       >
-        <v-card-title v-show="post.title_vi">{{post.title_vi}}</v-card-title>
-        <v-img class="orange--text align-end" :src="post.images.image460.url" contain></v-img>
+        <v-card-title v-show="post.title">{{post.title}}</v-card-title>
+        <v-img class="orange--text align-end" :src="post.images.image700.url" contain></v-img>
       </v-card>
     </v-row>
   </div>
@@ -39,31 +39,31 @@ export default {
         )
         .then(response => {
           let data = response.data.data.posts;
-          data.map( x=>  {
-               this.translate(x.title).then(
-                 r=> x.title_vi = r
-               )
-          })
+          // data.map( x=>  {
+          //      this.translate(x.title).then(
+          //        r=> x.title_vi = r
+          //      )
+          // })
           this.posts = this.posts.concat(data);
           this.busy = false;
           this.next = response.data.data.nextCursor;
         });
     },
-    translate(title) {
-      return this.$axios
-        .$post(
-          "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-          {
-            q: title,
-            source: "en",
-            target: "vi",
-            format: "text"
-          }
-        )
-        .then(r => {
-         return r.data.translations[0].translatedText;
-        });
-    }
+    // translate(title) {
+    //   return this.$axios
+    //     .$post(
+    //       "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+    //       {
+    //         q: title,
+    //         source: "en",
+    //         target: "vi",
+    //         format: "text"
+    //       }
+    //     )
+    //     .then(r => {
+    //      return r.data.translations[0].translatedText;
+    //     });
+    // }
   },
   created() {
     this.loadMore();
