@@ -2,7 +2,7 @@
   <div>
     <v-row class="d-flex flex-nowrap">
       <v-col class="flex-grow-0 flex-shrink-1">
-        <v-avatar size="100" v-if="url" class="ma-2">
+        <v-avatar size="100" v-if="photoURL" class="ma-2">
           <img :src="url" :alt="name" />
         </v-avatar>
         <v-avatar size="100" v-else color="indigo">
@@ -19,7 +19,13 @@
     </v-row>
     <v-row class="d-flex flex-wrap align-center justify-space-around">
       <v-card v-for="(random,i) in randoms" :key="i" class="ma-3">
-        <v-img class="orange--text align-end" height="200px" width="300px" :src="random.url" contain>
+        <v-img
+          class="orange--text align-end"
+          height="200px"
+          width="300px"
+          :src="random.url"
+          contain
+        >
           <v-card-title>Nghĩa của kanji này là gì</v-card-title>
         </v-img>
         <v-expansion-panels>
@@ -54,9 +60,11 @@ export default {
     };
   },
   layout: "oboe",
-   methods:{
-    async getNew(){
-      this.randoms = await this.$axios.$get("/api/get_random_primatives").then();
+  methods: {
+    async getNew() {
+      this.randoms = await this.$axios
+        .$get("/api/get_random_primatives")
+        .then();
     }
   },
   async mounted() {

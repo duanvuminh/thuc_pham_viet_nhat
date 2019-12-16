@@ -10,7 +10,7 @@
         :key="index"
         class="ma-2"
       >
-        <v-card-title v-show="post.title">{{post.title}}</v-card-title>
+        <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
         <v-img class="orange--text align-end" :src="post.images.image700.url" contain></v-img>
       </v-card>
     </v-row>

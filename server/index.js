@@ -37,7 +37,7 @@ app.get("/api/get_random_primatives", async (req, res) => {
   await db
     .collection("kanjicore")
     .where("random",">=",Math.floor(Math.random() * 250))
-    .limit(3)
+    .limit(5)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
