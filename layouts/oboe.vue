@@ -5,7 +5,6 @@
         <v-row>
           <v-app-bar-nav-icon class="align-self-center" @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
           <v-btn text to="/" class="align-self-center">Home</v-btn>
-          <v-btn text to="/main" class="align-self-center">Bộ</v-btn>
           <v-btn text to="/9gag" class="align-self-center">❤️Japan</v-btn>
           <v-spacer />
           <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>

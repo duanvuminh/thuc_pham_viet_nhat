@@ -16,19 +16,20 @@ export default {
     return {
       introdue: `
 ## Cách sử dụng
-Nhập từ kanji mà bạn muốn xem. Ví dụ "四".
-* Trên điện thoại các bạn thêm vào màn hình chính để dùng khi offline nhé
-## Các nguồn khác
-* Best recommended input extension
-[Google input tool](https://www.google.com/inputtools/chrome/)
-* Join oboe Team
-[Online support](https://lovejapanworkspace.slack.com)
-* How to edit with markdown
+* Nhập từ kanji mà bạn muốn xem. Ví dụ "四".
+Trên điện thoại các bạn thêm vào màn hình chính để dùng khi offline nhé
+* Cách sử dụng markdown để viết bài
 [markdown](https://lithong.com/howto)
+## Các tài liệu học tiếng nhật từ web này
+* Các nét kanji cơ bản
+[Kanji Primitive Elements](/main)
+* Tổng hợp các nguồn học tiếng nhật
+[awesome](/awesome)
+## Các nguồn khác
+* Chát online với oboe
+[Online support](https://lovejapanworkspace.slack.com)
 * Hỗ trợ đánh tiếng nhật online
 [Gõ tiếng Nhật](https://typing.lithong.com/)
-* Q&A
-Comming soon...
       `
     };
   },
