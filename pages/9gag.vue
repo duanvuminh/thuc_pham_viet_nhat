@@ -27,7 +27,8 @@ export default {
       posts: [],
       next: "",
       limit: 10,
-      busy: false
+      busy: false,
+      url:''
     };
   },
   methods: {
@@ -35,7 +36,7 @@ export default {
       this.busy = true;
       this.$axios
         .get(
-          `https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/japan/type/hot?${this.next}`
+            `${this.url}${this.next}`
         )
         .then(response => {
           let data = response.data.data.posts;
@@ -69,13 +70,12 @@ export default {
     this.loadMore();
   },
   mounted() {
-    // this.$axios
-    //   .$get("/api/get_post_by_id", {
-    //     params: {
-    //       id: params.id
-    //     }
-    //   })
-    //   .then();
+    this.url = [
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/japan/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?",
+    ][Math.floor(Math.random() * 4)]
     AOS.init();
   }
 };
