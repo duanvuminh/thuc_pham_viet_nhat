@@ -16,7 +16,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" aria-haspopup="">
       <v-list-item>
         <v-list-item-avatar>
           <img src="/logo.png" alt="oboe" />
