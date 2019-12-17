@@ -75,7 +75,7 @@ export default {
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?",
-    ][Math.floor(Math.random() * 4)]
+    ][Math.floor(Math.random() * 4)];
     AOS.init();
   }
 };
