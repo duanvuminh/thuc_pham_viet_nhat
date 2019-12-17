@@ -37,6 +37,14 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
+        <v-card-text>
+          <div v-html="$md.render(selectedTextApi.vi)"></div>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template> 
 
@@ -46,8 +54,25 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      drawer: false
+      selectedText: "",
+      selectedTextShow:"",
+      selectedTextApi: {
+        vi: ""
+      },
+      drawer: false,
+      dialog: false
     };
+  },
+  mounted() {
+    document.addEventListener("mouseout", () => {
+      let text = "";
+      if (window.getSelection) {
+        text = window.getSelection().toString();
+      } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+      }
+      this.selectedText = text;
+    });
   },
   methods: {},
   computed: {
@@ -65,7 +90,11 @@ export default {
             link: "/auth/mypage"
           },
           //{ title: "About", icon: "question_answer" }
-          { title: "Request", icon: "mdi-bell-check-outline ", link: "/auth/request/" },
+          {
+            title: "Request",
+            icon: "mdi-bell-check-outline ",
+            link: "/auth/request/"
+          },
           { title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {
@@ -78,6 +107,30 @@ export default {
           //{ title: "About", icon: "question_answer" }
           { title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
+      }
+    }
+  },
+  watch: {
+    dialog(value) {
+      if (!value) {
+        this.selectedText = "";
+      }
+    },
+    selectedText(value) {
+      if (value) {
+        this.$axios
+          .$get("/api/get_post_by_id", {
+            params: {
+              id: value
+            }
+          })
+          .then(r => {
+            if (r && r.length > 0) {
+              this.selectedTextShow = this.selectedText;
+              this.selectedTextApi = r[0];
+              this.dialog = true;
+            }
+          });
       }
     }
   }
