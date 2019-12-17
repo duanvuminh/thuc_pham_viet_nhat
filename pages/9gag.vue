@@ -28,28 +28,24 @@ export default {
       next: "",
       limit: 10,
       busy: false,
-      url:''
+      url: ""
     };
   },
   methods: {
-   loadMore() {
+    loadMore() {
       this.busy = true;
-      this.$axios
-        .get(
-            `${this.url}${this.next}`
-        )
-        .then(response => {
-          let data = response.data.data.posts;
-          // data.map( x=>  {
-          //      this.translate(x.title).then(
-          //        r=> x.title_vi = r
-          //      )
-          // })
-          this.posts = this.posts.concat(data);
-          this.busy = false;
-          this.next = response.data.data.nextCursor;
-        });
-    },
+      this.$axios.get(`${this.url}${this.next}`).then(response => {
+        let data = response.data.data.posts;
+        // data.map( x=>  {
+        //      this.translate(x.title).then(
+        //        r=> x.title_vi = r
+        //      )
+        // })
+        this.posts = this.posts.concat(data);
+        this.busy = false;
+        this.next = response.data.data.nextCursor;
+      });
+    }
     // translate(title) {
     //   return this.$axios
     //     .$post(
@@ -67,15 +63,15 @@ export default {
     // }
   },
   created() {
-    this.loadMore();
-  },
-  mounted() {
     this.url = [
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/japan/type/hot?",
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
       "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
-      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?"
     ][Math.floor(Math.random() * 4)];
+    this.loadMore();
+  },
+  mounted() {
     AOS.init();
   }
 };
