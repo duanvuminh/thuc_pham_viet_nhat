@@ -12,7 +12,7 @@
       </v-container>
     </v-app-bar>
     <v-content>
-      <v-container class="fill-height">
+      <v-container>
         <nuxt />
       </v-container>
     </v-content>
