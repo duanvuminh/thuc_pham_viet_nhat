@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       selectedText: "",
-      selectedTextShow:"",
+      selectedTextShow: "",
       selectedTextApi: {
         vi: ""
       },
@@ -64,7 +64,11 @@ export default {
     };
   },
   mounted() {
-    document.addEventListener("mouseout", () => {
+    document.addEventListener("mouseup", this.autodetect);
+    document.addEventListener("touchend", this.autodetect);
+  },
+  methods: {
+    autodetect() {
       let text = "";
       if (window.getSelection) {
         text = window.getSelection().toString();
@@ -72,9 +76,8 @@ export default {
         text = document.selection.createRange().text;
       }
       this.selectedText = text;
-    });
+    }
   },
-  methods: {},
   computed: {
     loggedIn() {
       return this.$store.state.loggedIn;
@@ -117,7 +120,7 @@ export default {
       }
     },
     selectedText(value) {
-      if (value) {
+      if (value && value != this.$route.params.id) {
         this.$axios
           .$get("/api/get_post_by_id", {
             params: {

@@ -23,6 +23,9 @@ export default {
 ## Đọc báo
 * New Easy
 [New Easy](https://www3.nhk.or.jp/news/easy/)
+## Khác
+* Rèn nói chuyện
+Bạn tìm câu tiếng nhật bạn thích học thuộc lòng và cố đọc nhanh nhất có thể
       `
     };
   },
