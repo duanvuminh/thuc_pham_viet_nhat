@@ -9,6 +9,7 @@
         data-aos-easing="ease-out-back"
         :key="index"
         class="ma-2"
+        elevation="0"
       >
         <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
         <v-img class="orange--text align-end" :src="post.images.image700.url" contain></v-img>
