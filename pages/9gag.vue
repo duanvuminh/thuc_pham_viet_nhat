@@ -31,6 +31,11 @@ export default {
       url: ""
     };
   },
+  head() {
+    return {
+      titleTemplate: `%s - japan, animewallpaper,animewaifu,anime-manga`
+    };
+  },
   methods: {
     loadMore() {
       this.busy = true;

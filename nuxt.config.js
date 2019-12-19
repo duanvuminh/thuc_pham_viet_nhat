@@ -31,7 +31,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [{src: '~/plugins/fireinit.js',mode: 'client'}],
+  plugins: [{ src: '~/plugins/fireinit.js', mode: 'client' }],
   /*
   ** Nuxt.js dev-modules
   */
@@ -63,7 +63,7 @@ export default {
   },
   sitemap:
   {
-    hostname:'https://oboe.lithong.com',
+    hostname: 'https://oboe.lithong.com',
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
@@ -160,6 +160,11 @@ export default {
     },
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extractCSS: true,
+  },
+  /*
+  ** render
+  */
+  render: {
   },
   /*
   ** router

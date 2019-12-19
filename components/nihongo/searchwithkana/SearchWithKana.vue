@@ -82,10 +82,10 @@ export default {
     setText() {
       this.$nextTick(() => {
         let startPos = this.$refs.textarea1.$el.getElementsByTagName(
-          "textarea"
+          "input"
         )[0].selectionStart;
         let endPos = this.$refs.textarea1.$el.getElementsByTagName(
-          "textarea"
+          "input"
         )[0].selectionEnd;
         let cursorPos = startPos;
         let tmpStr = this.text;
