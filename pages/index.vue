@@ -1,16 +1,16 @@
 <template>
   <v-row justify="center">
-    <NihonTyping />
+    <Search />
     <v-col cols="12">
       <div v-html="$md.render(introdue)"></div>
     </v-col>
   </v-row>
 </template>
 <script>
-import NihonTyping from "@/components/NihonTyping";
+import Search from "@/components/nihongo/Search";
 export default {
   components: {
-    NihonTyping
+    Search
   },
   data() {
     return {

@@ -1,11 +1,13 @@
 <template>
-  <v-col cols="12" style="position:relative">
+  <div>
     <Search
       ref="textarea1"
       @inputText="value=>{text = value?value:''}"
       @keydown="openDg"
       @blur="blurCheck"
       :text="text"
+      @active="emitActive"
+      :active="active"
     ></Search>
     <v-card style="position:absolute;min-width:100px" tile v-show="show" ref="sugest">
       <v-list dense>
@@ -22,10 +24,10 @@
         </v-list-item-group>
       </v-list>
     </v-card>
-  </v-col>
+  </div>
 </template>
 <script>
-import Search from "./Search";
+import Search from "./SearchChildren";
 import * as wanakana from "wanakana";
 var getCaretCoordinates = require("textarea-caret");
 
@@ -61,7 +63,7 @@ export default {
       this.caret = getCaretCoordinates(this, this.selectionEnd);
       me.$nextTick(() => {
         me.$refs.sugest.$el.style.top =
-          this.caret.top - -me.$refs.textarea1.$el.offsetTop - -50 + "px";
+          this.caret.top - -me.$refs.textarea1.$el.offsetTop - -30 + "px";
         me.$refs.sugest.$el.style.left =
           this.caret.left - -me.$refs.textarea1.$el.offsetLeft - -30 + "px";
       });
@@ -73,6 +75,9 @@ export default {
         this.show = false;
         this.textreal = "";
       }, 200);
+    },
+    emitActive(value){
+      this.$emit("active", value);
     },
     setText() {
       this.$nextTick(() => {
@@ -203,6 +208,7 @@ export default {
       }
     }
   },
+  props:["active"],
   computed: {
     textshow() {
       if (this.item || this.item == 0) {
@@ -227,6 +233,8 @@ export default {
       return convertText;
     }
   },
-  watch: {}
+  watch:{
+    
+  }
 };
 </script>

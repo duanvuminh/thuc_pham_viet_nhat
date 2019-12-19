@@ -47,7 +47,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 import Ocard from "@/components/Oboecard";
-import Search from "@/components/Search";
+import Search from "@/components/nihongo/Search";
 
 export default {
   async asyncData({ params, store, $axios }) {

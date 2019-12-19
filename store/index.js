@@ -3,6 +3,7 @@ import cookieparser from "cookieparser";
 
 export const state = () => ({
   count: 0,
+  japanesInput: false,
   loggedIn: false,
   user: {}
 })
@@ -13,7 +14,10 @@ export const mutations = {
   },
   setUser(state, user) {
     state.user = user;
-  }
+  },
+  setJapanesInput(state, value) {
+    state.japanesInput = value;
+  },
 }
 
 export const actions = {

@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12">
+  <div>
     <v-text-field
       solo
       label="Search"
@@ -12,7 +12,7 @@
       :disabled="disabled"
     >
       <template slot="append">
-        <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="active=!active">あ</v-btn>
+       <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="active=!active">あ</v-btn>
         <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet=!sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -20,37 +20,36 @@
     </v-text-field>
     <v-bottom-sheet v-model="sheet">
       <v-sheet class="text-center" height="300px">
-        <Handwriting @handwriting="handwriting" />
+        <Handwriting @handwriting="handwriting"/>
       </v-sheet>
     </v-bottom-sheet>
-  </v-col>
+  </div>
 </template>
 <script>
-import Handwriting from "./Handwriting";
+import Handwriting from "@/components/Handwriting";
 export default {
   components: {
     Handwriting
   },
-  props:["text","active"],
+  computed: {
+    disabled(){
+      return this.sheet
+    }
+  },
   data() {
     return {
       sheet: false,
+      text: "",
       loading: false
     };
   },
-  computed: {
-    disabled() {
-      return this.sheet;
-    }
-  },
   methods: {
-    handwriting(value) {
+    handwriting(value){
       this.text = value;
       this.sheet = false;
       this.search1();
     },
-    search1(e) {
-      this.$emit("blur",e);
+    search1() {
       if (!this.text) return;
       this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (this.text && this.$route.params.id != this.text) {
@@ -59,7 +58,6 @@ export default {
       }
     },
     search(e) {
-      this.$emit("keydown",e);
       if (!this.text) return;
       this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {
@@ -71,9 +69,10 @@ export default {
   mounted() {
     this.text = this.$route.params.id;
   },
-  watch: {
-    text(value) {
-      this.$emit("inputText", value);
+  props:["active"],
+  watch:{
+    active(value){
+      this.$emit("active", value);
     }
   }
 };
