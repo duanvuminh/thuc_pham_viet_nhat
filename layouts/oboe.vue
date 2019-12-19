@@ -14,6 +14,7 @@
       slot="img"
       src="/mainichi.jpg"
       max-height="100%"
+      max-width="500"
     ></v-img>
     </v-app-bar>
     <v-content>
