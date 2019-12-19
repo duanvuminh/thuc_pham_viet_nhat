@@ -1,4 +1,6 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 import Cookie from "js-cookie";
 import Vue from 'vue'
 var SocialSharing = require('vue-social-sharing');
@@ -20,7 +22,7 @@ var config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
-firebase.app()
+firebase
   .firestore()
   .enablePersistence({ synchronizeTabs: true })
 export default ({ store }) => {

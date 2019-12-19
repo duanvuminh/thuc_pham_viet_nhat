@@ -1,15 +1,20 @@
 <template>
   <v-app light>
-    <v-app-bar flat app dense>
+    <v-app-bar flat app dense hide-on-scroll prominent dark>
       <v-container>
         <v-row>
-          <v-app-bar-nav-icon class="align-self-center" @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
-          <v-btn text to="/" class="align-self-center">Home</v-btn>
-          <v-btn text to="/9gag" class="align-self-center">❤️Japan</v-btn>
+          <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
+          <v-btn icon to="/" > <v-icon>mdi-home</v-icon></v-btn>
+          <v-btn icon to="/9gag"> <v-icon>mdi-heart</v-icon></v-btn>
           <v-spacer />
           <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
         </v-row>
       </v-container>
+      <v-img
+      slot="img"
+      src="/mainichi.jpg"
+      max-height="100%"
+    ></v-img>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -49,7 +54,6 @@
 </template> 
 
 <script>
-import firebase from "firebase";
 import { mapState } from "vuex";
 export default {
   data() {
