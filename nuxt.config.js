@@ -159,6 +159,7 @@ export default {
     extend(config, ctx) {
     },
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+    extractCSS: true,
   },
   /*
   ** router
