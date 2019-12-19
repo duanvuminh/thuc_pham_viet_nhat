@@ -76,7 +76,14 @@ export default {
     manifest: {
       name: 'Oboe',
       lang: 'en',
-      description: "cách nhớ kanji"
+      description: "cách nhớ kanji",
+      icons:[
+        {
+          src:'logo.png',
+          size:"512x512",
+          type:"image/png"
+        }
+      ]
     },
     workbox: {
       runtimeCaching: [
