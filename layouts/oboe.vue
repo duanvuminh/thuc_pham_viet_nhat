@@ -118,6 +118,7 @@ export default {
       }
     }
   },
+  scrollToTop:true,
   watch: {
     dialog(value) {
       if (!value) {
