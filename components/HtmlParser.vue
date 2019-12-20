@@ -71,6 +71,7 @@ export default {
         this._links = []
       }
     }
-  }
+  },
+  serverCacheKey: props => props.content,
 }
 </script>

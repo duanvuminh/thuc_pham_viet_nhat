@@ -51,6 +51,10 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
+    ['@nuxtjs/component-cache', {
+      max: 10000,
+      maxAge: 1000 * 60 * 60
+    }]
   ],
   markdownit: {
     injected: true,
@@ -168,6 +172,9 @@ export default {
   ** render
   */
   render: {
+    static: {
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    }
   },
   /*
   ** router
