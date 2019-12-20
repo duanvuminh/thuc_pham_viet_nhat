@@ -7,7 +7,7 @@
       <div class="display-2">Danh sách kiểm tra</div>
       <v-card v-for="(item, index) in items" :key="index" width="300" class="ma-4">
         <v-card-text>
-          <div v-html="$md.render(item.vi)"></div>
+          <HtmlParser :content="$md.render(item.vi)"></HtmlParser>
         </v-card-text>
         <v-card-actions>
           <v-switch v-model="item.display" label="Hiển thị" class="mr-1" @change="commit(item)"></v-switch>
@@ -18,10 +18,16 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
   async asyncData({ params, store }) {
     return { params };
+  },
+  components: {
+    HtmlParser
   },
   data() {
     return {
@@ -32,7 +38,6 @@ export default {
   methods: {
     commit(item) {
       firebase
-        .app()
         .firestore()
         .collection("kanji")
         .doc(this.params.id)
@@ -51,7 +56,6 @@ export default {
     console.log(this.params);
     let items = [];
     await firebase
-      .app()
       .firestore()
       .collection("kanji")
       .doc(this.params.id)

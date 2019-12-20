@@ -3,7 +3,7 @@
     <v-col cols="12" class="d-flex flex-wrap align-center justify-space-around">
       <v-card v-for="(item, index) in items" :key="index" width="300" class="ma-4">
         <v-card-text>
-          <div v-html="$md.render(item.vi)"></div>
+          <HtmlParser :content="$md.render(item.vi)"></HtmlParser>
         </v-card-text>
         <v-card-actions>
           <v-switch v-model="item.display" label="Hiển thị" class="mr-1" @change="commit(item)"></v-switch>

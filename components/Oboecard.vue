@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto">
     <v-card-text class="pb-0">
-      <div v-html="$md.render(item.vi)"></div>
+      <HtmlParser :content="$md.render(item.vi)"/>
     </v-card-text>
 
     <v-card-actions class="pt-0">
@@ -24,9 +24,12 @@
   </v-card>
 </template>
 <script>
-import firebase from "firebase";
+import HtmlParser from "@/components/HtmlParser";
 export default {
   props: ["item", "searchkey", "email"],
+  components: {
+    HtmlParser
+  },
   data() {
     return {
     };

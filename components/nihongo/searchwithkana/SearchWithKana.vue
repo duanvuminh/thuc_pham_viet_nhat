@@ -9,7 +9,7 @@
       @active="emitActive"
       :active="active"
     ></Search>
-    <v-card style="position:absolute;min-width:100px" tile v-show="show" ref="sugest">
+    <v-card style="position:absolute;min-width:100px;z-index:1" tile v-show="show" ref="sugest">
       <v-list dense>
         <div class="pa-2">
           {{textshow}}
@@ -136,7 +136,7 @@ export default {
         " "
       ];
       if (this.show) {
-        event.preventDefault();
+        e.preventDefault();
         if (e.key == "Backspace") {
           this.item = null;
           console.log(this.textreal);
@@ -199,7 +199,7 @@ export default {
           this.lastKey = e.key;
         } else {
           this.lastKey = e.key;
-          event.preventDefault();
+          e.preventDefault();
           this.textreal += e.key;
           this.show = true;
         }

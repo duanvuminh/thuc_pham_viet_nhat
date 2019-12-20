@@ -28,12 +28,12 @@
             <v-btn class="ma-2" color="success" @click="saveandshare" small text>Lưu & chia sẻ</v-btn>
             <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
           </v-row>
-          <div
+          <HtmlParser
             v-show="show1"
             class="elevation-1 pa-2 mb-3"
             v-if="commentvi!=''"
-            v-html="$md.render(commentvi)"
-          ></div>
+            :content="$md.render(commentvi)"
+          ></HtmlParser>
         </v-col>
       </v-row>
     </v-col>
@@ -45,6 +45,8 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
+import HtmlParser from "@/components/HtmlParser";
+
 
 import Ocard from "@/components/Oboecard";
 import Search from "@/components/nihongo/Search";
@@ -70,7 +72,8 @@ export default {
   beforeCreate() {},
   components: {
     Ocard,
-    Search
+    Search,
+    HtmlParser
   },
   computed: {
     readonly() {

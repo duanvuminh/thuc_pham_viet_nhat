@@ -1,12 +1,17 @@
 <template>
   <v-row justify="center">
     <v-col cols="12">
-      <div v-html="$md.render(introdue)"></div>
+      <HtmlParser :content="$md.render(introdue)"></HtmlParser>
     </v-col>
   </v-row>
 </template>
 <script>
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
+  components: {
+    HtmlParser
+  },
   data() {
     return {
       introdue: `

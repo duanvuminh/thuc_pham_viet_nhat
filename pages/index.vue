@@ -2,15 +2,17 @@
   <v-row justify="center">
     <Search />
     <v-col cols="12">
-      <div v-html="$md.render(introdue)"></div>
+      <HtmlParser :content="$md.render(introdue)"/>
     </v-col>
   </v-row>
 </template>
 <script>
 import Search from "@/components/nihongo/Search";
+import HtmlParser from "@/components/HtmlParser";
 export default {
   components: {
-    Search
+    Search,
+    HtmlParser
   },
   data() {
     return {

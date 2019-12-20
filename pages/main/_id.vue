@@ -34,10 +34,10 @@
                   ></v-img>
                 </td>
                 <td>
-                  <div v-html="$md.render(item.en)"></div>
+                  <HtmlParser :content="$md.render(item.en)"></HtmlParser>
                 </td>
                 <td>
-                  <div v-html="$md.render(item.vi)"></div>
+                  <HtmlParser :content="$md.render(item.vi)"></HtmlParser>
                 </td>
               </tr>
             </tbody>
@@ -48,6 +48,8 @@
   </v-row>
 </template>
 <script>
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
   async asyncData({ params, store, $axios }) {
     let desserts = [];
@@ -58,6 +60,9 @@ export default {
       })
       .then();
     return { desserts };
+  },
+  components: {
+    HtmlParser
   },
   data() {
     return {

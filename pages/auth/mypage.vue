@@ -32,7 +32,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header>show</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div v-html="$md.render(random.vi)"></div>
+              <HtmlParser :content="$md.render(random.vi)"/>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -41,11 +41,17 @@
   </div>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
   async asyncData({ params, store, $axios }) {
     let randoms = await $axios.$get("/api/get_random_primatives").then();
     return { randoms };
+  },
+  components: {
+    HtmlParser
   },
   computed: {
     url() {

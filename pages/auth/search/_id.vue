@@ -37,7 +37,7 @@
             dense
             @focus="show = true"
           />
-          <div v-html="$md.render(commentvi)"></div>
+          <HtmlParser :content="$md.render(commentvi)"></HtmlParser>
         </v-col>
       </v-row>
       <v-row v-show="show">
@@ -78,7 +78,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div v-html="$md.render(basecomment)"></div>
+                  <HtmlParser :content="$md.render(basecomment)"></HtmlParser>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea
@@ -101,12 +101,15 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
   async asyncData({ params, store }) {
     let email = store.state.user.email;
     let item = await firebase
-      .app()
       .firestore()
       .collection("kanji")
       .doc(params.id)
@@ -129,6 +132,9 @@ export default {
     }
   },
   beforeCreate() {},
+  components: {
+    HtmlParser
+  },
   computed: {
     // readonly() {
     //   return !this.$store.state.loggedIn;
@@ -172,7 +178,6 @@ export default {
     save() {
       this.loading = true;
       firebase
-        .app()
         .firestore()
         .collection("kanji")
         .doc(this.searchkey)
@@ -184,7 +189,6 @@ export default {
         )
         .then(r => {
           firebase
-            .app()
             .firestore()
             .collection("kanji")
             .doc(this.searchkey)
@@ -218,7 +222,6 @@ export default {
             })
           ).then(url => {
             firebase
-              .app()
               .firestore()
               .collection("kanjicore")
               .doc(this.basename)
@@ -233,7 +236,6 @@ export default {
           });
         } else {
           firebase
-            .app()
             .firestore()
             .collection("kanjicore")
             .doc(this.basename)

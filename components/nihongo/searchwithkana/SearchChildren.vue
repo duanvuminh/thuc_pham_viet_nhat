@@ -5,9 +5,9 @@
       label="Search"
       prepend-inner-icon="mdi-magnify"
       clearable
-      @keypress="search"
+      @keydown="search"
       @blur="search1"
-      v-model="text"
+      v-model="textModel"
       :loading="loading"
       :disabled="disabled"
     >
@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       sheet: false,
-      loading: false
+      loading: false,
+      textModel:''
     };
   },
   computed: {
@@ -45,38 +46,41 @@ export default {
   },
   methods: {
     handwriting(value) {
-      this.text = value;
+      this.textModel = value;
       this.sheet = false;
       this.search1();
     },
     search1(e) {
       this.$emit("blur",e);
-      if (!this.text) return;
-      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (this.text && this.$route.params.id != this.text) {
+      if (!this.textModel) return;
+      this.textModel = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (this.textModel && this.$route.params.id != this.textModel) {
         this.loading = true;
-        this.$router.push(`/search/${this.text}`);
+        this.$router.push(`/search/${this.textModel}`);
       }
     },
     search(e) {
       this.$emit("keydown",e);
-      if (!this.text) return;
-      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {
+      if (!this.textModel) return;
+      this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (e.key == "Enter" && this.textModel && this.$route.params.id != this.textModel) {
         this.loading = true;
-        this.$router.push(`/search/${this.text}`);
+        this.$router.push(`/search/${this.textModel}`);
       }
     }
   },
   mounted() {
-    this.text = this.$route.params.id;
+    this.textModel = this.$route.params.id;
   },
   watch: {
-    text(value) {
+    textModel(value) {
       this.$emit("inputText", value);
     },
     active(value){
       this.$emit("active", value);
+    },
+    text(value){
+      this.textModel = value
     }
   }
 };

@@ -47,7 +47,7 @@
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
         <v-card-text>
-          <div v-html="$md.render(selectedTextApi.vi)"></div>
+          <HtmlParser :content="$md.render(selectedTextApi.vi)"></HtmlParser>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -56,7 +56,12 @@
 
 <script>
 import { mapState } from "vuex";
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
+  components: {
+    HtmlParser
+  },
   data() {
     return {
       selectedText: "",
