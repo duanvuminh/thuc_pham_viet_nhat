@@ -174,7 +174,7 @@ export default {
   render: {
     static: {
       // one month
-      maxAge: 2628000
+      maxAge: '1y'
     }
   },
   /*
