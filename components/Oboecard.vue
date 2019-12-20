@@ -39,7 +39,6 @@ export default {
   },
   mounted() {
   
-  },
-  serverCacheKey: props => props.item.id,
+  }
 };
 </script>

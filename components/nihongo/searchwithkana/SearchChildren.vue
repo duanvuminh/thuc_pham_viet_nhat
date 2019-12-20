@@ -48,7 +48,6 @@ export default {
     handwriting(value) {
       this.textModel = value;
       this.sheet = false;
-      this.search1();
     },
     search1(e) {
       this.$emit("blur",e);

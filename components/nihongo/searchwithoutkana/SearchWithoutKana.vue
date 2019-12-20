@@ -75,6 +75,5 @@ export default {
       this.$emit("active", value);
     }
   },
-  serverCacheKey: props => props.active,
 };
 </script>
