@@ -4,6 +4,7 @@ import cookieparser from "cookieparser";
 export const state = () => ({
   count: 0,
   japanesInput: false,
+  connectedFirebase:false,
   loggedIn: false,
   user: {}
 })
@@ -17,6 +18,9 @@ export const mutations = {
   },
   setJapanesInput(state, value) {
     state.japanesInput = value;
+  },
+  setConnectedFirebase(state, value) {
+    state.connectedFirebase = value;
   },
 }
 

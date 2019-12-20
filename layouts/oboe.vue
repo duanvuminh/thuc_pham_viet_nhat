@@ -1,5 +1,5 @@
 <template>
-  <v-app light>
+  <v-app light v-show="connectedFirebase">
     <v-app-bar flat app dense hide-on-scroll prominent dark>
       <v-container>
         <v-row>
@@ -87,7 +87,7 @@ export default {
     loggedIn() {
       return this.$store.state.loggedIn;
     },
-    ...mapState(["user"]),
+    ...mapState(["user","connectedFirebase"]),
     items() {
       // is triggered whenever the store state changes
       if (this.user.email == "duanvuminh@gmail.com") {
