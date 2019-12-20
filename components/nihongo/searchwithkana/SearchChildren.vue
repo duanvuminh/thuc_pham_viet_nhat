@@ -12,7 +12,7 @@
       :disabled="disabled"
     >
       <template slot="append">
-        <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="active=!active">あ</v-btn>
+        <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn>
         <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet=!sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -31,12 +31,12 @@ export default {
   components: {
     Handwriting
   },
-  props:["text","active"],
+  props: ["text", "active"],
   data() {
     return {
       sheet: false,
       loading: false,
-      textModel:''
+      textModel: ""
     };
   },
   computed: {
@@ -45,12 +45,26 @@ export default {
     }
   },
   methods: {
+    emitActive(){
+      this.$emit("active", !this.active);
+    },
     handwriting(value) {
       this.textModel = value;
       this.sheet = false;
+      this.$nextTick(() => {
+        if (!this.textModel) return;
+        this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
+        if (
+          this.textModel &&
+          this.$route.params.id != this.textModel
+        ) {
+          this.loading = true;
+          this.$router.push(`/search/${this.textModel}`);
+        }
+      });
     },
     search1(e) {
-      this.$emit("blur",e);
+      this.$emit("blur", e);
       if (!this.textModel) return;
       this.textModel = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (this.textModel && this.$route.params.id != this.textModel) {
@@ -59,10 +73,14 @@ export default {
       }
     },
     search(e) {
-      this.$emit("keydown",e);
+      this.$emit("keydown", e);
       if (!this.textModel) return;
       this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (e.key == "Enter" && this.textModel && this.$route.params.id != this.textModel) {
+      if (
+        e.key == "Enter" &&
+        this.textModel &&
+        this.$route.params.id != this.textModel
+      ) {
         this.loading = true;
         this.$router.push(`/search/${this.textModel}`);
       }
@@ -75,11 +93,8 @@ export default {
     textModel(value) {
       this.$emit("inputText", value);
     },
-    active(value){
-      this.$emit("active", value);
-    },
-    text(value){
-      this.textModel = value
+    text(value) {
+      this.textModel = value;
     }
   }
 };

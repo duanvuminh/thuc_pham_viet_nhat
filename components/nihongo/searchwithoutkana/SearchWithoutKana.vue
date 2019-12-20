@@ -12,7 +12,7 @@
       :disabled="disabled"
     >
       <template slot="append">
-       <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="active=!active">あ</v-btn>
+        <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn>
         <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet=!sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -20,7 +20,7 @@
     </v-text-field>
     <v-bottom-sheet v-model="sheet">
       <v-sheet class="text-center" height="300px">
-        <Handwriting @handwriting="handwriting"/>
+        <Handwriting @handwriting="handwriting" />
       </v-sheet>
     </v-bottom-sheet>
   </div>
@@ -32,8 +32,8 @@ export default {
     Handwriting
   },
   computed: {
-    disabled(){
-      return this.sheet
+    disabled() {
+      return this.sheet;
     }
   },
   data() {
@@ -44,7 +44,10 @@ export default {
     };
   },
   methods: {
-    handwriting(value){
+    emitActive() {
+      this.$emit("active", !this.active);
+    },
+    handwriting(value) {
       this.text = value;
       this.sheet = false;
       this.search1();
@@ -69,11 +72,7 @@ export default {
   mounted() {
     this.text = this.$route.params.id;
   },
-  props:["active"],
-  watch:{
-    active(value){
-      this.$emit("active", value);
-    }
-  },
+  props: ["active"],
+  watch: {}
 };
 </script>
