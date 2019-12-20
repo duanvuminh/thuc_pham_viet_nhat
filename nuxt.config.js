@@ -172,10 +172,6 @@ export default {
   ** render
   */
   render: {
-    static: {
-      // one month
-      maxAge: '1y'
-    }
   },
   /*
   ** router
