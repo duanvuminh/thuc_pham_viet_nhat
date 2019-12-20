@@ -14,7 +14,8 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 export default {
   async asyncData({ params, store }) {
     return { params };
@@ -28,7 +29,6 @@ export default {
   methods: {
     commit(item) {
       firebase
-        .app()
         .firestore()
         .collection("kanji")
         .doc(this.params.id)
@@ -47,7 +47,6 @@ export default {
     console.log(this.params);
     let items = [];
     await firebase
-      .app()
       .firestore()
       .collection("kanji")
       .doc(this.params.id)

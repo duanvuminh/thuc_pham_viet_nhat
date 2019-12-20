@@ -84,7 +84,8 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import Cookie from "js-cookie";
 
 export default {

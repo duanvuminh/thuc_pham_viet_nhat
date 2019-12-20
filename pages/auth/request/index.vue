@@ -12,7 +12,8 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 export default {
   async asyncData({ params, store }) {},
   data() {
@@ -24,7 +25,6 @@ export default {
   methods: {
     commit(item) {
       firebase
-        .app()
         .firestore()
         .collection("kanji")
         .doc(item.id)
@@ -40,7 +40,6 @@ export default {
     // i dont known why but it dont work in server side render
     let items = [];
     await firebase
-      .app()
       .firestore()
       .collection("kanji")
       .where("hasRequest", "==", true)
