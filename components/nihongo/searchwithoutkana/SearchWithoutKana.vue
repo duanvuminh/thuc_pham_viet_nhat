@@ -48,6 +48,7 @@ export default {
       this.$emit("active", !this.active);
     },
     handwriting(value) {
+      this.text=this.text?this.text:"";
       this.text += value;
       this.sheet = false;
     },

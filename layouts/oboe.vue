@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     document.addEventListener("mouseup", this.autodetect);
-    document.addEventListener("touchmove", this.autodetect);
+    document.addEventListener("touchend", this.autodetect);
   },
   methods: {
     autodetect() {
