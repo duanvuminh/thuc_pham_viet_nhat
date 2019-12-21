@@ -2,43 +2,69 @@
   <v-row justify="center">
     <Search :text="searchkey" />
     <v-col cols="12">
-      <v-row class="d-flex flex-nowrap">
-        <v-col class="flex-grow-0 flex-shrink-1">
-          <h1 class="display-4 nihongo">{{$route.params.id}}</h1>
-        </v-col>
+      <v-row>
+        <v-col cols="12">
+          <v-tabs
+            v-model="tab"
+            background-color="deep-purple accent-4"
+            class="elevation-0"
+            dark
+            show-arrows
+          >
+            <v-tabs-slider></v-tabs-slider>
 
-        <v-col class="flex-grow-1">
-          <v-textarea
-            :outlined="!readonly"
-            :solo="readonly"
-            :flat="readonly"
-            label="Thêm cách nhớ của bạn"
-            auto-grow
-            v-model="commentvi"
-            rows="1"
-            :loading="loading"
-            :readonly="readonly"
-            :placeholder="placeholder"
-            @focus="show = true"
-            hide-details
-          />
-          <v-row v-if="show1">
-            <v-spacer />
-            <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-            <v-btn class="ma-2" color="success" @click="saveandshare" small text>Lưu & chia sẻ</v-btn>
-            <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
-          </v-row>
-          <HtmlParser
-            v-show="show1"
-            class="elevation-1 pa-2 mb-3"
-            v-if="commentvi!=''"
-            :content="$md.render(commentvi)"
-          ></HtmlParser>
+            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
+
+            <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
+              <v-card flat tile>
+                <v-card-text class="pa-2">
+                  <template v-if="index==0">
+                    <Strockes :kanji="$route.params.id" />
+                    <v-textarea
+                      :outlined="!readonly"
+                      :solo="readonly"
+                      :flat="readonly"
+                      label="Thêm cách nhớ của bạn"
+                      auto-grow
+                      v-model="commentvi"
+                      rows="1"
+                      :loading="loading"
+                      :readonly="readonly"
+                      :placeholder="placeholder"
+                      @focus="show = true"
+                      hide-details
+                    />
+                    <v-row v-if="show1">
+                      <v-spacer />
+                      <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+                      <v-btn
+                        class="ma-2"
+                        color="success"
+                        @click="saveandshare"
+                        small
+                        text
+                      >Lưu&chia sẻ</v-btn>
+                      <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
+                    </v-row>
+                    <HtmlParser
+                      v-show="show1"
+                      class="elevation-1 pa-2 mb-3"
+                      v-if="commentvi!=''"
+                      :content="$md.render(commentvi)"
+                    ></HtmlParser>
+                    <v-row>
+                      <v-col cols="12" v-for="(oboe,i) in items" :key="i">
+                        <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <div v-else v-html="$md.render(item.text)"></div>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
         </v-col>
       </v-row>
-    </v-col>
-    <v-col cols="12" v-for="(item,i) in items" :key="i">
-      <Ocard :item="item" :searchkey="searchkey" :email="email"></Ocard>
     </v-col>
   </v-row>
 </template>
@@ -46,14 +72,13 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import HtmlParser from "@/components/HtmlParser";
-
+import Strockes from "@/components/Strockes";
 
 import Ocard from "@/components/Oboecard";
 import Search from "@/components/nihongo/Search";
 
 export default {
   async asyncData({ params, store, $axios }) {
-    console.log(params);
     let email = store.state.user.email ? store.state.user.email : "undefined";
     let items = await $axios
       .$get("/api/get_post_by_id", {
@@ -73,7 +98,8 @@ export default {
   components: {
     Ocard,
     Search,
-    HtmlParser
+    HtmlParser,
+    Strockes
   },
   computed: {
     readonly() {
@@ -104,6 +130,8 @@ export default {
       loading1: false,
       show: false,
       searchkey: "",
+      tab: null,
+      tabs: [],
       valid: true
     };
   },
@@ -135,17 +163,131 @@ export default {
       this.loading = false;
     }
   },
-  async mounted() {
-    let item = await firebase
+  mounted() {
+    firebase
       .firestore()
       .collection("kanji")
       .doc(this.searchkey)
       .collection("oboe")
       .doc(this.email)
-      .get();
-    if (item.exists) {
-      this.commentvi = item.data().vi;
-    }
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          this.commentvi = doc.data().vi;
+        }
+      });
+    // init tab
+    // hiển thị nghĩa
+    // hiển thị ví dụ
+    // hiển thị ngữ pháp
+    this.tabs = [];
+    this.tabs.push({
+      text: "",
+      label: "Oboe"
+    });
+    // nghĩa
+    this.$axios
+      .$post("https://mazii.net/api/search", {
+        dict: "javi",
+        type: "word",
+        query: this.searchkey,
+        limit: 20,
+        page: 1
+      })
+      .then(response => {
+        if (response.found) {
+          let fireObj = {};
+          fireObj.mean = response.data[0];
+
+          let str = "";
+          response.data[0].means.map(x => {
+            str = `${str}
+* ${x.mean}(${x.kind ? x.kind : "-"})            
+            `;
+          });
+          this.tabs.push({
+            data: response.data[0],
+            text: `## ${response.data[0].word}
+### ${response.data[0].phonetic}  
+${str}         
+            `,
+            label: "Nghĩa"
+          });
+          //kanji
+          this.$axios
+            .$post("https://mazii.net/api/search", {
+              dict: "javi",
+              type: "kanji",
+              query: this.searchkey,
+              page: 1
+            })
+            .then(response1 => {
+              fireObj.kanji = response1.results;
+              let strG = "";
+              response1.results.map(x => {
+                let str = "";
+                x.compDetail.map(x => {
+                  str = `${str} ${x.w}: ${x.h}`;
+                });
+                strG = `${strG}
+## ${x.kanji}
+KunYomi: ${x.kun}        
+OnYomi: ${x.on} 
+Bộ: ${x.mean}  
+Bộ con: ${str}  
+${x.detail.replace(/##/g, "")}        
+            `;
+              });
+
+              this.tabs.push({
+                data: response1.results[0],
+                text: strG,
+                label: "Kanji"
+              });
+              // ví dụ
+              this.$axios
+                .$post("https://mazii.net/api/search", {
+                  dict: "javi",
+                  type: "example",
+                  query: this.searchkey,
+                  page: 1
+                })
+                .then(response2 => {
+                  fireObj.example = response2.results;
+                  let str = "";
+                  response2.results.map(x => {
+                    str = `${str}
+
+* ${x.content}
+${x.mean}
+            `;
+                  });
+                  this.tabs.push({
+                    data: response2.results,
+                    text: `
+${str}         
+            `,
+                    label: "Mẫu"
+                  });
+                  //insert mazzi to firestore
+                  firebase
+                    .firestore()
+                    .collection("opendic")
+                    .doc(response.data[0].word)
+                    .get()
+                    .then(doc => {
+                      if (!doc.exists) {
+                        firebase
+                          .firestore()
+                          .collection("opendic")
+                          .doc(response.data[0].word)
+                          .set(fireObj);
+                      }
+                    });
+                });
+            });
+        }
+      });
   },
   watch: {}
 };

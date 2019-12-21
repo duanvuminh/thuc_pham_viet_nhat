@@ -6,10 +6,10 @@
       prepend-inner-icon="mdi-magnify"
       clearable
       @keydown="search"
-      @blur="search1"
       v-model="textModel"
       :loading="loading"
       :disabled="disabled"
+      hide-details
     >
       <template slot="append">
         <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn>
@@ -49,28 +49,8 @@ export default {
       this.$emit("active", !this.active);
     },
     handwriting(value) {
-      this.textModel = value;
+      this.textModel += value;
       this.sheet = false;
-      this.$nextTick(() => {
-        if (!this.textModel) return;
-        this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
-        if (
-          this.textModel &&
-          this.$route.params.id != this.textModel
-        ) {
-          this.loading = true;
-          this.$router.push(`/search/${this.textModel}`);
-        }
-      });
-    },
-    search1(e) {
-      this.$emit("blur", e);
-      if (!this.textModel) return;
-      this.textModel = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (this.textModel && this.$route.params.id != this.textModel) {
-        this.loading = true;
-        this.$router.push(`/search/${this.textModel}`);
-      }
     },
     search(e) {
       this.$emit("keydown", e);

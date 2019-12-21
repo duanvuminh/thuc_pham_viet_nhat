@@ -5,12 +5,13 @@
     </v-card-text>
 
     <v-card-actions class="pt-0">
-      <v-btn v-if="item.id=='duanvuminh@gmail.com'" text color="deep-purple accent-4">
+      <v-btn v-if="item.id=='duanvuminh@gmail.com'" text color="deep-purple accent-4" small>
         <v-icon left>mdi-star-outline</v-icon>Offical
       </v-btn>
-      <v-btn v-else color="orange" text dark>{{item.id}}</v-btn>
+      <v-btn v-else color="orange" text dark small>{{item.id}}</v-btn>
       <v-spacer></v-spacer>
       <!-- color="blue lighten-2" -->
+      <client-only>
       <social-sharing
         :url="`https://oboe.lithong.com${$route.path}`"
         :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
@@ -20,6 +21,7 @@
           <network network="facebook">share</network>
         </div>
       </social-sharing>
+      </client-only>
     </v-card-actions>
   </v-card>
 </template>

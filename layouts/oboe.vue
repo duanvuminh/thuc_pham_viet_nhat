@@ -1,5 +1,5 @@
 <template>
-  <v-app light v-show="connectedFirebase" ontouchstart="">
+  <v-app light v-show="connectedFirebase" >
     <v-app-bar flat app dense hide-on-scroll prominent dark>
       <v-container>
         <v-row>
@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     document.addEventListener("mouseup", this.autodetect);
-    document.addEventListener("touchend", this.autodetect);
+    document.addEventListener("touchmove", this.autodetect);
   },
   methods: {
     autodetect() {
