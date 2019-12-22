@@ -226,9 +226,9 @@ ${str}
               let strG = "";
               response1.results.map(x => {
                 let str = "";
-                x.compDetail.map(x => {
+                x.compDetail?x.compDetail.map(x => {
                   str = `${str} ${x.w}: ${x.h}`;
-                });
+                }):"";
                 strG = `${strG}
 ## ${x.kanji}
 KunYomi: ${x.kun}        
@@ -273,14 +273,14 @@ ${str}
                   firebase
                     .firestore()
                     .collection("opendic")
-                    .doc(response.data[0].word)
+                    .doc(this.searchkey)
                     .get()
                     .then(doc => {
                       if (!doc.exists) {
                         firebase
                           .firestore()
                           .collection("opendic")
-                          .doc(response.data[0].word)
+                          .doc(this.searchkey)
                           .set(fireObj);
                       }
                     });

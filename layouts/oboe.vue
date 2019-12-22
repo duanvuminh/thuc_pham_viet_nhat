@@ -1,6 +1,6 @@
 <template>
   <v-app light v-show="connectedFirebase" >
-    <v-app-bar flat app dense hide-on-scroll prominent dark>
+    <v-app-bar flat app dense prominent dark>
       <v-container>
         <v-row>
           <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>

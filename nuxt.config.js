@@ -102,6 +102,20 @@ export default {
           }
         },
         {
+          urlPattern: /https:\/\/mazii.net\/api\/.*/,
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'mazzi-cache',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 300
+            },
+            cacheableResponse: {
+              statuses: [0, 200]
+            }
+          }
+        },
+        {
           urlPattern: 'https://fonts.googleapis.com/.*',
           handler: 'cacheFirst',
           method: 'GET',
