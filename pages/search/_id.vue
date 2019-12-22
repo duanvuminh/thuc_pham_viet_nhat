@@ -296,6 +296,7 @@ ${str}
               page: 1
             })
             .then(response1 => {
+              let fireObj = {};
               if(!response1.results) return;
               fireObj.kanji = response1.results;
               let strG = "";

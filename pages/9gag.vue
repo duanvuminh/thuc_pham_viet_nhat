@@ -1,6 +1,6 @@
 <template>
-  <v-row align="center" justify="center">
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+    <v-row align="center" justify="center">
       <v-card
         v-for="(post,index) in posts"
         style="margin-bottom: 2rem;"
@@ -14,8 +14,8 @@
         <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
         <v-img class="orange--text align-end" :src="post.images.image700.url" contain></v-img>
       </v-card>
-    </div>
-  </v-row>
+    </v-row>
+  </div>
 </template>
 <script>
 import AOS from "aos";
