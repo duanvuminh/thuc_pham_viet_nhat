@@ -232,7 +232,7 @@ ${str}
                 strG = `${strG}
 ## ${x.kanji?x.kanji:""}
 KunYomi: ${x.kun?x.kun:""}        
-OnYomi: ${x.on} 
+OnYomi: ${x.on?x.on:""} 
 Bộ: ${x.mean}  
 Bộ con: ${str}  
 ${x.detail.replace(/##/g, "")}        
