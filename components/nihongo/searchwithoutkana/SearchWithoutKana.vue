@@ -57,7 +57,7 @@ export default {
       this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {
         this.loading = true;
-        this.$router.push(`/search/${this.text}`);
+        this.$router.push(`/search/${this.text.toLowerCase()}`);
       }
     }
   },

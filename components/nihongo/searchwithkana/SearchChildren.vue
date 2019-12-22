@@ -63,7 +63,7 @@ export default {
         this.$route.params.id != this.textModel
       ) {
         this.loading = true;
-        this.$router.push(`/search/${this.textModel}`);
+        this.$router.push(`/search/${this.textModel.toLowerCase()}`);
       }
     }
   },

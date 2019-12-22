@@ -273,14 +273,14 @@ ${str}
                   firebase
                     .firestore()
                     .collection("opendic")
-                    .doc(this.searchkey)
+                    .doc(this.searchkey.toLowerCase())
                     .get()
                     .then(doc => {
                       if (!doc.exists) {
                         firebase
                           .firestore()
                           .collection("opendic")
-                          .doc(this.searchkey)
+                          .doc(this.searchkey.toLowerCase())
                           .set(fireObj);
                       }
                     });
@@ -324,14 +324,14 @@ ${x.detail.replace(/##/g, "")}
                   firebase
                     .firestore()
                     .collection("opendic")
-                    .doc(this.searchkey)
+                    .doc(this.searchkey.toLowerCase())
                     .get()
                     .then(doc => {
                       if (!doc.exists) {
                         firebase
                           .firestore()
                           .collection("opendic")
-                          .doc(this.searchkey)
+                          .doc(this.searchkey.toLowerCase())
                           .set(fireObj);
                       }
                     });
