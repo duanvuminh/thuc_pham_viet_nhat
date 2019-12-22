@@ -230,8 +230,8 @@ ${str}
                   str = `${str} ${x.w}: ${x.h}`;
                 }):"";
                 strG = `${strG}
-## ${x.kanji}
-KunYomi: ${x.kun}        
+## ${x.kanji?x.kanji:""}
+KunYomi: ${x.kun?x.kun:""}        
 OnYomi: ${x.on} 
 Bộ: ${x.mean}  
 Bộ con: ${str}  
