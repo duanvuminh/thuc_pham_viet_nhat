@@ -286,6 +286,55 @@ ${str}
                     });
                 });
             });
+        }else{
+          //kanji
+          this.$axios
+            .$post("https://mazii.net/api/search", {
+              dict: "javi",
+              type: "kanji",
+              query: this.searchkey,
+              page: 1
+            })
+            .then(response1 => {
+              if(!response1.results) return;
+              fireObj.kanji = response1.results;
+              let strG = "";
+              response1.results.map(x => {
+                let str = "";
+                x.compDetail?x.compDetail.map(x => {
+                  str = `${str} ${x.w}: ${x.h}`;
+                }):"";
+                strG = `${strG}
+## ${x.kanji}
+KunYomi: ${x.kun}        
+OnYomi: ${x.on} 
+Bộ: ${x.mean}  
+Bộ con: ${str}  
+${x.detail.replace(/##/g, "")}        
+            `;
+              });
+
+              this.tabs.push({
+                data: response1.results[0],
+                text: strG,
+                label: "Kanji"
+              });
+                                //insert mazzi to firestore
+                  firebase
+                    .firestore()
+                    .collection("opendic")
+                    .doc(this.searchkey)
+                    .get()
+                    .then(doc => {
+                      if (!doc.exists) {
+                        firebase
+                          .firestore()
+                          .collection("opendic")
+                          .doc(this.searchkey)
+                          .set(fireObj);
+                      }
+                    });
+            });
         }
       });
   },
