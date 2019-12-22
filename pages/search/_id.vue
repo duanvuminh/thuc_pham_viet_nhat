@@ -307,8 +307,8 @@ ${str}
                 }):"";
                 strG = `${strG}
 ## ${x.kanji}
-KunYomi: ${x.kun}        
-OnYomi: ${x.on} 
+KunYomi: ${x.kun?x.kun:""}        
+OnYomi: ${x.on?x.on:""} 
 Bộ: ${x.mean}  
 Bộ con: ${str}  
 ${x.detail.replace(/##/g, "")}        

@@ -1,5 +1,5 @@
 <template>
-  <v-app light v-show="connectedFirebase" >
+  <v-app light v-show="connectedFirebase" ontouchstart="">
     <v-app-bar flat app dense prominent dark>
       <v-container>
         <v-row>
