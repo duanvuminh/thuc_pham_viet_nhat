@@ -197,22 +197,6 @@ export default {
       .then(response => {
         if (response.found) {
           let fireObj = {};
-          fireObj.mean = response.data[0];
-
-          let str = "";
-          response.data[0].means.map(x => {
-            str = `${str}
-* ${x.mean}(${x.kind ? x.kind : "-"})            
-            `;
-          });
-          this.tabs.push({
-            data: response.data[0],
-            text: `## ${response.data[0].word}
-### ${response.data[0].phonetic}  
-${str}         
-            `,
-            label: "Nghĩa"
-          });
           //kanji
           this.$axios
             .$post("https://mazii.net/api/search", {
@@ -222,17 +206,36 @@ ${str}
               page: 1
             })
             .then(response1 => {
+              fireObj.mean = response.data[0];
+
+              let strmean = "";
+              response.data[0].means.map(x => {
+                strmean = `${strmean}
+* ${x.mean}(${x.kind ? x.kind : "-"})            
+            `;
+              });
+              this.tabs.push({
+                data: response.data[0],
+                text: `## ${response.data[0].word} 
+### ${response.data[0].phonetic} [${response1.results.reverse().map(x=>x.mean.split(",")[0]).join(' ')}] 
+${strmean}         
+            `,
+                label: "Nghĩa"
+              });
+
               fireObj.kanji = response1.results;
               let strG = "";
               response1.results.map(x => {
                 let str = "";
-                x.compDetail?x.compDetail.map(x => {
-                  str = `${str} ${x.w}: ${x.h}`;
-                }):"";
+                x.compDetail
+                  ? x.compDetail.map(x => {
+                      str = `${str} ${x.w}: ${x.h}`;
+                    })
+                  : "";
                 strG = `${strG}
-## ${x.kanji?x.kanji:""}
-KunYomi: ${x.kun?x.kun:""}        
-OnYomi: ${x.on?x.on:""} 
+## ${x.kanji ? x.kanji : ""}
+KunYomi: ${x.kun ? x.kun : ""}        
+OnYomi: ${x.on ? x.on : ""} 
 Bộ: ${x.mean}  
 Bộ con: ${str}  
 ${x.detail.replace(/##/g, "")}        
@@ -286,7 +289,7 @@ ${str}
                     });
                 });
             });
-        }else{
+        } else {
           //kanji
           this.$axios
             .$post("https://mazii.net/api/search", {
@@ -297,18 +300,20 @@ ${str}
             })
             .then(response1 => {
               let fireObj = {};
-              if(!response1.results) return;
+              if (!response1.results) return;
               fireObj.kanji = response1.results;
               let strG = "";
               response1.results.map(x => {
                 let str = "";
-                x.compDetail?x.compDetail.map(x => {
-                  str = `${str} ${x.w}: ${x.h}`;
-                }):"";
+                x.compDetail
+                  ? x.compDetail.map(x => {
+                      str = `${str} ${x.w}: ${x.h}`;
+                    })
+                  : "";
                 strG = `${strG}
 ## ${x.kanji}
-KunYomi: ${x.kun?x.kun:""}        
-OnYomi: ${x.on?x.on:""} 
+KunYomi: ${x.kun ? x.kun : ""}        
+OnYomi: ${x.on ? x.on : ""} 
 Bộ: ${x.mean}  
 Bộ con: ${str}  
 ${x.detail.replace(/##/g, "")}        
@@ -320,21 +325,22 @@ ${x.detail.replace(/##/g, "")}
                 text: strG,
                 label: "Kanji"
               });
-                                //insert mazzi to firestore
-                  firebase
-                    .firestore()
-                    .collection("opendic")
-                    .doc(this.searchkey.toLowerCase())
-                    .get()
-                    .then(doc => {
-                      if (!doc.exists) {
-                        firebase
-                          .firestore()
-                          .collection("opendic")
-                          .doc(this.searchkey.toLowerCase())
-                          .set(fireObj);
-                      }
-                    });
+              //insert mazzi to firestore
+              if (this.searchkey.toLowerCase().length() > 1) return;
+              firebase
+                .firestore()
+                .collection("opendic")
+                .doc(this.searchkey.toLowerCase())
+                .get()
+                .then(doc => {
+                  if (!doc.exists) {
+                    firebase
+                      .firestore()
+                      .collection("opendic")
+                      .doc(this.searchkey.toLowerCase())
+                      .set(fireObj);
+                  }
+                });
             });
         }
       });

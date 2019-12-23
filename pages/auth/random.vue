@@ -15,7 +15,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-btn text color="orange" @click="getNew" class="ma-3">Tạo mới</v-btn>
+      <v-btn icon @click="getNew" color="orange" class="ma-3">
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
     </v-row>
     <v-row class="d-flex flex-wrap align-center justify-space-around">
       <v-card v-for="(random,i) in randoms" :key="i" class="ma-3">
@@ -32,7 +34,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header>show</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <HtmlParser :content="$md.render(random.vi)"/>
+              <HtmlParser :content="$md.render(random.vi)" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>

@@ -2,11 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import Cookie from "js-cookie";
-import Vue from 'vue'
-var SocialSharing = require('vue-social-sharing');
-Vue.use(SocialSharing);
-var infiniteScroll = require('vue-infinite-scroll');
-Vue.use(infiniteScroll);
 var config = {
   apiKey: "AIzaSyCniellt7ZkxGUk6r3ISo476bkwc0ya3OA",
   authDomain: "gaonhat-1b0c8.firebaseapp.com",
@@ -21,6 +16,7 @@ var config = {
 }
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
+  console.log("duan")
 }
 firebase
   .firestore()

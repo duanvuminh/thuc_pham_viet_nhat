@@ -33,7 +33,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [{ src: '~/plugins/fireinit.js', mode: 'client' }],
+  plugins: [{ src: '~/plugins/fireinit.js' },{ src: '~/plugins/clientRender.js', mode: 'client' }],
   /*
   ** Nuxt.js dev-modules
   */
@@ -146,7 +146,7 @@ export default {
   */
   axios: {
     baseURL: 'https://oboe.lithong.com/',
-    // baseURL: 'http://localhost:3000/',
+    //baseURL: 'http://localhost:3000/',
     proxyHeaders: false,
     credentials: false
   },

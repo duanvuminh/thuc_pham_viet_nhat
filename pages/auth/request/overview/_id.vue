@@ -16,9 +16,14 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
+import HtmlParser from "@/components/HtmlParser";
+
 export default {
   async asyncData({ params, store }) {
     return { params };
+  },
+  components: {
+    HtmlParser
   },
   data() {
     return {

@@ -129,6 +129,11 @@ export default {
       valid: true
     };
   },
+  head() {
+    return {
+      titleTemplate: `%s - login`
+    };
+  },
   methods: {
     toggleForm() {
       this.isLoggingIn = !this.isLoggingIn;

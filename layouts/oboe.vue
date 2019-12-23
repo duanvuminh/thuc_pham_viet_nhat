@@ -5,6 +5,7 @@
         <v-row>
           <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
           <v-btn icon to="/" > <v-icon>mdi-home</v-icon></v-btn>
+          <v-btn icon to="/manga" class="align-self-center"><v-icon>mdi-book-open-page-variant</v-icon></v-btn>
           <v-btn icon to="/9gag"> <v-icon>mdi-heart</v-icon></v-btn>
           <v-spacer />
           <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
@@ -98,24 +99,29 @@ export default {
       if (this.user.email == "duanvuminh@gmail.com") {
         return [
           {
-            title: "Danh sách của tôi",
-            icon: "dashboard",
-            link: "/auth/mypage"
+            title: "Kanji ngẫu nhiên",
+            icon: "book",
+            link: "/auth/random"
           },
           //{ title: "About", icon: "question_answer" }
           {
             title: "Request",
-            icon: "mdi-bell-check-outline ",
+            icon: "mdi-bell-check-outline",
             link: "/auth/request/"
+          },
+          {
+            title: "Manga",
+            icon: "mdi-chat",
+            link: "/auth/manga/"
           },
           { title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {
         return [
           {
-            title: "Danh sách của tôi",
-            icon: "dashboard",
-            link: "/auth/mypage"
+            title: "Kanji ngẫu nhiên",
+            icon: "book",
+            link: "/auth/random"
           },
           //{ title: "About", icon: "question_answer" }
           { title: "Logout", icon: "mdi-logout", link: "/logout" }
