@@ -109,6 +109,7 @@ export default {
               ).then(r=>this.loading=false);
           });
         } else {
+          this.loading = true
           firebase
             .firestore()
             .collection("manga")
