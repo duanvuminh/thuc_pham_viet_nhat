@@ -217,7 +217,7 @@ export default {
               this.tabs.push({
                 data: response.data[0],
                 text: `## ${response.data[0].word} 
-### ${response.data[0].phonetic} [${response1.results.reverse().map(x=>x.mean.split(",")[0]).join(' ')}] 
+### ${response.data[0].phonetic} [${response1.results[0].mean.split(",")[0]!= this.searchkey[0]?response1.results.reverse().map(x=>x.mean.split(",")[0]).join(' '):response1.results().map(x=>x.mean.split(",")[0]).join(' ')}] 
 ${strmean}         
             `,
                 label: "Nghĩa"
@@ -326,7 +326,7 @@ ${x.detail.replace(/##/g, "")}
                 label: "Kanji"
               });
               //insert mazzi to firestore
-              if (this.searchkey.toLowerCase().length() > 1) return;
+              if (this.searchkey.toLowerCase().length > 1) return;
               firebase
                 .firestore()
                 .collection("opendic")
