@@ -14,7 +14,8 @@
             <v-tabs-slider></v-tabs-slider>
 
             <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
-
+          </v-tabs>
+          <v-tabs-items v-model="tab">
             <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index" touchless>
               <v-card flat tile>
                 <v-card-text class="pa-2">
@@ -62,7 +63,7 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
-          </v-tabs>
+          </v-tabs-items>
         </v-col>
       </v-row>
     </v-col>
@@ -217,7 +218,17 @@ export default {
               this.tabs.push({
                 data: response.data[0],
                 text: `## ${response.data[0].word} 
-### ${response.data[0].phonetic} [${response1.results[0].mean.split(",")[0]!= this.searchkey[0]?response1.results.reverse().map(x=>x.mean.split(",")[0]).join(' '):response1.results().map(x=>x.mean.split(",")[0]).join(' ')}] 
+### ${response.data[0].phonetic} [${
+                  response1.results[0].mean.split(",")[0] != this.searchkey[0]
+                    ? response1.results
+                        .reverse()
+                        .map(x => x.mean.split(",")[0])
+                        .join(" ")
+                    : response1
+                        .results()
+                        .map(x => x.mean.split(",")[0])
+                        .join(" ")
+                }] 
 ${strmean}         
             `,
                 label: "Nghĩa"
