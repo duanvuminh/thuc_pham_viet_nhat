@@ -60,7 +60,6 @@ export default {
   layout: "oboe",
   methods: {
     loadMore() {
-      if (!this.last) return;
       this.busy = true;
       // this.$axios.get("").then(response => {
       //   let data = response.data.data.posts;
