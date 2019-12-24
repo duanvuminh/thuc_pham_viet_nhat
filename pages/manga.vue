@@ -36,7 +36,7 @@ export default {
     this.next = firebase
       .firestore()
       .collection("manga")
-      .orderBy("edited")
+      .orderBy("edited", 'desc')
       .limit(this.limit);
     this.loadMore();
   },
@@ -77,7 +77,7 @@ export default {
       this.next.get().then(documentSnapshots => {
         // Get the last visible document
         documentSnapshots.forEach(doc => {
-          this.posts.unshift({ id: doc.id, ...doc.data() });
+          this.posts.push({ id: doc.id, ...doc.data() });
         });
         this.busy = false;
         this.last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
@@ -88,7 +88,7 @@ export default {
         this.next = firebase
           .firestore()
           .collection("manga")
-          .orderBy("edited")
+          .orderBy("edited", 'desc')
           .startAfter(this.last)
           .limit(this.limit);
       });
