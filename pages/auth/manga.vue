@@ -44,7 +44,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="taomanga">Lưu</v-btn>
+        <v-btn color="blue darken-1" text @click="taomanga" :loading="loading"
+      :disabled="loading">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -69,7 +70,8 @@ export default {
       files: [],
       //   show: false,
       //   searchkey: "",
-      valid: true
+      valid: true,
+      loading:false
     };
   },
   layout: "oboe",
@@ -79,6 +81,7 @@ export default {
         return;
       } else {
         if (this.files.length > 0) {
+          this.loading = true
           Promise.all(
             // Array of "Promises"
             this.files.map(item => {
@@ -103,7 +106,7 @@ export default {
                   url: url[0]
                 },
                 { merge: true }
-              );
+              ).then(r=>this.loading=false);
           });
         } else {
           firebase
@@ -116,7 +119,7 @@ export default {
                 content: this.basecomment
               },
               { merge: true }
-            );
+            ).then(r=>this.loading=false);
         }
       }
     }
