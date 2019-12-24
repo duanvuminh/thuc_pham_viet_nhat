@@ -15,7 +15,7 @@
 
             <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
 
-            <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
+            <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index" touchless>
               <v-card flat tile>
                 <v-card-text class="pa-2">
                   <template v-if="index==0">
