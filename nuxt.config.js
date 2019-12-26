@@ -69,7 +69,7 @@ export default {
   },
   sitemap:
   {
-    hostname: 'https://oboe.lithong.com',
+    hostname: 'https://oboemasu.com/',
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
@@ -145,7 +145,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://oboe.lithong.com/',
+    baseURL: 'https://oboemasu.com/',
     //baseURL: 'http://localhost:3000/',
     proxyHeaders: false,
     credentials: false
