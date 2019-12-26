@@ -28,17 +28,39 @@ import { mapState } from "vuex";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 export default {
+  async asyncData({ params, store, $axios }) {
+    let posts=[]
+    let last={}
+    let next ={}
+    let limit=5
+    await firebase
+      .firestore()
+      .collection("manga")
+      .orderBy("edited", "desc")
+      .limit(5)
+      .get()
+      .then(documentSnapshots => {
+        // Get the last visible document
+        documentSnapshots.forEach(doc => {
+          posts.push({ id: doc.id, ...doc.data() });
+        });
+        last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+        // Construct a new query starting at this document,
+        // get the next 25 cities.
+        next = firebase
+          .firestore()
+          .collection("manga")
+          .orderBy("edited", "desc")
+          .startAfter(last)
+          .limit(limit);
+      });
+      return {posts,last,next,limit}
+  },
   beforeCreate() {},
   components: {
     HtmlParser
   },
   created() {
-    this.next = firebase
-      .firestore()
-      .collection("manga")
-      .orderBy("edited", 'desc')
-      .limit(this.limit);
-    this.loadMore();
   },
   computed: {
     ...mapState(["user", "connectedFirebase"])
@@ -87,7 +109,7 @@ export default {
         this.next = firebase
           .firestore()
           .collection("manga")
-          .orderBy("edited", 'desc')
+          .orderBy("edited", "desc")
           .startAfter(this.last)
           .limit(this.limit);
       });

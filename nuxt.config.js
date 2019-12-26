@@ -51,6 +51,7 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
+    '@nuxtjs/proxy',
     ['@nuxtjs/component-cache', {
       max: 10000,
       maxAge: 1000 * 60 * 60
@@ -78,6 +79,19 @@ export default {
     },
     exclude: ['/auth/', '/auth/**']
   },
+  proxy: [
+    // Proxies /foo to http://example.com/foo
+    'https://m.9gag.com/v1/group-posts/group/japan/type/hot',
+
+    // Proxies /api/books/*/**.json to http://example.com:8000
+    'https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot',
+
+    // You can also pass more options
+    'https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot',
+    'https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot',
+    'https://mazii.net/api/search',
+
+  ],
   pwa: {
     manifest: {
       name: 'Oboe',
@@ -88,7 +102,7 @@ export default {
     workbox: {
       runtimeCaching: [
         {
-          urlPattern: /https:\/\/oboe.lithong.com\/api\/.*/,
+          urlPattern: /https:\/\/oboemasu.com\/api\/.*/,
           handler: 'networkFirst',
           options: {
             cacheName: 'oboe-cache',
@@ -102,10 +116,10 @@ export default {
           }
         },
         {
-          urlPattern: /https:\/\/mazii.net\/api\/.*/,
-          handler: 'cacheFirst',
+          urlPattern: /https:\/\/oboemasu.com\/v1\/.*/,
+          handler: 'networkFirst',
           options: {
-            cacheName: 'mazzi-cache',
+            cacheName: '9gag-cache',
             expiration: {
               maxEntries: 10,
               maxAgeSeconds: 300
@@ -146,9 +160,8 @@ export default {
   */
   axios: {
     baseURL: 'https://oboemasu.com/',
-    //baseURL: 'http://localhost:3000/',
-    proxyHeaders: false,
-    credentials: false
+    // baseURL: 'http://localhost:3000/',
+    proxy: true
   },
   /*
   ** vuetify module configuration

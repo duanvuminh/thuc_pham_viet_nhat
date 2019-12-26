@@ -16,11 +16,10 @@ var config = {
 }
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
-  console.log("duan")
-}
-firebase
+  firebase
   .firestore()
   .enablePersistence({ synchronizeTabs: true })
+}
 export default ({ store }) => {
   firebase.auth().onAuthStateChanged((user) => {
     // console.log("firebase work")

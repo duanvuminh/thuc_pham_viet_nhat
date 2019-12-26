@@ -21,6 +21,22 @@
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 export default {
+  async asyncData({ params, store, $axios }) {
+     let posts={};
+     let next="";
+     let url = [
+      "/v1/group-posts/group/japan/type/hot?",
+      "/v1/group-posts/group/animewallpaper/type/hot?",
+      "/v1/group-posts/group/anime-manga/type/hot?",
+      "/v1/group-posts/group/animewaifu/type/hot?"
+    ][Math.floor(Math.random() * 4)];
+     await $axios.get(`${url}${next}`).then(response => {
+      let data = response.data.data.posts;
+      posts = posts.concat(data);
+      next = response.data.data.nextCursor;
+    });
+    return{posts,next,url}
+  },
   layout: "oboe",
   beforeCreate() {},
   data() {
@@ -69,13 +85,6 @@ export default {
     // }
   },
   created() {
-    this.url = [
-      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/japan/type/hot?",
-      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
-      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
-      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?"
-    ][Math.floor(Math.random() * 4)];
-    this.loadMore();
   },
   mounted() {
     AOS.init();
