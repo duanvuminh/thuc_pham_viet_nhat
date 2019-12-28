@@ -29,10 +29,10 @@ import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 export default {
   async asyncData({ params, store, $axios }) {
-    let posts=[]
-    let last={}
-    let next ={}
-    let limit=5
+    let posts = [];
+    let lastId = "";
+    let limit = 5;
+
     await firebase
       .firestore()
       .collection("manga")
@@ -41,26 +41,39 @@ export default {
       .get()
       .then(documentSnapshots => {
         // Get the last visible document
-        documentSnapshots.forEach(doc => {
-          posts.push({ id: doc.id, ...doc.data() });
-        });
-        last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+        // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
         // Construct a new query starting at this document,
         // get the next 25 cities.
-        next = firebase
-          .firestore()
-          .collection("manga")
-          .orderBy("edited", "desc")
-          .startAfter(last)
-          .limit(limit);
+        documentSnapshots.forEach(doc => {
+          posts.push({
+            id: doc.id,
+            url: doc.data().url,
+            content: doc.data().content
+          });
+          lastId = doc.id;
+        });
       });
-      return {posts,last,next,limit}
+    return { posts, lastId, limit };
   },
   beforeCreate() {},
   components: {
     HtmlParser
   },
   created() {
+    firebase
+      .firestore()
+      .collection("manga")
+      .doc(this.lastId)
+      .get()
+      .then(doc => {
+        this.last = doc;
+        this.next = firebase
+          .firestore()
+          .collection("manga")
+          .orderBy("edited", "desc")
+          .startAfter(this.last)
+          .limit(this.limit);
+      });
   },
   computed: {
     ...mapState(["user", "connectedFirebase"])

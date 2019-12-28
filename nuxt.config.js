@@ -80,15 +80,6 @@ export default {
     exclude: ['/auth/', '/auth/**']
   },
   proxy: [
-    // Proxies /foo to http://example.com/foo
-    'https://m.9gag.com/v1/group-posts/group/japan/type/hot',
-
-    // Proxies /api/books/*/**.json to http://example.com:8000
-    'https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot',
-
-    // You can also pass more options
-    'https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot',
-    'https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot',
     'https://mazii.net/api/search',
 
   ],
@@ -159,9 +150,11 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://oboemasu.com/',
+    // baseURL: 'https://oboemasu.com/',
     // baseURL: 'http://localhost:3000/',
-    proxy: true
+    proxy: true,
+    proxyHeaders: false,
+    credentials: false
   },
   /*
   ** vuetify module configuration

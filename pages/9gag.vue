@@ -12,7 +12,7 @@
         elevation="0"
       >
         <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
-        <v-img class="orange--text align-end" :src="post.images.image700.url" contain></v-img>
+        <v-img class="orange--text align-end" :src="post.url" contain></v-img>
       </v-card>
     </v-row>
   </div>
@@ -22,20 +22,23 @@ import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 export default {
   async asyncData({ params, store, $axios }) {
-     let posts={};
-     let next="";
-     let url = [
-      "/v1/group-posts/group/japan/type/hot?",
-      "/v1/group-posts/group/animewallpaper/type/hot?",
-      "/v1/group-posts/group/anime-manga/type/hot?",
-      "/v1/group-posts/group/animewaifu/type/hot?"
+    let posts = [];
+    let next = "";
+    let url = [
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/japan/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
+      "https://cors-anywhere.herokuapp.com/https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?"
     ][Math.floor(Math.random() * 4)];
-     await $axios.get(`${url}${next}`).then(response => {
-      let data = response.data.data.posts;
-      posts = posts.concat(data);
-      next = response.data.data.nextCursor;
-    });
-    return{posts,next,url}
+    // await $axios.get(`${url}${next}`).then(response => {
+    //   let data = response.data.data.posts;
+    //   data = data.map(x => {
+    //     return { title: x.title, url: x.images.image700.url };
+    //   });
+    //   posts = posts.concat(data);
+    //   next = response.data.data.nextCursor;
+    // });
+    return { posts, next, url };
   },
   layout: "oboe",
   beforeCreate() {},
@@ -58,6 +61,9 @@ export default {
       this.busy = true;
       this.$axios.get(`${this.url}${this.next}`).then(response => {
         let data = response.data.data.posts;
+        data = data.map(x => {
+          return { title: x.title, url: x.images.image700.url };
+        });
         // data.map( x=>  {
         //      this.translate(x.title).then(
         //        r=> x.title_vi = r
@@ -84,8 +90,7 @@ export default {
     //     });
     // }
   },
-  created() {
-  },
+  created() {},
   mounted() {
     AOS.init();
   }
