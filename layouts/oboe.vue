@@ -1,16 +1,12 @@
 <template>
   <v-app light v-show="connectedFirebase" ontouchstart="">
-    <v-app-bar flat app dense prominent dark>
-      <v-container>
-        <v-row>
+    <v-app-bar flat app dark collapse-on-scroll>
           <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
           <v-btn icon to="/" > <v-icon>mdi-home</v-icon></v-btn>
-          <v-btn icon to="/manga" class="align-self-center"><v-icon>mdi-book-open-page-variant</v-icon></v-btn>
+          <v-btn icon to="/manga"><v-icon>mdi-book-open-page-variant</v-icon></v-btn>
           <v-btn icon to="/9gag"> <v-icon>mdi-heart</v-icon></v-btn>
           <v-spacer />
           <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
-        </v-row>
-      </v-container>
       <v-img
       slot="img"
       src="/mainichi.jpg"

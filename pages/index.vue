@@ -20,8 +20,6 @@ export default {
 ## Cách sử dụng
 * Nhập từ kanji mà bạn muốn xem. Ví dụ "四".
 Trên điện thoại các bạn thêm vào màn hình chính để dùng khi offline nhé
-* Cách sử dụng markdown để viết bài
-[markdown](https://lithong.com/howto)
 ## Các tài liệu học tiếng nhật từ web này
 * Các nét kanji cơ bản
 [Kanji Primitive Elements](/main)
@@ -32,6 +30,8 @@ Trên điện thoại các bạn thêm vào màn hình chính để dùng khi of
 [Online support](https://lovejapanworkspace.slack.com)
 * Hỗ trợ đánh tiếng nhật online
 [Gõ tiếng Nhật](https://typing.lithong.com/)
+* Cách sử dụng markdown để viết bài
+[markdown](https://lithong.com/howto)
       `
     };
   },
