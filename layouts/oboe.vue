@@ -1,6 +1,6 @@
 <template>
   <v-app light v-show="connectedFirebase" ontouchstart="">
-    <v-app-bar flat app dark collapse-on-scroll dense>
+    <v-app-bar flat app dark>
           <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
           <v-btn icon to="/" > <v-icon>mdi-home</v-icon></v-btn>
           <v-btn icon to="/manga"><v-icon>mdi-book-open-page-variant</v-icon></v-btn>
