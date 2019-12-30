@@ -6,6 +6,7 @@ export const state = () => ({
   japanesInput: false,
   connectedFirebase:false,
   loggedIn: false,
+  visionurl:"",
   user: {}
 })
 
@@ -18,6 +19,9 @@ export const mutations = {
   },
   setJapanesInput(state, value) {
     state.japanesInput = value;
+  },
+  setVision(state, value) {
+    state.visionurl = value;
   },
   setConnectedFirebase(state, value) {
     state.connectedFirebase = value;

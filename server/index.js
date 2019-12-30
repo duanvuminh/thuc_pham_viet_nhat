@@ -36,7 +36,7 @@ app.get("/api/get_random_primatives", async (req, res) => {
   let desserts = []
   await db
     .collection("kanjicore")
-    .where("random",">=",Math.floor(Math.random() * 250))
+    .where("random", ">=", Math.floor(Math.random() * 250))
     .limit(5)
     .get()
     .then(querySnapshot => {
@@ -68,6 +68,29 @@ app.get("/api/get_post_by_id", async (req, res) => {
       });
     });
   res.json(items);
+});
+
+app.get("/api/handwriting", async (req, res) => {
+  // Imports the Google Cloud client libraries
+  let params = req.query
+  const vision = require('@google-cloud/vision');
+
+  // Creates a client
+  const client = new vision.ImageAnnotatorClient();
+
+  /**
+   * TODO(developer): Uncomment the following lines before running the sample.
+   */
+  // const bucketName = 'Bucket where the file resides, e.g. my-bucket';
+  // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
+
+  // Read a remote image as a text document
+  const [result] = await client.documentTextDetection(
+    //`https://firebasestorage.googleapis.com/v0/b/gaonhat-1b0c8.appspot.com/o/manga%2Fduanvuminh%40gmail.com%2F80349664_455085585166328_6015180184280367104_n.jpg?alt=media&token=719d31e4-c2ab-4538-8779-62ccad175706`
+    params.id
+  );
+  const fullTextAnnotation = result.fullTextAnnotation;
+  res.json({ result: fullTextAnnotation.text });
 });
 
 app.post("/api/post", async (req, res) => {
@@ -122,7 +145,7 @@ app.post("/api/post1", async (req, res) => {
         .collection("kanji")
         .doc(params.searchkey)
         .set({
-          hasRequest:true,
+          hasRequest: true,
           name: params.searchkey
         }, { merge: true })
         .then(r => {

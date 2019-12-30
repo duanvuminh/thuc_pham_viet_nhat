@@ -188,7 +188,7 @@ export default {
     });
     // nghĩa
     this.$axios
-      .$post("/api/search", {
+      .$post("https://mazii.net/api/search", {
         dict: "javi",
         type: "word",
         query: this.searchkey,
@@ -200,7 +200,7 @@ export default {
           let fireObj = {};
           //kanji
           this.$axios
-            .$post("/api/search", {
+            .$post("https://mazii.net/api/search", {
               dict: "javi",
               type: "kanji",
               query: this.searchkey,
@@ -260,7 +260,7 @@ ${x.detail.replace(/##/g, "")}
               });
               // ví dụ
               this.$axios
-                .$post("/api/search", {
+                .$post("https://mazii.net/api/search", {
                   dict: "javi",
                   type: "example",
                   query: this.searchkey,
@@ -303,7 +303,7 @@ ${str}
         } else {
           //kanji
           this.$axios
-            .$post("/api/search", {
+            .$post("https://mazii.net/api/search", {
               dict: "javi",
               type: "kanji",
               query: this.searchkey,
