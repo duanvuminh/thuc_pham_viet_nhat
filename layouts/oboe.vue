@@ -1,6 +1,6 @@
 <template>
   <v-app light v-show="connectedFirebase" ontouchstart>
-    <v-app-bar flat app dark>
+    <v-app-bar flat app dark id="app-bar">
       <div id="stars"></div>
       <div id="stars2"></div>
       <div id="stars3"></div>
@@ -167,6 +167,10 @@ export default {
 $shadows-small:  multiple-box-shadow(700)
 $shadows-medium: multiple-box-shadow(200)
 $shadows-big:    multiple-box-shadow(100)
+
+#app-bar
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, black 100%)
+  overflow: hidden
 
 .display-4.nihongo
   font-family: Hiragino Mincho Pro, ヒラギノ明朝 Pro W3, ＭＳ 明朝, ＭＳ Ｐ明朝,
