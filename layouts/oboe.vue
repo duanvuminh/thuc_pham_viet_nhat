@@ -1,18 +1,21 @@
 <template>
-  <v-app light v-show="connectedFirebase" ontouchstart="">
+  <v-app light v-show="connectedFirebase" ontouchstart>
     <v-app-bar flat app dark>
-          <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
-          <v-btn icon to="/" > <v-icon>mdi-home</v-icon></v-btn>
-          <v-btn icon to="/manga"><v-icon>mdi-book-open-page-variant</v-icon></v-btn>
-          <v-btn icon to="/9gag"> <v-icon>mdi-heart</v-icon></v-btn>
-          <v-spacer />
-          <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
-      <v-img
-      slot="img"
-      src="/mainichi.jpg"
-      max-height="100%"
-      max-width="500"
-    ></v-img>
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
+      <v-app-bar-nav-icon @click="drawer=!drawer" v-if="loggedIn"></v-app-bar-nav-icon>
+      <v-btn icon to="/">
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-btn icon to="/manga">
+        <v-icon>mdi-book-open-page-variant</v-icon>
+      </v-btn>
+      <v-btn icon to="/9gag">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      <v-spacer />
+      <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -89,7 +92,7 @@ export default {
     loggedIn() {
       return this.$store.state.loggedIn;
     },
-    ...mapState(["user","connectedFirebase"]),
+    ...mapState(["user", "connectedFirebase"]),
     items() {
       // is triggered whenever the store state changes
       if (this.user.email == "duanvuminh@gmail.com") {
@@ -125,7 +128,7 @@ export default {
       }
     }
   },
-  scrollToTop:true,
+  scrollToTop: true,
   watch: {
     dialog(value) {
       if (!value) {
@@ -152,12 +155,99 @@ export default {
   }
 };
 </script>
-<style>
-.display-4.nihongo {
+<style lang="sass">
+/* @import compass */
+@function multiple-box-shadow ($n) 
+  $value: '#{random(2000)}px #{random(2000)}px #FFF'
+  @for $i from 2 through $n
+    $value: '#{$value} , #{random(2000)}px #{random(2000)}px #FFF'
+
+  @return unquote($value)
+
+$shadows-small:  multiple-box-shadow(700)
+$shadows-medium: multiple-box-shadow(200)
+$shadows-big:    multiple-box-shadow(100)
+
+.display-4.nihongo
   font-family: Hiragino Mincho Pro, ヒラギノ明朝 Pro W3, ＭＳ 明朝, ＭＳ Ｐ明朝,
-    serif !important;
-}
-img {
-  max-width: 100%;
-}
+    serif :important
+
+img
+  max-width: 100%
+ 
+#stars
+  width: 1px
+  height: 1px
+  background: transparent
+  box-shadow: $shadows-small
+  animation         : animStar 50s linear infinite
+    
+  &:after
+    content: " "
+    position: absolute
+    top: 2000px
+    width: 1px
+    height: 1px
+    background: transparent
+    box-shadow: $shadows-small
+    
+#stars2
+  width: 2px
+  height: 2px
+  background: transparent
+  box-shadow: $shadows-medium
+  animation         : animStar 100s linear infinite
+    
+  &:after
+    content: " "
+    position: absolute
+    top: 2000px
+    width: 2px
+    height: 2px
+    background: transparent
+    box-shadow: $shadows-medium
+    
+#stars3
+  width: 3px
+  height: 3px
+  background: transparent
+  box-shadow: $shadows-big
+  animation         : animStar 150s linear infinite
+    
+  &:after
+    content: " "
+    position: absolute
+    top: 2000px
+    width: 3px
+    height: 3px
+    background: transparent
+    box-shadow: $shadows-big
+
+#title
+  position: absolute
+  top: 50%
+  left: 0
+  right: 0
+  
+  color: #FFF
+  text-align: center
+  font-family: 'lato',sans-serif
+  font-weight: 300
+  font-size: 50px
+  letter-spacing: 10px
+  
+  margin-top: -60px
+  padding-left: 10px
+  
+  span
+    background: -webkit-linear-gradient(white, #38495a)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    
+@keyframes animStar
+  from  
+    transform: translateY(0px)
+  to        
+    transform: translateY(-2000px)
+    
 </style>

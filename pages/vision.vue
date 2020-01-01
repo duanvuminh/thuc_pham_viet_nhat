@@ -1,6 +1,5 @@
 <template>
   <v-row justify="center">
-    <Search />
     <v-img v-if="url" class="orange--text align-end" :src="url" contain></v-img>
     <div v-html="text"></div>
   </v-row>
