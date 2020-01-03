@@ -51,6 +51,11 @@ export default {
       message: ""
     };
   },
+  head() {
+    return {
+      titleTemplate: `%s - logout`
+    };
+  },
   mounted() {}
 };
 </script>
