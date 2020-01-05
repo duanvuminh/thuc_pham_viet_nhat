@@ -51,7 +51,7 @@ async function url() {
         });
 
     let routes = result.map(x => {
-        return `/search/${x.id}`;
+        return `/show/${x.id}`;
     })
     routes.push('/')
     return routes;

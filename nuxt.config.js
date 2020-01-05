@@ -75,9 +75,9 @@ export default {
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
-    // routes: () => {
-    //   return getAppRoutes.url()
-    // },
+    routes: () => {
+      return getAppRoutes.url()
+    },
     exclude: ['/auth/', '/auth/**']
   },
   proxy: [

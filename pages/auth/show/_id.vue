@@ -164,7 +164,7 @@ export default {
   methods: {
     search1() {
       if (this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()) {
-        this.$router.push(`/auth/search/${this.searchkey[0]}`);
+        this.$router.push(`/auth/show/${this.searchkey[0]}`);
       }
     },
     search(e) {
@@ -172,7 +172,7 @@ export default {
         e.key == "Enter" &&
         this.searchkey.replace(/(\r\n|\n|\r)/gm, "").trim()
       ) {
-        this.$router.push(`/auth/search/${this.searchkey[0]}`);
+        this.$router.push(`/auth/show/${this.searchkey[0]}`);
       }
     },
     save() {
