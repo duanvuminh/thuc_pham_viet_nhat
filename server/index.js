@@ -2,6 +2,7 @@ import admin from "./modules/admin";
 import express from "express";
 import cookieparser from "cookieparser";
 
+var rp = require('request-promise');
 const util = require('util')
 
 const port = process.env.PORT || 3000
@@ -68,6 +69,17 @@ app.get("/api/get_post_by_id", async (req, res) => {
       });
     });
   res.json(items);
+});
+
+app.get("/api/9gag", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  // console.log(util.inspect(req, {showHidden: false, depth: 1}))
+  // console.log(`/select: ${req.params}`);
+  let params = req.query
+  res.type('json')
+  return res.send(await rp(params.id)
+    .then())
+
 });
 
 app.get("/api/handwriting", async (req, res) => {

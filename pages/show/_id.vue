@@ -89,10 +89,12 @@ export default {
       })
       .then();
     let searchkey = params.id;
+    let tab = searchkey.length > 1 ? "tab-1" : null;
     return {
       searchkey,
       email,
-      items
+      items,
+      tab
     };
   },
   beforeCreate() {},
