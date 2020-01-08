@@ -3,6 +3,7 @@ import express from "express";
 import cookieparser from "cookieparser";
 
 var rp = require('request-promise');
+const fs = require('fs');
 const util = require('util')
 
 const port = process.env.PORT || 3000
@@ -79,6 +80,29 @@ app.get("/api/9gag", async (req, res) => {
   res.type('json')
   return res.send(await rp(params.id)
     .then())
+
+});
+function loadPage(filename, res) {
+  fs.readFile(filename,'utf8', (err,data) => {
+                  if ( err ) {
+                    res.send(JSON.stringify(err));
+                  } else {
+                      var page = data.toString();
+                      res.send(page);
+                  }
+              })
+}
+
+
+app.get("/api/strokes", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  // console.log(util.inspect(req, {showHidden: false, depth: 1}))
+  // console.log(`/select: ${req.params}`);
+  let params = req.query
+  let body = await rp(`https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${params.id}.svg`)
+    .then()
+  //console.log(body)
+  return res.json({svg:body})
 
 });
 

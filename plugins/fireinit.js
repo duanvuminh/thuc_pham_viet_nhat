@@ -16,9 +16,9 @@ var config = {
 }
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
-  // firebase
-  // .firestore()
-  // .enablePersistence({ synchronizeTabs: true })
+  firebase
+  .firestore()
+  .enablePersistence({ synchronizeTabs: true })
 }
   
 export default ({ store }) => {

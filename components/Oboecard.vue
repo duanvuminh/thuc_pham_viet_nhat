@@ -13,7 +13,7 @@
       <!-- color="blue lighten-2" -->
       <client-only>
       <social-sharing
-        :url="`https://oboe.lithong.com${$route.path}`"
+        :url="`https://oboemasu.com${$route.path}`"
         :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
         inline-template
       >
