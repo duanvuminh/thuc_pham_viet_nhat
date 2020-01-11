@@ -60,7 +60,7 @@ export default {
       this.tongle = !this.tongle;
     }, 500);
     let me = this;
-    this.$refs.textarea1.$el.getElementsByTagName("input")[0].addEventListener("keydown", function() {
+    this.$refs.textarea1?this.$refs.textarea1.$el.getElementsByTagName("input")[0].addEventListener("keydown", function() {
       this.caret = getCaretCoordinates(this, this.selectionEnd);
       me.$nextTick(() => {
         me.$refs.sugest.$el.style.top =
@@ -68,7 +68,7 @@ export default {
         me.$refs.sugest.$el.style.left =
           this.caret.left - -me.$refs.textarea1.$el.offsetLeft - -30 + "px";
       });
-    });
+    }):"";
   },
   methods: {
     blurCheck() {

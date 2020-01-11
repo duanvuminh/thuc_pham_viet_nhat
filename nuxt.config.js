@@ -159,6 +159,7 @@ export default {
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake:false,
     theme: {
       themes: {
         dark: {
@@ -190,6 +191,10 @@ export default {
   ** render
   */
   render: {
+    bundleRenderer: {
+      shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
+      // resourceHints:false
+    }
   },
   /*
   ** router
