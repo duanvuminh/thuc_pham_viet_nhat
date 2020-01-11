@@ -7,8 +7,8 @@
   </v-row>
 </template>
 <script>
-import Search from "@/components/nihongo/Search";
-import HtmlParser from "@/components/HtmlParser";
+const Search =()=> import("@/components/nihongo/Search");
+const HtmlParser =()=> import("@/components/HtmlParser");
 export default {
   components: {
     Search,

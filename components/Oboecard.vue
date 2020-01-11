@@ -26,7 +26,7 @@
   </v-card>
 </template>
 <script>
-import HtmlParser from "@/components/HtmlParser";
+const HtmlParser = ()=>import("@/components/HtmlParser");
 export default {
   props: ["item", "searchkey", "email"],
   components: {

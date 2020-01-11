@@ -6,7 +6,9 @@
   </v-row>
 </template>
 <script>
-import HtmlParser from "@/components/HtmlParser";
+//import HtmlParser from "@/components/HtmlParser";
+const HtmlParser = ()=>import("@/components/HtmlParser")
+
 const nhk="https://www.nhk.or.jp/lesson/vietnamese/learn/list/";
 
 export default {

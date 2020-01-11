@@ -72,11 +72,14 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-import HtmlParser from "@/components/HtmlParser";
-import Strockes from "@/components/Strockes";
-
-import Ocard from "@/components/Oboecard";
-import Search from "@/components/nihongo/Search";
+//import HtmlParser from "@/components/HtmlParser";
+const HtmlParser = ()=>import("@/components/HtmlParser")
+//import Strockes from "@/components/Strockes";
+const Strockes = ()=>import("@/components/Strockes")
+//import Ocard from "@/components/Oboecard";
+const Ocard = ()=>import("@/components/Oboecard")
+//import Search from "@/components/nihongo/Search";
+const Search = ()=>import("@/components/nihongo/Search")
 
 export default {
   async asyncData({ params, store, $axios }) {

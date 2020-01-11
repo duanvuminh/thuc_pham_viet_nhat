@@ -5,8 +5,11 @@
   </v-col>
 </template>
 <script>
-import SearchWithoutKana from "./searchwithoutkana/SearchWithoutKana";
-import SearchWithKana from "./searchwithkana/SearchWithKana";
+// import SearchWithoutKana from "./searchwithoutkana/SearchWithoutKana";
+const SearchWithoutKana = ()=> import("./searchwithoutkana/SearchWithoutKana")
+//import SearchWithKana from "./searchwithkana/SearchWithKana";
+const SearchWithKana = ()=> import("./searchwithkana/SearchWithKana")
+
 import { mapState } from "vuex";
 
 export default {

@@ -46,9 +46,10 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-import 'firebase/storage';
+import "firebase/storage";
 
-import Handwriting from "@/components/Handwriting";
+//import Handwriting from "@/components/Handwriting";
+const Handwriting = () => import("@/components/Handwriting");
 export default {
   components: {
     Handwriting
@@ -88,7 +89,7 @@ export default {
       if (!files.length) return;
       Promise.all(
         // Array of "Promises"
-      [files[0]].map(item => {
+        [files[0]].map(item => {
           var ref = firebase
             .storage()
             .ref("vision/" + this.$store.state.user.email + "/visionimg");
@@ -98,7 +99,7 @@ export default {
         })
       ).then(url => {
         //console.log(encodeURI(url[0]))
-        this.$store.commit("setVision",url[0])
+        this.$store.commit("setVision", url[0]);
         this.$router.push("/vision");
       });
     },

@@ -5,8 +5,11 @@
   </v-row>
 </template>
 <script>
-import Search from "@/components/nihongo/Search";
-import HtmlParser from "@/components/HtmlParser";
+//import Search from "@/components/nihongo/Search";
+const Search = ()=>import("@/components/nihongo/Search")
+//import HtmlParser from "@/components/HtmlParser";
+const HtmlParser = ()=>import("@/components/HtmlParser")
+
 export default {
   async asyncData({ params, store, $axios }) {
     let api = await $axios
