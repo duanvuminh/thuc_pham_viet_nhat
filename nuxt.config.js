@@ -52,11 +52,7 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
-    '@nuxtjs/proxy',
-    ['@nuxtjs/component-cache', {
-      max: 10000,
-      maxAge: 1000 * 60 * 60
-    }]
+    '@nuxtjs/proxy'
   ],
   markdownit: {
     injected: true,
@@ -186,7 +182,8 @@ export default {
     */
     extend(config, ctx) {
     },
-    transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+    analyze: true,
+    //transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extractCSS: true,
   },
   /*
