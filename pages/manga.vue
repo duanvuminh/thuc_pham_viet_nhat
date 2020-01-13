@@ -22,7 +22,7 @@
 </template>
 <script>
 // import HtmlParser from "@/components/HtmlParser";
-const HtmlParser = ()=>import("@/components/HtmlParser")
+const HtmlParser = () => import("@/components/HtmlParser");
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -97,6 +97,7 @@ export default {
   layout: "oboe",
   methods: {
     loadMore() {
+      if (!this.next.firestore) return;
       this.busy = true;
       // this.$axios.get("").then(response => {
       //   let data = response.data.data.posts;
