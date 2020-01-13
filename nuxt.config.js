@@ -13,12 +13,10 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1'},
-      { name: 'apple-mobile-web-app-capable', content: 'yes'},
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: "apple-touch-startup-image", sizes:"1125x2436", href: "/icon.png"}
     ]
   },
   /*
@@ -51,8 +49,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
-    '@nuxtjs/pwa',
-    '@nuxtjs/proxy'
+    '@nuxtjs/pwa'
   ],
   markdownit: {
     injected: true,
@@ -149,9 +146,9 @@ export default {
   axios: {
     baseURL: 'https://oboemasu.com/',
     // baseURL: 'http://localhost:3000/',
-    proxy: true,
-    proxyHeaders: false,
-    credentials: false
+    // proxy: true,
+    // proxyHeaders: false,
+    // credentials: false
   },
   /*
   ** vuetify module configuration
