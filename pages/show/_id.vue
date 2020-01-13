@@ -190,7 +190,7 @@ export default {
     },
     getKanji() {
       //kanji
-      this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "kanji",
@@ -228,7 +228,7 @@ ${x.detail.replace(/##/g, "")}
     },
     getExample() {
       // ví dụ
-      this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "example",
@@ -268,7 +268,7 @@ ${str}
     },
     getMean() {
       // nghĩa
-      this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "word",
@@ -283,7 +283,7 @@ ${str}
               .then(r => {
                 return r.data.html;
               });
-            if(!webo) return
+            if (!webo) return;
             this.tabs.splice(1, 0, {
               webo: webo,
               text: ``,
@@ -317,6 +317,7 @@ ${strmean}
     }
   },
   mounted() {
+    console.log("im here");
     firebase
       .firestore()
       .collection("kanji")
