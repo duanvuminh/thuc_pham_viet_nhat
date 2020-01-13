@@ -276,26 +276,43 @@ ${str}
           limit: 20,
           page: 1
         })
-        .then( async response => {
-          if (!response.found) return;
-          this.fireObj.isavaiable = true;
-          this.fireObj.mean = response.data[0];
-          console.log(response);
-          let strmean = "";
-          response.data[0].means.map(x => {
-            strmean = `${strmean}
+        .then(async response => {
+          if (!response.found) {
+            let webo = await this.$axios
+              .get(`/api/dic?id=${this.searchkey}`)
+              .then(r => {
+                return r.data.html;
+              });
+            if(!webo) return
+            this.tabs.splice(1, 0, {
+              webo: webo,
+              text: ``,
+              label: "Nghĩa"
+            });
+          } else {
+            this.fireObj.isavaiable = true;
+            this.fireObj.mean = response.data[0];
+            console.log(response);
+            let strmean = "";
+            response.data[0].means.map(x => {
+              strmean = `${strmean}
 * ${x.mean}(${x.kind ? x.kind : "-"})            
             `;
-          });
-          let webo = await this.$axios.get(`/api/dic?id=${this.searchkey}`).then(r=>{return r.data.html})
-          this.tabs.splice(1,0,{
-            webo: webo,
-            text: `## ${response.data[0].word} 
+            });
+            let webo = await this.$axios
+              .get(`/api/dic?id=${this.searchkey}`)
+              .then(r => {
+                return r.data.html;
+              });
+            this.tabs.splice(1, 0, {
+              webo: webo,
+              text: `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
             `,
-            label: "Nghĩa"
-          });
+              label: "Nghĩa"
+            });
+          }
         });
     }
   },
