@@ -183,7 +183,6 @@ export default {
     */
     extend(config, ctx) {
     },
-    analyze: true,
     //transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extractCSS: true,
   },

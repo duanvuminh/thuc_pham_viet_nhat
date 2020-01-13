@@ -60,6 +60,7 @@
                     </v-row>
                   </template>
                   <div v-else v-html="$md.render(item.text)"></div>
+                  <div v-if="item.webo" v-html="item.webo"></div>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -73,13 +74,13 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 //import HtmlParser from "@/components/HtmlParser";
-const HtmlParser = ()=>import("@/components/HtmlParser")
+const HtmlParser = () => import("@/components/HtmlParser");
 //import Strockes from "@/components/Strockes";
-const Strockes = ()=>import("@/components/Strockes")
+const Strockes = () => import("@/components/Strockes");
 //import Ocard from "@/components/Oboecard";
-const Ocard = ()=>import("@/components/Oboecard")
+const Ocard = () => import("@/components/Oboecard");
 //import Search from "@/components/nihongo/Search";
-const Search = ()=>import("@/components/nihongo/Search")
+const Search = () => import("@/components/nihongo/Search");
 
 export default {
   async asyncData({ params, store, $axios }) {
@@ -138,7 +139,8 @@ export default {
       searchkey: "",
       tab: null,
       tabs: [],
-      valid: true
+      valid: true,
+      fireObj: {}
     };
   },
   head() {
@@ -167,6 +169,134 @@ export default {
         }
       });
       this.loading = false;
+    },
+    insertMtoF() {
+      //insert mazzi to firestore
+      if (!this.fireObj.isavaiable) return;
+      firebase
+        .firestore()
+        .collection("opendic")
+        .doc(this.searchkey.toLowerCase())
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            firebase
+              .firestore()
+              .collection("opendic")
+              .doc(this.searchkey.toLowerCase())
+              .set(this.fireObj);
+          }
+        });
+    },
+    getKanji() {
+      //kanji
+      this.$axios
+        .$post("https://mazii.net/api/search", {
+          dict: "javi",
+          type: "kanji",
+          query: this.searchkey,
+          page: 1
+        })
+        .then(response => {
+          //console.log(response);
+          if (!response.results) return;
+          this.fireObj.isavaiable = true;
+          this.fireObj.kanji = response.results;
+          let strG = "";
+          response.results.map(x => {
+            let str = "";
+            x.compDetail
+              ? x.compDetail.map(x => {
+                  str = `${str} ${x.w}: ${x.h}`;
+                })
+              : "";
+            strG = `${strG}
+## ${x.kanji}
+KunYomi: ${x.kun ? x.kun : ""}        
+OnYomi: ${x.on ? x.on : ""} 
+Bộ: ${x.mean}  
+Bộ con: ${str}  
+${x.detail.replace(/##/g, "")}        
+            `;
+          });
+          this.tabs.push({
+            data: response.results[0],
+            text: strG,
+            label: "Kanji"
+          });
+        });
+    },
+    getExample() {
+      // ví dụ
+      this.$axios
+        .$post("https://mazii.net/api/search", {
+          dict: "javi",
+          type: "example",
+          query: this.searchkey,
+          page: 1
+        })
+        .then(response => {
+          //console.log(response);
+          if (!response.results) return;
+          this.fireObj.isavaiable = true;
+          this.fireObj.example = response.results;
+          // ví dụ
+          this.$axios
+            .$post("https://mazii.net/api/search", {
+              dict: "javi",
+              type: "example",
+              query: this.searchkey,
+              page: 1
+            })
+            .then(response => {
+              let str = "";
+              response.results.map(x => {
+                str = `${str}
+* ${x.content.replace(/````/g, "")}
+${x.mean.replace(/````/g, "")}
+            `;
+              });
+              this.tabs.push({
+                data: response.results,
+                text: `
+${str}
+            `,
+                label: "Mẫu"
+              });
+            });
+        });
+    },
+    getMean() {
+      // nghĩa
+      this.$axios
+        .$post("https://mazii.net/api/search", {
+          dict: "javi",
+          type: "word",
+          query: this.searchkey,
+          limit: 20,
+          page: 1
+        })
+        .then( async response => {
+          if (!response.found) return;
+          this.fireObj.isavaiable = true;
+          this.fireObj.mean = response.data[0];
+          console.log(response);
+          let strmean = "";
+          response.data[0].means.map(x => {
+            strmean = `${strmean}
+* ${x.mean}(${x.kind ? x.kind : "-"})            
+            `;
+          });
+          let webo = await this.$axios.get(`/api/dic?id=${this.searchkey}`).then(r=>{return r.data.html})
+          this.tabs.splice(1,0,{
+            webo: webo,
+            text: `## ${response.data[0].word} 
+### ${response.data[0].phonetic}
+${strmean}         
+            `,
+            label: "Nghĩa"
+          });
+        });
     }
   },
   mounted() {
@@ -191,175 +321,11 @@ export default {
       text: "",
       label: "Oboe"
     });
-    // nghĩa
-    this.$axios
-      .$post("https://mazii.net/api/search", {
-        dict: "javi",
-        type: "word",
-        query: this.searchkey,
-        limit: 20,
-        page: 1
-      })
-      .then(response => {
-        if (response.found) {
-          let fireObj = {};
-          //kanji
-          this.$axios
-            .$post("https://mazii.net/api/search", {
-              dict: "javi",
-              type: "kanji",
-              query: this.searchkey,
-              page: 1
-            })
-            .then(response1 => {
-              fireObj.mean = response.data[0];
-
-              let strmean = "";
-              response.data[0].means.map(x => {
-                strmean = `${strmean}
-* ${x.mean}(${x.kind ? x.kind : "-"})            
-            `;
-              });
-              this.tabs.push({
-                data: response.data[0],
-                text: `## ${response.data[0].word} 
-### ${response.data[0].phonetic} [${
-                  response1.results[0].mean.split(",")[0] != this.searchkey[0]
-                    ? response1.results
-                        .reverse()
-                        .map(x => x.mean.split(",")[0])
-                        .join(" ")
-                    : response1
-                        .results()
-                        .map(x => x.mean.split(",")[0])
-                        .join(" ")
-                }] 
-${strmean}         
-            `,
-                label: "Nghĩa"
-              });
-
-              fireObj.kanji = response1.results;
-              let strG = "";
-              response1.results.map(x => {
-                let str = "";
-                x.compDetail
-                  ? x.compDetail.map(x => {
-                      str = `${str} ${x.w}: ${x.h}`;
-                    })
-                  : "";
-                strG = `${strG}
-## ${x.kanji ? x.kanji : ""}
-KunYomi: ${x.kun ? x.kun : ""}        
-OnYomi: ${x.on ? x.on : ""} 
-Bộ: ${x.mean}  
-Bộ con: ${str}  
-${x.detail.replace(/##/g, "")}        
-            `;
-              });
-
-              this.tabs.push({
-                data: response1.results[0],
-                text: strG,
-                label: "Kanji"
-              });
-              // ví dụ
-              this.$axios
-                .$post("https://mazii.net/api/search", {
-                  dict: "javi",
-                  type: "example",
-                  query: this.searchkey,
-                  page: 1
-                })
-                .then(response2 => {
-                  fireObj.example = response2.results;
-                  let str = "";
-                  response2.results.map(x => {
-                    str = `${str}
-
-* ${x.content}
-${x.mean}
-            `;
-                  });
-                  this.tabs.push({
-                    data: response2.results,
-                    text: `
-${str}         
-            `,
-                    label: "Mẫu"
-                  });
-                  //insert mazzi to firestore
-                  firebase
-                    .firestore()
-                    .collection("opendic")
-                    .doc(this.searchkey.toLowerCase())
-                    .get()
-                    .then(doc => {
-                      if (!doc.exists) {
-                        firebase
-                          .firestore()
-                          .collection("opendic")
-                          .doc(this.searchkey.toLowerCase())
-                          .set(fireObj);
-                      }
-                    });
-                });
-            });
-        } else {
-          //kanji
-          this.$axios
-            .$post("https://mazii.net/api/search", {
-              dict: "javi",
-              type: "kanji",
-              query: this.searchkey,
-              page: 1
-            })
-            .then(response1 => {
-              let fireObj = {};
-              if (!response1.results) return;
-              fireObj.kanji = response1.results;
-              let strG = "";
-              response1.results.map(x => {
-                let str = "";
-                x.compDetail
-                  ? x.compDetail.map(x => {
-                      str = `${str} ${x.w}: ${x.h}`;
-                    })
-                  : "";
-                strG = `${strG}
-## ${x.kanji}
-KunYomi: ${x.kun ? x.kun : ""}        
-OnYomi: ${x.on ? x.on : ""} 
-Bộ: ${x.mean}  
-Bộ con: ${str}  
-${x.detail.replace(/##/g, "")}        
-            `;
-              });
-
-              this.tabs.push({
-                data: response1.results[0],
-                text: strG,
-                label: "Kanji"
-              });
-              //insert mazzi to firestore
-              if (this.searchkey.toLowerCase().length > 1) return;
-              firebase
-                .firestore()
-                .collection("opendic")
-                .doc(this.searchkey.toLowerCase())
-                .get()
-                .then(doc => {
-                  if (!doc.exists) {
-                    firebase
-                      .firestore()
-                      .collection("opendic")
-                      .doc(this.searchkey.toLowerCase())
-                      .set(fireObj);
-                  }
-                });
-            });
-        }
-      });
+    Promise.all([this.getMean(), this.getKanji(), this.getExample()]).then(
+      () => {
+        this.insertMtoF();
+      }
+    );
   },
   watch: {}
 };

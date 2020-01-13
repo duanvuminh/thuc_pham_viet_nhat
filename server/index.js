@@ -5,6 +5,7 @@ import cookieparser from "cookieparser";
 var rp = require('request-promise');
 const fs = require('fs');
 const util = require('util')
+const cheerio = require('cheerio')
 
 const port = process.env.PORT || 3000
 const app = express();
@@ -82,17 +83,18 @@ app.get("/api/9gag", async (req, res) => {
     .then())
 
 });
-function loadPage(filename, res) {
-  fs.readFile(filename,'utf8', (err,data) => {
-                  if ( err ) {
-                    res.send(JSON.stringify(err));
-                  } else {
-                      var page = data.toString();
-                      res.send(page);
-                  }
-              })
-}
+app.get("/api/dic", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  // console.log(util.inspect(req, {showHidden: false, depth: 1}))
+  // console.log(`/select: ${req.params}`);
+  let params = req.query
+  let url=`https://www.weblio.jp/content/${encodeURIComponent(params.id)}`
+  let body = await rp(url)
+  .then()
+  const $ = cheerio.load(body)
 
+  return res.json({ html: $('.kijiWrp .kiji').html() })
+});
 
 app.get("/api/strokes", async (req, res) => {
   // console.log(`/select: ${req.params}`);
@@ -102,7 +104,7 @@ app.get("/api/strokes", async (req, res) => {
   let body = await rp(`https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${params.id}.svg`)
     .then()
   //console.log(body)
-  return res.json({svg:body})
+  return res.json({ svg: body })
 
 });
 
