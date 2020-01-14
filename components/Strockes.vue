@@ -18,8 +18,8 @@ export default {
         return this.$axios.get(`/api/strokes?id=${cp}`);
       });
     },
-    link(e, url) {
-      url.then(r => {
+    async link(e, url) {
+      await url.then(r => {
         var parser = new DOMParser();
         var doc = parser.parseFromString(r.data.svg, "image/svg+xml");
         var d = doc.documentElement;

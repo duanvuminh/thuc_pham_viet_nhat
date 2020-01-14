@@ -171,7 +171,6 @@ $shadows-big:    multiple-box-shadow(100)
 #app-bar
   background: radial-gradient(ellipse at bottom, #1B2735 0%, black 100%)
   overflow: hidden
-  opacity:0.85
 
 .display-4.nihongo
   font-family: Hiragino Mincho Pro, ヒラギノ明朝 Pro W3, ＭＳ 明朝, ＭＳ Ｐ明朝,

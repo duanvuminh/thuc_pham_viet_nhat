@@ -27,7 +27,7 @@ export default {
   ** Global CSS
   */
   css: [
-    'vuetify/dist/vuetify.css'
+    // 'vuetify/dist/vuetify.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -156,7 +156,7 @@ export default {
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    treeShake:false,
+    // treeShake:false,
     theme: {
       themes: {
         dark: {

@@ -100,7 +100,7 @@ export default {
       ).then(url => {
         //console.log(encodeURI(url[0]))
         this.$store.commit("setVision",url[0])
-        this.$router.push("/vision");
+        this.$router.push("/auth/vision");
       });
     },
     search(e) {
