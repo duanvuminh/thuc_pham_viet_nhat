@@ -94,11 +94,17 @@ export default {
       .then();
     let searchkey = params.id;
     let tab = searchkey.length > 1 ? "tab-1" : null;
+    let webo = await $axios
+              .get(`/api/dic?id=${encodeURIComponent(searchkey)}`)
+              .then(r => {
+                return r.data.html;
+              });
     return {
       searchkey,
       email,
       items,
-      tab
+      tab,
+      webo
     };
   },
   beforeCreate() {},
@@ -278,14 +284,9 @@ ${str}
         })
         .then(async response => {
           if (!response.found) {
-            let webo = await this.$axios
-              .get(`/api/dic?id=${this.searchkey}`)
-              .then(r => {
-                return r.data.html;
-              });
-            if (!webo) return;
+            if (!this.webo) return;
             this.tabs.splice(1, 0, {
-              webo: webo,
+              webo: this.webo,
               text: ``,
               label: "Nghĩa"
             });
@@ -299,13 +300,8 @@ ${str}
 * ${x.mean}(${x.kind ? x.kind : "-"})            
             `;
             });
-            let webo = await this.$axios
-              .get(`/api/dic?id=${this.searchkey}`)
-              .then(r => {
-                return r.data.html;
-              });
             this.tabs.splice(1, 0, {
-              webo: webo,
+              webo: this.webo,
               text: `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
