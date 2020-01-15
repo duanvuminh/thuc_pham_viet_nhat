@@ -12,7 +12,7 @@ export default {
     title: process.env.site_name || '',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
@@ -32,7 +32,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [{ src: '~/plugins/fireinit.js' },{ src: '~/plugins/clientRender.js', mode: 'client' }],
+  plugins: [{ src: '~/plugins/fireinit.js' }, { src: '~/plugins/clientRender.js', mode: 'client' }],
   /*
   ** Nuxt.js dev-modules
   */
@@ -49,7 +49,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-compress'
   ],
   markdownit: {
     injected: true,
@@ -151,12 +152,23 @@ export default {
     // credentials: false
   },
   /*
+  ** compress
+  */
+  "nuxt-compress": {
+    gzip: {
+      cache: true
+    },
+    brotli: {
+      threshold: 10240
+    }
+  },
+  /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    treeShake:false,
+    treeShake: false,
     theme: {
       themes: {
         dark: {

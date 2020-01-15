@@ -10,6 +10,7 @@
             class="elevation-0"
             dark
             show-arrows
+            ref="tabs"
           >
             <v-tabs-slider></v-tabs-slider>
 
@@ -93,17 +94,16 @@ export default {
       })
       .then();
     let searchkey = params.id;
-    let tab = searchkey.length > 1 ? "tab-1" : null;
     let webo = await $axios
-              .get(`/api/dic?id=${encodeURIComponent(searchkey)}`)
-              .then(r => {
-                return r.data.html;
-              });
+      .get(`/api/dic?id=${encodeURIComponent(searchkey)}`)
+      .then(r => {
+        return r.data.html;
+      });
+    webo = webo.includes(searchkey) ? webo : "";
     return {
       searchkey,
       email,
       items,
-      tab,
       webo
     };
   },
@@ -183,16 +183,7 @@ export default {
         .firestore()
         .collection("opendic")
         .doc(this.searchkey.toLowerCase())
-        .get()
-        .then(doc => {
-          if (!doc.exists) {
-            firebase
-              .firestore()
-              .collection("opendic")
-              .doc(this.searchkey.toLowerCase())
-              .set(this.fireObj);
-          }
-        });
+        .set(this.fireObj, { merge: true });
     },
     getKanji() {
       //kanji
@@ -225,11 +216,10 @@ Bộ con: ${str}
 ${x.detail.replace(/##/g, "")}        
             `;
           });
-          this.tabs.push({
-            data: response.results[0],
+          this.tabs[2] = {
             text: strG,
             label: "Kanji"
-          });
+          };
         });
     },
     getExample() {
@@ -237,39 +227,29 @@ ${x.detail.replace(/##/g, "")}
       return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
-          type: "example",
+          type: "word",
           query: this.searchkey,
           page: 1
         })
         .then(response => {
           //console.log(response);
-          if (!response.results) return;
+          if (!response.found) return;
           this.fireObj.isavaiable = true;
-          this.fireObj.example = response.results;
+          this.fireObj.example = response.data;
           // ví dụ
-          this.$axios
-            .$post("https://mazii.net/api/search", {
-              dict: "javi",
-              type: "example",
-              query: this.searchkey,
-              page: 1
-            })
-            .then(response => {
-              let str = "";
-              response.results.map(x => {
-                str = `${str}
-* ${x.content.replace(/````/g, "")}
-${x.mean.replace(/````/g, "")}
+          let str = "";
+          response.data.map(x => {
+            str = `${str}
+* ${x.word.replace(/````/g, "")}[${x.phonetic}]
+${x.means[0].mean.replace(/````/g, "")}
             `;
-              });
-              this.tabs.push({
-                data: response.results,
-                text: `
+          });
+          this.tabs[3] = {
+            text: `
 ${str}
             `,
-                label: "Mẫu"
-              });
-            });
+            label: "Mẫu"
+          };
         });
     },
     getMean() {
@@ -282,38 +262,38 @@ ${str}
           limit: 20,
           page: 1
         })
-        .then(async response => {
+        .then(response => {
           if (!response.found) {
             if (!this.webo) return;
-            this.tabs.splice(1, 0, {
+            this.tabs[1] = {
               webo: this.webo,
               text: ``,
               label: "Nghĩa"
-            });
+            };
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];
-            console.log(response);
+            // console.log(response);
             let strmean = "";
             response.data[0].means.map(x => {
               strmean = `${strmean}
 * ${x.mean}(${x.kind ? x.kind : "-"})            
             `;
             });
-            this.tabs.splice(1, 0, {
+            this.tabs[1] = {
               webo: this.webo,
               text: `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
             `,
               label: "Nghĩa"
-            });
+            };
           }
         });
     }
   },
   mounted() {
-    console.log("im here");
+    // console.log("im here");
     firebase
       .firestore()
       .collection("kanji")
@@ -331,16 +311,49 @@ ${strmean}
     // hiển thị ví dụ
     // hiển thị ngữ pháp
     this.tabs = [];
-    this.tabs.push({
+    this.tabs[0] = {
       text: "",
       label: "Oboe"
-    });
+    };
+    this.tabs[1] = {
+      text: "",
+      label: "Nghĩa"
+    };
+    this.tabs[2] = {
+      text: "",
+      label: "Kanji"
+    };
+    this.tabs[3] = {
+      text: "",
+      label: "Mẫu"
+    };
+    //this.getMean()
     Promise.all([this.getMean(), this.getKanji(), this.getExample()]).then(
       () => {
         this.insertMtoF();
+        this.tab = this.searchkey.length > 1 ? "tab-1" : null;
       }
     );
   },
-  watch: {}
+  watch: {
+    // tab(val) {
+    //   if (val == "tab-1") {
+    //     this.getMean().then(() => {
+    //       this.insertMtoF();
+    //     });
+    //   }
+    //   if (val == "tab-2") {
+    //     this.getKanji().then(() => {
+    //       this.insertMtoF();
+    //     });
+    //   }
+    //   if (val == "tab-3") {
+    //     this.getExample().then(() => {
+    //       this.insertMtoF();
+    //     });
+    //   }
+    //   this.$refs.tabs.callSlider();
+    // }
+  }
 };
 </script>
