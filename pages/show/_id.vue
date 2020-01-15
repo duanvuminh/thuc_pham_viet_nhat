@@ -99,7 +99,7 @@ export default {
       .then(r => {
         return r.data.html;
       });
-    webo = webo.includes(searchkey) ? webo : "";
+  　 // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     return {
       searchkey,
       email,
@@ -293,6 +293,7 @@ ${strmean}
     }
   },
   mounted() {
+    console.log(this.webo)
     // console.log("im here");
     firebase
       .firestore()
@@ -312,18 +313,22 @@ ${strmean}
     // hiển thị ngữ pháp
     this.tabs = [];
     this.tabs[0] = {
+      webo:"",
       text: "",
       label: "Oboe"
     };
     this.tabs[1] = {
+      webo:"",
       text: "",
       label: "Nghĩa"
     };
     this.tabs[2] = {
+      webo:"",
       text: "",
       label: "Kanji"
     };
     this.tabs[3] = {
+      webo:"",
       text: "",
       label: "Mẫu"
     };
@@ -332,6 +337,7 @@ ${strmean}
       () => {
         this.insertMtoF();
         this.tab = this.searchkey.length > 1 ? "tab-1" : null;
+        console.log(this.tabs)
       }
     );
   },
