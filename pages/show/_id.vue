@@ -14,7 +14,12 @@
           >
             <v-tabs-slider></v-tabs-slider>
 
-            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`" @click="tabclick(`tab-${index}`)">{{item.label}}</v-tab>
+            <v-tab
+              v-for="(item,index) in tabs"
+              :key="index"
+              :href="`#tab-${index}`"
+              @click="tabclick(`tab-${index}`)"
+            >{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
             <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
@@ -61,10 +66,7 @@
                     </v-row>
                   </template>
                   <div v-else v-html="$md.render(item.text)"></div>
-                  <HtmlParser
-                      v-show="item.webo"
-                      :content="item.webo"
-                    ></HtmlParser>
+                  <HtmlParser v-show="item.webo" :content="item.webo"></HtmlParser>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -101,8 +103,7 @@ export default {
       .get(`/api/dic?id=${encodeURIComponent(searchkey)}`)
       .then(r => {
         return r.data.html;
-      });
-  　 // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
+      }); // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
     return {
       searchkey,
@@ -150,26 +151,26 @@ export default {
       searchkey: "",
       tab: null,
       tabs: [
-      {
-       webo:"",
-       text: "",
-       label: "Oboe"
-      },
-      {
-       webo:"",
-       text: "",
-       label: "Nghĩa"
-      },
-      {
-       webo:"",
-       text: "",
-       label: "Kanji"
-      },
-      {
-       webo:"",
-       text: "",
-       label: "Mẫu"
-      }
+        {
+          webo: "",
+          text: "",
+          label: "Oboe"
+        },
+        {
+          webo: "",
+          text: "",
+          label: "Nghĩa"
+        },
+        {
+          webo: "",
+          text: "",
+          label: "Kanji"
+        },
+        {
+          webo: "",
+          text: "",
+          label: "Mẫu"
+        }
       ],
       valid: true,
       fireObj: {}
@@ -242,7 +243,10 @@ Bộ con: ${str}
 ${x.detail.replace(/##/g, "")}        
             `;
           });
-          this.tabs[2].text= strG
+          this.tabs[2].text = strG;
+        })
+        .catch(err => {
+          console.log("error", err.response);
         });
     },
     getExample() {
@@ -267,9 +271,12 @@ ${x.detail.replace(/##/g, "")}
 ${x.means[0].mean.replace(/````/g, "")}
             `;
           });
-          this.tabs[3].text= `
+          this.tabs[3].text = `
 ${str}
-            `
+            `;
+        })
+        .catch(err => {
+          console.log("error", err.response);
         });
     },
     getMean() {
@@ -285,7 +292,7 @@ ${str}
         .then(response => {
           if (!response.found) {
             if (!this.webo) return;
-            this.tabs[1].webo= this.webo
+            this.tabs[1].webo = this.webo;
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];
@@ -296,28 +303,37 @@ ${str}
 * ${x.mean}(${x.kind ? x.kind : "-"})            
             `;
             });
-            this.tabs[1].webo= this.webo
-            this.tabs[1].text= `## ${response.data[0].word} 
+            this.tabs[1].webo = this.webo;
+            this.tabs[1].text = `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
-            `
+            `;
           }
+        })
+        .catch(err => {
+          console.log("error", err.response);
         });
     },
-    tabclick(val){
-       if (val == "tab-1") {
-         this.getMean().then(()=>{this.insertMtoF()});
-       }
-       if (val == "tab-2") {
-         this.getKanji().then(()=>{this.insertMtoF()});
-       }
-       if (val == "tab-3") {
-         this.getExample().then(()=>{this.insertMtoF()});
-       }
+    tabclick(val) {
+      if (val == "tab-1") {
+        this.getMean().then(() => {
+          this.insertMtoF();
+        });
+      }
+      if (val == "tab-2") {
+        this.getKanji().then(() => {
+          this.insertMtoF();
+        });
+      }
+      if (val == "tab-3") {
+        this.getExample().then(() => {
+          this.insertMtoF();
+        });
+      }
     }
   },
   mounted() {
-    console.log(this.webo)
+    console.log(this.webo);
     // console.log("im here");
     firebase
       .firestore()
@@ -364,14 +380,14 @@ ${strmean}
     //    console.log(this.tabs)
     //  }
     //);
-    if(this.tab=="tab-1"){
-      this.getMean().then(()=>{this.insertMtoF()});
+    if (this.tab == "tab-1") {
+      this.getMean().then(() => {
+        this.insertMtoF();
+      });
     }
   },
   watch: {
-    tab(val) {
-       
-     }
+    tab(val) {}
   }
 };
 </script>
