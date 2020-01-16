@@ -94,8 +94,8 @@ app.get("/api/dic", async (req, res) => {
     .then()
     const $ = cheerio.load(body)
     $('.kijiWrp .kiji .SsdSmlR').remove()
-    $('a').attr("href",function( i, val ){
-      return `/main/show/${val.split("/").slice(-1)[0] }`
+    $('a').attr("href",function( i ){
+      return `/main/show/${$(this).text()}`
       // item.attr("href",`/main/show/${item.text()}`)
     })
   }catch(e){
