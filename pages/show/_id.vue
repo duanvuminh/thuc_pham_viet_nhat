@@ -61,7 +61,10 @@
                     </v-row>
                   </template>
                   <div v-else v-html="$md.render(item.text)"></div>
-                  <div v-if="item.webo" v-html="item.webo"></div>
+                  <HtmlParser
+                      v-show="item.webo"
+                      :content="item.webo"
+                    ></HtmlParser>
                 </v-card-text>
               </v-card>
             </v-tab-item>
