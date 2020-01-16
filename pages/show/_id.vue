@@ -14,7 +14,7 @@
           >
             <v-tabs-slider></v-tabs-slider>
 
-            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
+            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`" @click="tabclick(index)">{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
             <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
@@ -206,9 +206,9 @@ export default {
         .doc(this.searchkey.toLowerCase())
         .set(this.fireObj, { merge: true });
     },
-    async getKanji() {
+    getKanji() {
       //kanji
-      await this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "kanji",
@@ -237,15 +237,12 @@ Bộ con: ${str}
 ${x.detail.replace(/##/g, "")}        
             `;
           });
-          this.tabs[2] = {
-            text: strG,
-            label: "Kanji"
-          };
+          this.tabs[2].text= strG
         });
     },
-    async getExample() {
+    getExample() {
       // ví dụ
-      await this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "word",
@@ -265,17 +262,14 @@ ${x.detail.replace(/##/g, "")}
 ${x.means[0].mean.replace(/````/g, "")}
             `;
           });
-          this.tabs[3] = {
-            text: `
+          this.tabs[3].text= `
 ${str}
-            `,
-            label: "Mẫu"
-          };
+            `
         });
     },
-    async getMean() {
+    getMean() {
       // nghĩa
-      await this.$axios
+      return this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "word",
@@ -286,11 +280,7 @@ ${str}
         .then(response => {
           if (!response.found) {
             if (!this.webo) return;
-            this.tabs[1] = {
-              webo: this.webo,
-              text: ``,
-              label: "Nghĩa"
-            };
+            this.tabs[1].webo= this.webo
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];
@@ -301,16 +291,25 @@ ${str}
 * ${x.mean}(${x.kind ? x.kind : "-"})            
             `;
             });
-            this.tabs[1] = {
-              webo: this.webo,
-              text: `## ${response.data[0].word} 
+            this.tabs[1].webo= this.webo
+            this.tabs[1].text: `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
-            `,
-              label: "Nghĩa"
-            };
+            `
           }
         });
+    },
+    tabclick(val){
+       if (val == "tab-1") {
+         this.getMean().then(()=>{this.insertMtoF()});
+         
+       }
+       if (val == "tab-2") {
+         this.getKanji().then(()=>{this.insertMtoF()});
+       }
+       if (val == "tab-3") {
+         this.getExample().then(()=>{this.insertMtoF()});
+       }
     }
   },
   mounted() {
@@ -364,18 +363,7 @@ ${strmean}
   },
   watch: {
     tab(val) {
-       if (val == "tab-1") {
-         this.getMean();
-         this.insertMtoF();
-       }
-       if (val == "tab-2") {
-         this.getKanji();
-         this.insertMtoF();
-       }
-       if (val == "tab-3") {
-         this.getExample();
-         this.insertMtoF();
-       }
+       
      }
   }
 };
