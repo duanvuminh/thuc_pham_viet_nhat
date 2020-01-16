@@ -362,6 +362,9 @@ ${strmean}
     //    console.log(this.tabs)
     //  }
     //);
+    if(this.tab=="tab-1"){
+      this.getMean()
+    }
   },
   watch: {
     tab(val) {
