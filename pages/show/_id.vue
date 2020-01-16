@@ -144,7 +144,28 @@ export default {
       show: false,
       searchkey: "",
       tab: null,
-      tabs: [],
+      tabs: [
+      {
+       webo:"",
+       text: "",
+       label: "Oboe"
+      },
+      {
+       webo:"",
+       text: "",
+       label: "Nghĩa"
+      },
+      {
+       webo:"",
+       text: "",
+       label: "Kanji"
+      },
+      {
+       webo:"",
+       text: "",
+       label: "Mẫu"
+      }
+      ],
       valid: true,
       fireObj: {}
     };
@@ -311,55 +332,54 @@ ${strmean}
     // hiển thị nghĩa
     // hiển thị ví dụ
     // hiển thị ngữ pháp
-    this.tabs = [];
-    this.tabs[0] = {
-      webo:"",
-      text: "",
-      label: "Oboe"
-    };
-    this.tabs[1] = {
-      webo:"",
-      text: "",
-      label: "Nghĩa"
-    };
-    this.tabs[2] = {
-      webo:"",
-      text: "",
-      label: "Kanji"
-    };
-    this.tabs[3] = {
-      webo:"",
-      text: "",
-      label: "Mẫu"
-    };
+    // this.tabs = [];
+    //this.tabs[0] = {
+    // webo:"",
+    //  text: "",
+    //  label: "Oboe"
+    //};
+    //this.tabs[1] = {
+    //  webo:"",
+    //  text: "",
+    //  label: "Nghĩa"
+    //};
+    //this.tabs[2] = {
+    //  webo:"",
+    //  text: "",
+    //  label: "Kanji"
+    //};
+    //this.tabs[3] = {
+    //  webo:"",
+    //  text: "",
+    //  label: "Mẫu"
+    //};
     //this.getMean()
-    Promise.all([this.getMean(), this.getKanji(), this.getExample()]).then(
-      () => {
-        this.insertMtoF();
-        this.tab = this.searchkey.length > 1 ? "tab-1" : null;
-        console.log(this.tabs)
-      }
+    //Promise.all([this.getMean(), this.getKanji(), this.getExample()]).then(
+    //  () => {
+    //    this.insertMtoF();
+    //    this.tab = this.searchkey.length > 1 ? "tab-1" : null;
+    //    console.log(this.tabs)
+    //  }
     );
   },
   watch: {
-    // tab(val) {
-    //   if (val == "tab-1") {
-    //     this.getMean().then(() => {
-    //       this.insertMtoF();
-    //     });
-    //   }
-    //   if (val == "tab-2") {
-    //     this.getKanji().then(() => {
-    //       this.insertMtoF();
-    //     });
-    //   }
-    //   if (val == "tab-3") {
-    //     this.getExample().then(() => {
-    //       this.insertMtoF();
-    //     });
-    //   }
-    //   this.$refs.tabs.callSlider();
-    // }
+    tab(val) {
+       if (val == "tab-1") {
+         this.getMean().then(() => {
+           this.insertMtoF();
+         });
+       }
+       if (val == "tab-2") {
+         this.getKanji().then(() => {
+           this.insertMtoF();
+         });
+       }
+       if (val == "tab-3") {
+         this.getExample().then(() => {
+           this.insertMtoF();
+         });
+       }
+     }
   }
 };
 </script>
