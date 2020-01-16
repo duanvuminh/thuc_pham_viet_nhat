@@ -206,9 +206,9 @@ export default {
         .doc(this.searchkey.toLowerCase())
         .set(this.fireObj, { merge: true });
     },
-    getKanji() {
+    async getKanji() {
       //kanji
-      return this.$axios
+      await this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "kanji",
@@ -243,9 +243,9 @@ ${x.detail.replace(/##/g, "")}
           };
         });
     },
-    getExample() {
+    async getExample() {
       // ví dụ
-      return this.$axios
+      await this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "word",
@@ -273,9 +273,9 @@ ${str}
           };
         });
     },
-    getMean() {
+    async getMean() {
       // nghĩa
-      return this.$axios
+      await this.$axios
         .$post("https://mazii.net/api/search", {
           dict: "javi",
           type: "word",
@@ -365,19 +365,16 @@ ${strmean}
   watch: {
     tab(val) {
        if (val == "tab-1") {
-         this.getMean().then(() => {
-           this.insertMtoF();
-         });
+         this.getMean();
+         this.insertMtoF();
        }
        if (val == "tab-2") {
-         this.getKanji().then(() => {
-           this.insertMtoF();
-         });
+         this.getKanji();
+         this.insertMtoF();
        }
        if (val == "tab-3") {
-         this.getExample().then(() => {
-           this.insertMtoF();
-         });
+         this.getExample();
+         this.insertMtoF();
        }
      }
   }
