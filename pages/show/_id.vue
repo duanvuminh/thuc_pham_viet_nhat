@@ -292,7 +292,7 @@ ${str}
             `;
             });
             this.tabs[1].webo= this.webo
-            this.tabs[1].text: `## ${response.data[0].word} 
+            this.tabs[1].text= `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}         
             `
