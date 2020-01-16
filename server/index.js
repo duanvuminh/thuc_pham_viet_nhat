@@ -89,13 +89,17 @@ app.get("/api/dic", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   let params = req.query
   let url=`https://www.weblio.jp/content/${encodeURIComponent(params.id)}`
-  let body = await rp(url)
-  .then()
-  const $ = cheerio.load(body)
-  $('.kijiWrp .kiji .SsdSmlR').remove()
-  $('a').map(item=>{
-    item.attr("href",`/main/show/${item.text()}`)
-  })
+  try{
+    let body = await rp(url)
+    .then()
+    const $ = cheerio.load(body)
+    $('.kijiWrp .kiji .SsdSmlR').remove()
+    $('a').map(item=>{
+      item.attr("href",`/main/show/${item.text()}`)
+    })
+  }catch(e){
+    return res.json({ html: "",message:e})
+  }
   return res.json({ html: $('.kijiWrp .kiji').html() })
 });
 
