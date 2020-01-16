@@ -93,11 +93,11 @@ app.get("/api/dic", async (req, res) => {
     let body = await rp(url)
     .then()
     const $ = cheerio.load(body)
+    $("a").map(function(i, el) {
+    // this === el
+      return $(this).attr("href", `/main/show/${$(this).text()}`);
+    });
     $('.kijiWrp .kiji .SsdSmlR').remove()
-    $('a').map(function(i, el) {
-      // this === el
-      return $(this).attr("href",`/main/show/${$(this).text()}`);
-    })
   }catch(e){
     return res.json({ html: "",message:e.message})
   }
