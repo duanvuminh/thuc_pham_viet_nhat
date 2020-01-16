@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@google-cloud/vision": "^1.7.2",
+    "@nuxtjs/amp": "^0.2.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/markdownit": "^1.2.7",
