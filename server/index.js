@@ -97,6 +97,7 @@ app.get("/api/dic", async (req, res) => {
     $('a').map(function(i, el) {
       // this === el
       $(this).attr("href",`/main/show/${$(this).text()}`);
+      return"";
     })
   }catch(e){
     return res.json({ html: "",message:e.message})
