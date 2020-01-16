@@ -99,7 +99,7 @@ app.get("/api/dic", async (req, res) => {
       // item.attr("href",`/main/show/${item.text()}`)
     })
   }catch(e){
-    return res.json({ html: "",message:e})
+    return res.json({ html: "",message:e.message})
   }
   return res.json({ html: $('.kijiWrp .kiji').html() })
 });
