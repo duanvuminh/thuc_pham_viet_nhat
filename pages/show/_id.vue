@@ -360,7 +360,7 @@ ${strmean}
     //    this.tab = this.searchkey.length > 1 ? "tab-1" : null;
     //    console.log(this.tabs)
     //  }
-    );
+    //);
   },
   watch: {
     tab(val) {
