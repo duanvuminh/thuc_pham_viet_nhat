@@ -14,7 +14,7 @@
           >
             <v-tabs-slider></v-tabs-slider>
 
-            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`" @click="tabclick(index)">{{item.label}}</v-tab>
+            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`" @click="tabclick(`tab-${index}`)">{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
             <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
