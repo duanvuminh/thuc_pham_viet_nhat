@@ -137,7 +137,7 @@ ${strmean}
     return {
       searchkey,
       email,
-      fireObj
+      fireObj,
       items,
       tab,
       tabs,
