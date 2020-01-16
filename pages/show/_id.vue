@@ -101,12 +101,48 @@ export default {
       });
   　 // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
+    let tabs=[]
+    let fireObj={}
+    if(tab=="tab-1"){
+    await $axios
+        .$post("https://mazii.net/api/search", {
+          dict: "javi",
+          type: "word",
+          query: searchkey,
+          limit: 20,
+          page: 1
+        })
+        .then(response => {
+          if (!response.found) {
+            if (!webo) return;
+            tabs[1].webo= this.webo
+          } else {
+            fireObj.isavaiable = true;
+            fireObj.mean = response.data[0];
+            // console.log(response);
+            let strmean = "";
+            response.data[0].means.map(x => {
+              strmean = `${strmean}
+* ${x.mean}(${x.kind ? x.kind : "-"})            
+            `;
+            });
+            tabs[1].webo= webo
+            tabs[1].text= `## ${response.data[0].word} 
+### ${response.data[0].phonetic}
+${strmean}         
+            `
+          }
+        });
+    }
     return {
       searchkey,
       email,
+      fireObj
       items,
       tab,
-      webo
+      tabs,
+      webo,
+      
     };
   },
   beforeCreate() {},
@@ -304,7 +340,6 @@ ${strmean}
     tabclick(val){
        if (val == "tab-1") {
          this.getMean().then(()=>{this.insertMtoF()});
-         
        }
        if (val == "tab-2") {
          this.getKanji().then(()=>{this.insertMtoF()});
@@ -363,7 +398,7 @@ ${strmean}
     //  }
     //);
     if(this.tab=="tab-1"){
-      this.getMean()
+      this.insertMtoF()
     }
   },
   watch: {
