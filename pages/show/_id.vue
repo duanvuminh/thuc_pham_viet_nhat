@@ -100,7 +100,7 @@ export default {
         return r.data.html;
       });
   　 // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
-    tab = searchkey.length > 1 ? "tab-1" : null;
+    let tab = searchkey.length > 1 ? "tab-1" : null;
     return {
       searchkey,
       email,
