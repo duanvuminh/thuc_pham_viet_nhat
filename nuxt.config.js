@@ -50,6 +50,7 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
+    '@nuxtjs/amp',
     'nuxt-compress'
   ],
   markdownit: {
