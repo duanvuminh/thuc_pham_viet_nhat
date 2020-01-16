@@ -24,7 +24,7 @@ export default {
         var doc = parser.parseFromString(r.data.svg, "image/svg+xml");
         var d = doc.documentElement;
         e.appendChild(d);
-        console.log(d);
+        // console.log(d);
         const scheme = [
           "1976D2",
           "D32F2F",

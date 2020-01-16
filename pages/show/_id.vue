@@ -279,6 +279,31 @@ ${str}
           console.log("error", err.response);
         });
     },
+     getExample1() {
+      // ví dụ
+      return this.$axios
+        .get("/api/9gag", {
+          params: {
+            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(this.searchkey)}`
+          }
+        })
+        .then(response => {
+          if (response.data.data.length==0) return;
+          let str = "";
+          response.data.data.map(x => {
+            str = `${str}
+* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x=>x.reading).toString()}]
+${x.senses.map(x=>{return x.english_definitions.toString()}).toString()}
+            `;
+          });
+          this.tabs[3].text += `
+${str}
+            `;
+        })
+        .catch(err => {
+          console.log("error", err.response);
+        });
+    },
     getMean() {
       // nghĩa
       return this.$axios
@@ -329,11 +354,12 @@ ${strmean}
         this.getExample().then(() => {
           this.insertMtoF();
         });
+        this.getExample1();
       }
     }
   },
   mounted() {
-    console.log(this.webo);
+    // console.log(this.webo);
     // console.log("im here");
     firebase
       .firestore()
