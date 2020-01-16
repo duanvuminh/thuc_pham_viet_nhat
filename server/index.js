@@ -87,21 +87,20 @@ app.get("/api/dic", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   // console.log(util.inspect(req, {showHidden: false, depth: 1}))
   // console.log(`/select: ${req.params}`);
-  let params = req.query
-  let url=`https://www.weblio.jp/content/${encodeURIComponent(params.id)}`
-  try{
-    let body = await rp(url)
-    .then()
-    const $ = cheerio.load(body)
+  let params = req.query;
+  let url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
+  try {
+    let body = await rp(url).then();
+    const $ = cheerio.load(body);
     $("a").map(function(i, el) {
-    // this === el
+      // this === el
       return $(this).attr("href", `/main/show/${$(this).text()}`);
     });
-    $('.kijiWrp .kiji .SsdSmlR').remove()
-  }catch(e){
-    return res.json({ html: "",message:e.message})
+    $(".kijiWrp .kiji .SsdSmlR").remove();
+    return res.json({ html: $(".kijiWrp .kiji").html() });
+  } catch (e) {
+    return res.json({ html: "", message: e.message });
   }
-  return res.json({ html: $('.kijiWrp .kiji').html() })
 });
 
 app.get("/api/strokes", async (req, res) => {
