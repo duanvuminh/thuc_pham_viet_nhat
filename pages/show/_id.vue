@@ -26,7 +26,7 @@
               <v-card flat tile>
                 <v-card-text class="pa-2">
                   <template v-if="index==0">
-                    <Strockes :kanji="kanjis" />
+                    <Strockes :kanji="$route.params.id" />
                     <v-textarea
                       :outlined="!readonly"
                       :solo="readonly"
@@ -105,35 +105,26 @@ export default {
         return r.data.html;
       }); // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
-
-    let gTranslate = await $axios
-      .$post(
-        "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-        {
-          q: searchkey,
-          source: "ja",
-          target: "vi",
-          format: "text"
-        }
-      )
-      .then(r => {
-        return r.data.translations[0].translatedText;
-      });
-    let kanjis=[]
-    await Promise.all(
-    searchkey.split('').map( (item,index) => {
-       return $axios.get(`/api/strokes?id=${item.charCodeAt(0).toString(16)}`);
-    })).then(r=>{
-      kanjis=r
-    }).catch(()=>{})
+    
+    let gTranslate = await $axios.$post(
+           "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+           {
+             q: searchkey,
+             source: "ja",
+             target: "vi",
+             format: "text"
+           }
+         )
+         .then(r => {
+          return r.data.translations[0].translatedText;
+         });
     return {
       searchkey,
       email,
       items,
       tab,
       webo,
-      gTranslate,
-      kanjis
+      gTranslate
     };
   },
   beforeCreate() {},
@@ -302,27 +293,21 @@ ${str}
           console.log("error", err.response);
         });
     },
-    getExample1() {
+     getExample1() {
       // ví dụ
       return this.$axios
         .get("/api/9gag", {
           params: {
-            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(
-              this.searchkey
-            )}`
+            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(this.searchkey)}`
           }
         })
         .then(response => {
-          if (response.data.data.length == 0) return;
+          if (response.data.data.length==0) return;
           let str = "";
           response.data.data.map(x => {
             str = `${str}
-* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x => x.reading).toString()}]
-${x.senses
-  .map(x => {
-    return x.english_definitions.toString();
-  })
-  .toString()}
+* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x=>x.reading).toString()}]
+${x.senses.map(x=>{return x.english_definitions.toString()}).toString()}
             `;
           });
           this.tabs[3].text += `
@@ -347,9 +332,9 @@ ${str}
           if (!response.found) {
             if (!this.webo) return;
             this.tabs[1].webo = this.webo;
-            this.tabs[1].text = `## ${this.searchkey}
+            this.tabs[1].text=`## ${this.searchkey}
 ${this.gTranslate}            
-            `;
+            `
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];

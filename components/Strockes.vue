@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row mb-6 flex-wrap" style="overflow-x:auto">
     <div class="d-flex">
-    <div v-for="(item,index) in kanji" :key="index" :ref="`object${index}`"></div>
+      <div v-for="(item,index) in url" :key="index" :ref="`object${item}`"></div>
     </div>
   </div>
 </template>
@@ -14,14 +14,15 @@ export default {
     };
   },
   methods: {
-    // getSvgUrl(str) {
-    //   return str.split("").map(x => {
-    //     let cp = x.charCodeAt(0).toString(16);
-    //     // return `/kanji/0${cp}.svg`;
-    //     // return `https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${cp}.svg`;
-    //     return this.$axios.get(`/api/strokes?id=${cp}`);
-    //   });
-    // },
+   getSvgUrl(str) {
+      this.url=str.split("");
+      return str.split("").map(x => {
+        let cp = x.charCodeAt(0).toString(16);
+        // return `/kanji/0${cp}.svg`;
+        // return `https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${cp}.svg`;
+        return this.$axios.get(`/api/strokes?id=${cp}`).then(r=> {return {id:x,...r}});
+      });
+    },
     link(e, r) {
       var parser = new DOMParser();
       var doc = parser.parseFromString(r.data.svg, "image/svg+xml");
@@ -94,9 +95,14 @@ export default {
     }
   },
   mounted() {
-    this.kanji.forEach((url, index) => {
-      this.link(this.$refs[`object${index}`][0], url);
+    this.getSvgUrl(this.kanji).map(x=>{
+      x.then(r=>{
+        this.link(this.$refs[`object${r.id}`][0], r);
+      })
     });
+    // this.urls.forEach((url,index) => {
+    //   this.link(this.$refs[`object${index}`], url);
+    // });
   },
   props: ["kanji"],
   watch: {}
