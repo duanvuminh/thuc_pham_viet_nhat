@@ -51,7 +51,10 @@ export default {
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
     '@nuxtjs/amp',
-    'nuxt-compress'
+    'nuxt-compress',
+    ['@nuxtjs/google-adsense', {
+      id:'ca-pub-9016732088039840'
+    }]
   ],
   markdownit: {
     injected: true,
