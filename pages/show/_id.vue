@@ -105,12 +105,25 @@ export default {
         return r.data.html;
       }); // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
+    
+    let gTranslate = await $axios.$post(
+           "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+           {
+             q: searchkey,
+             target: "vi",
+             format: "text"
+           }
+         )
+         .then(r => {
+          return r.data.translations[0].translatedText;
+         });
     return {
       searchkey,
       email,
       items,
       tab,
-      webo
+      webo,
+      gTranslate
     };
   },
   beforeCreate() {},
@@ -318,6 +331,9 @@ ${str}
           if (!response.found) {
             if (!this.webo) return;
             this.tabs[1].webo = this.webo;
+            this.tabs[1].text=`## ${this.searchkey}
+${this.gTranslate}            
+            `
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];
@@ -331,7 +347,8 @@ ${str}
             this.tabs[1].webo = this.webo;
             this.tabs[1].text = `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
-${strmean}         
+${strmean}
+${this.gTranslate}         
             `;
           }
         })
@@ -406,7 +423,7 @@ ${strmean}
     //    console.log(this.tabs)
     //  }
     //);
-    if (this.tab == "tab-1") {
+    if (this.tab === "tab-1") {
       this.getMean().then(() => {
         this.insertMtoF();
       });
