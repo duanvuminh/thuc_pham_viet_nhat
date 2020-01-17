@@ -11,15 +11,14 @@ export default {
   },
   methods: {
     getSvgUrl(str) {
-      return str.split("").map(x => {
+      return str.split("").map(async　x => {
         let cp = x.charCodeAt(0).toString(16);
         // return `/kanji/0${cp}.svg`;
         // return `https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${cp}.svg`;
-        return this.$axios.get(`/api/strokes?id=${cp}`);
+        return await this.$axios.get(`/api/strokes?id=${cp}`);
       });
     },
-    async link(e, url) {
-      await url.then(r => {
+   link(e, r) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(r.data.svg, "image/svg+xml");
         var d = doc.documentElement;
@@ -88,7 +87,6 @@ export default {
           ${pathAnimations}
         `;
         d.children[0].appendChild(style);
-      });
     }
   },
   mounted() {
