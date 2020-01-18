@@ -4,9 +4,6 @@
       <v-card
         v-for="(post,index) in posts"
         style="margin-bottom: 2rem;"
-        data-aos="slide-up"
-        data-aos-offset="100"
-        data-aos-easing="ease-out-back"
         :key="index"
         class="ma-2"
         elevation="0"
@@ -27,8 +24,6 @@ const HtmlParser = () => import("@/components/HtmlParser");
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
 export default {
   async asyncData({ params, store, $axios }) {
     let posts = [];
@@ -147,7 +142,6 @@ export default {
     // }
   },
   mounted() {
-    AOS.init();
   }
 };
 </script>

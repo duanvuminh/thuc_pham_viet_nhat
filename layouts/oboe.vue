@@ -1,6 +1,6 @@
 <template>
-  <v-app light v-show="connectedFirebase" ontouchstart>
-    <v-app-bar flat app dark id="app-bar">
+  <v-app light ontouchstart>
+    <!-- <v-app-bar flat app dark id="app-bar">
       <div id="stars"></div>
       <div id="stars2"></div>
       <div id="stars3"></div>
@@ -16,33 +16,71 @@
       </v-btn>
       <v-spacer />
       <v-btn v-if="!loggedIn" text to="/login" class="align-self-center">Login</v-btn>
+    </v-app-bar>-->
+    <v-app-bar
+      absolute
+      color="#6A76AB"
+      dark
+      src="https://picsum.photos/1920/1080?random"
+      prominent
+      shrink-on-scroll
+      fade-img-on-scroll
+      scroll-target="#scrolling-techniques-3"
+      id="app-bar"
+    >
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
+      <template v-slot:img="{ props }">
+        <v-img v-bind="props" gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"></v-img>
+      </template>
+      <v-btn icon class="cj-k headline">覚</v-btn>
+      <v-toolbar-title>Oboe</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item to="/manga">
+            <v-list-item-title>Blog</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/9gag">
+            <v-list-item-title>Otaku</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="!loggedIn" to="/login">
+            <v-list-item-title>Login</v-list-item-title>
+          </v-list-item>
+          <template v-else>
+            <v-divider></v-divider>
+
+            <v-subheader>Admin</v-subheader>
+            <v-list-item v-for="item in items" :key="item.title" :to="item.link">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item to="/logout">
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
+
+      <template v-slot:extension>
+        <v-tabs align-with-title background-color="transparent">
+          <v-tab to="/">Home</v-tab>
+          <v-tab to="/#">Ngữ pháp</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
-    <v-content>
+    <v-sheet id="scrolling-techniques-3" class="overflow-y-auto" height="100vh">
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list-item>
-        <v-list-item-avatar>
-          <img src="/logo.png" alt="oboe" />
-        </v-list-item-avatar>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" :to="item.link">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    </v-sheet>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
@@ -56,7 +94,7 @@
 
 <script>
 import { mapState } from "vuex";
-const HtmlParser = ()=>import("@/components/HtmlParser");
+const HtmlParser = () => import("@/components/HtmlParser");
 
 export default {
   components: {
@@ -69,7 +107,6 @@ export default {
       selectedTextApi: {
         vi: ""
       },
-      drawer: false,
       dialog: false
     };
   },
@@ -99,21 +136,18 @@ export default {
         return [
           {
             title: "Kanji ngẫu nhiên",
-            icon: "book",
             link: "/auth/random"
           },
           //{ title: "About", icon: "question_answer" }
           {
             title: "Request",
-            icon: "mdi-bell-check-outline",
             link: "/auth/request/"
           },
           {
             title: "Manga",
-            icon: "mdi-chat",
             link: "/auth/manga/"
           },
-          { title: "Logout", icon: "mdi-logout", link: "/logout" }
+          //{ title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {
         return [
@@ -121,9 +155,8 @@ export default {
             title: "Kanji ngẫu nhiên",
             icon: "book",
             link: "/auth/random"
-          },
+          }
           //{ title: "About", icon: "question_answer" }
-          { title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       }
     }
@@ -171,6 +204,11 @@ $shadows-big:    multiple-box-shadow(100)
 #app-bar
   background: radial-gradient(ellipse at bottom, #1B2735 0%, black 100%)
   overflow: hidden
+
+#scrolling-techniques-3
+  padding-top:220px
+.cj-k
+  font-family: Hiragino Mincho Pro,ヒラギノ明朝 Pro W3,ＭＳ 明朝,ＭＳ Ｐ明朝,serif
 
 .display-4.nihongo
   font-family: Hiragino Mincho Pro, ヒラギノ明朝 Pro W3, ＭＳ 明朝, ＭＳ Ｐ明朝,

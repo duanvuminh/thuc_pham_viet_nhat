@@ -23,7 +23,6 @@
     "@nuxtjs/pwa": "^3.0.0-beta.19",
     "@nuxtjs/sitemap": "^2.0.1",
     "@nuxtjs/vuetify": "^1.9.1",
-    "aos": "^3.0.0-beta.6",
     "cheerio": "^1.0.0-rc.3",
     "cookieparser": "^0.1.0",
     "firebase": "^7.6.1",
@@ -43,6 +42,7 @@
     "textarea-caret": "^3.1.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-social-sharing": "^2.4.7",
+    "vuetify": "^2.2.4",
     "wanakana": "^4.0.2"
   },
   "devDependencies": {
