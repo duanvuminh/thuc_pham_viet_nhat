@@ -207,7 +207,7 @@ $shadows-big:    multiple-box-shadow(100)
 
 #scrolling-techniques-3
   padding-top:220px
-.cj-k
+.cj-k span
   font-family: Hiragino Mincho Pro,ヒラギノ明朝 Pro W3,ＭＳ 明朝,ＭＳ Ｐ明朝,serif
 
 .display-4.nihongo

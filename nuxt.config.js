@@ -225,7 +225,6 @@ export default {
       shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
       // resourceHints:false
     },
-    resourceHints: false
   },
   /*
   ** router

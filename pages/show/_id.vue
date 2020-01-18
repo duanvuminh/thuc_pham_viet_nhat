@@ -105,19 +105,20 @@ export default {
         return r.data.html;
       }); // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
-    
-    let gTranslate = await $axios.$post(
-           "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-           {
-             q: searchkey,
-             source: "ja",
-             target: "vi",
-             format: "text"
-           }
-         )
-         .then(r => {
-          return r.data.translations[0].translatedText;
-         });
+
+    let gTranslate = await $axios
+      .$post(
+        "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+        {
+          q: searchkey,
+          source: "ja",
+          target: "vi",
+          format: "text"
+        }
+      )
+      .then(r => {
+        return r.data.translations[0].translatedText;
+      });
     return {
       searchkey,
       email,
@@ -293,21 +294,27 @@ ${str}
           console.log("error", err.response);
         });
     },
-     getExample1() {
+    getExample1() {
       // ví dụ
       return this.$axios
         .get("/api/9gag", {
           params: {
-            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(this.searchkey)}`
+            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(
+              this.searchkey
+            )}`
           }
         })
         .then(response => {
-          if (response.data.data.length==0) return;
+          if (response.data.data.length == 0) return;
           let str = "";
           response.data.data.map(x => {
             str = `${str}
-* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x=>x.reading).toString()}]
-${x.senses.map(x=>{return x.english_definitions.toString()}).toString()}
+* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x => x.reading).toString()}]
+${x.senses
+  .map(x => {
+    return x.english_definitions.toString();
+  })
+  .toString()}
             `;
           });
           this.tabs[3].text += `
@@ -316,6 +323,42 @@ ${str}
         })
         .catch(err => {
           console.log("error", err.response);
+        });
+    },
+    getExample2() {
+      // ví dụ
+      this.$axios
+        .$post("https://mazii.net/api/search", {
+          dict: "javi",
+          type: "example",
+          query: this.searchkey,
+          page: 1
+        })
+        .then(response => {
+          //console.log(response);
+          if (!response.results) return;
+          this.fireObj.isavaiable = true;
+          this.fireObj.example1 = response.results;
+          // ví dụ
+          this.$axios
+            .$post("https://mazii.net/api/search", {
+              dict: "javi",
+              type: "example",
+              query: this.searchkey,
+              page: 1
+            })
+            .then(response => {
+              let str = "";
+              response.results.map(x => {
+                str = `${str}
+* ${x.content.replace(/````/g, "")}
+${x.mean.replace(/````/g, "")}
+            `;
+              });
+              this.tabs[3].text += `
+${str}
+            `;
+            });
         });
     },
     getMean() {
@@ -332,9 +375,9 @@ ${str}
           if (!response.found) {
             if (!this.webo) return;
             this.tabs[1].webo = this.webo;
-            this.tabs[1].text=`## ${this.searchkey}
+            this.tabs[1].text = `## ${this.searchkey}
 ${this.gTranslate}            
-            `
+            `;
           } else {
             this.fireObj.isavaiable = true;
             this.fireObj.mean = response.data[0];
@@ -370,6 +413,9 @@ ${strmean}
       }
       if (val == "tab-3") {
         this.getExample().then(() => {
+          this.insertMtoF();
+        });
+        this.getExample2().then(() => {
           this.insertMtoF();
         });
         this.getExample1();

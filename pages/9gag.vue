@@ -10,7 +10,7 @@
         elevation="0"
       >
         <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
-        <v-img class="orange--text align-end" :src="post.url" contain></v-img>
+        <v-img class="orange--text align-end" :lazy-src="post.url" contain></v-img>
       </v-card>
     </v-row>
   </div>

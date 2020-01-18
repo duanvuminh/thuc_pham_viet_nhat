@@ -8,7 +8,7 @@
         class="ma-2"
         elevation="0"
       >
-        <v-img v-if="post.url" class="orange--text align-end" :src="post.url" contain></v-img>
+        <v-img v-if="post.url" class="orange--text align-end" :lazy-src="post.url" contain></v-img>
         <v-card-text>
           <HtmlParser :content="$md.render(post.content)"></HtmlParser>
           <b>{{post.id}}</b>
