@@ -210,4 +210,11 @@ app.post("/api/post1", async (req, res) => {
     })
   res.json({ message: "ok" });
 });
+
+// app.use((req, res, next) => {
+//   res.setHeader("Cache-Control", "public, max-age=31557600, s-maxage=3000");
+//   next();
+// });
+
+
 export default app;

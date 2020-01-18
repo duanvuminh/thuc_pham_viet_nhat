@@ -2,6 +2,18 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
 import getAppRoutes from './server/modules/getRoutes';
 
+const modifyHtml = (html) => {
+  // Add amp-custom tag to added CSS
+  html = html.replace(/<style data-vue-ssr/g, '<style amp-custom data-vue-ssr')
+  // Remove every script tag from generated HTML
+  html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+  // Add AMP script before </head>
+  const ampScript = '<script async src="https://cdn.ampproject.org/v0.js"></script>'
+  const ampSocial = '<script async custom-element="amp-social-share" src="https://cdn.ampproject.org/v0/amp-social-share-0.1.js"></script>'
+  html = html.replace('</head>', ampScript + ampSocial + '</head>')
+  return html
+}
+
 export default {
   mode: 'universal',
   /*
@@ -19,6 +31,12 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
   },
+  // hooks: {
+  //   // This hook is called before rendering the html to the browser
+  //   'render:route': (url, page) => {
+  //     page.html = modifyHtml(page.html)
+  //   }
+  // },
   /*
   ** Customize the progress-bar color
   */
@@ -53,7 +71,7 @@ export default {
     '@nuxtjs/amp',
     'nuxt-compress',
     ['@nuxtjs/google-adsense', {
-      id:'ca-pub-9016732088039840'
+      id: 'ca-pub-9016732088039840'
     }]
   ],
   markdownit: {
@@ -206,7 +224,8 @@ export default {
     bundleRenderer: {
       shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
       // resourceHints:false
-    }
+    },
+    resourceHints: false
   },
   /*
   ** router
