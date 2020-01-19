@@ -63,14 +63,20 @@
       <template v-slot:extension>
         <v-tabs align-with-title background-color="transparent">
           <v-tab to="/">Home</v-tab>
-          <v-tab to="/manga">Blog</v-tab>
           <v-tab to="/9gag">Otaku</v-tab>
+          <v-tab to="/manga">Blog</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
-    <v-container id="scrolling-techniques-3" class="overflow-y-auto" height="100vh">
+    <v-sheet
+      id="scrolling-techniques-3"
+      class="overflow-y-auto"
+      max-height="100vh"
+    >
+    <v-container>
       <nuxt />
     </v-container>
+    </v-sheet>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
