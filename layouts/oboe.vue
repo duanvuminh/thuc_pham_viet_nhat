@@ -46,19 +46,10 @@
         </template>
 
         <v-list>
-          <v-list-item to="/manga">
-            <v-list-item-title>Blog</v-list-item-title>
-          </v-list-item>
-          <v-list-item to="/9gag">
-            <v-list-item-title>Otaku</v-list-item-title>
-          </v-list-item>
           <v-list-item v-if="!loggedIn" to="/login">
             <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
           <template v-else>
-            <v-divider></v-divider>
-
-            <v-subheader>Admin</v-subheader>
             <v-list-item v-for="item in items" :key="item.title" :to="item.link">
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
@@ -72,15 +63,14 @@
       <template v-slot:extension>
         <v-tabs align-with-title background-color="transparent">
           <v-tab to="/">Home</v-tab>
-          <v-tab to="/#">Ngữ pháp</v-tab>
+          <v-tab to="/manga">Blog</v-tab>
+          <v-tab to="/9gag">Otaku</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
-    <v-sheet id="scrolling-techniques-3" class="overflow-y-auto" height="100vh">
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-sheet>
+    <v-container id="scrolling-techniques-3" class="overflow-y-auto" height="100vh">
+      <nuxt />
+    </v-container>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
@@ -129,15 +119,15 @@ export default {
     loggedIn() {
       return this.$store.state.loggedIn;
     },
-    ...mapState(["user", "connectedFirebase"]),
+    ...mapState(["user"]),
     items() {
       // is triggered whenever the store state changes
       if (this.user.email == "duanvuminh@gmail.com") {
         return [
-          {
-            title: "Kanji ngẫu nhiên",
-            link: "/auth/random"
-          },
+          // {
+          //   title: "Kanji ngẫu nhiên",
+          //   link: "/auth/random"
+          // },
           //{ title: "About", icon: "question_answer" }
           {
             title: "Request",
@@ -146,16 +136,16 @@ export default {
           {
             title: "Manga",
             link: "/auth/manga/"
-          },
+          }
           //{ title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {
         return [
-          {
-            title: "Kanji ngẫu nhiên",
-            icon: "book",
-            link: "/auth/random"
-          }
+          // {
+          //   title: "Kanji ngẫu nhiên",
+          //   icon: "book",
+          //   link: "/auth/random"
+          // }
           //{ title: "About", icon: "question_answer" }
         ];
       }
@@ -206,7 +196,7 @@ $shadows-big:    multiple-box-shadow(100)
   overflow: hidden
 
 #scrolling-techniques-3
-  padding-top:220px
+  padding-top:240px
 .cj-k span
   font-family: Hiragino Mincho Pro,ヒラギノ明朝 Pro W3,ＭＳ 明朝,ＭＳ Ｐ明朝,serif
 

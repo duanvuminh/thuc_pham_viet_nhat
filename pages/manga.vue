@@ -1,19 +1,28 @@
 <template>
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
     <v-row align="center" justify="center">
-      <v-card
-        v-for="(post,index) in posts"
-        style="margin-bottom: 2rem;"
-        :key="index"
-        class="ma-2"
-        elevation="0"
-      >
-        <v-img v-if="post.url" class="orange--text align-end" :lazy-src="post.url" contain></v-img>
-        <v-card-text>
-          <HtmlParser :content="$md.render(post.content)"></HtmlParser>
-          <b>{{post.id}}</b>
-        </v-card-text>
-      </v-card>
+      <template v-for="(post,index) in posts">
+        <v-fade-transition mode="out-in" :key="index">
+          <v-card
+            style="margin-bottom: 2rem;"
+            :key="index"
+            class="ma-2"
+            elevation="0"
+          >
+            <v-img
+              v-if="post.url"
+              class="orange--text align-end"
+              :lazy-src="post.url"
+              :src="post.url"
+              contain
+            ></v-img>
+            <v-card-text>
+              <HtmlParser :content="$md.render(post.content)"></HtmlParser>
+              <b>{{post.id}}</b>
+            </v-card-text>
+          </v-card>
+        </v-fade-transition>
+      </template>
     </v-row>
   </div>
 </template>
@@ -141,7 +150,6 @@ export default {
     //     });
     // }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
