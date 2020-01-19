@@ -68,15 +68,11 @@
         </v-tabs>
       </template>
     </v-app-bar>
-    <v-sheet
-      id="scrolling-techniques-3"
-      class="overflow-y-auto"
-      max-height="100vh"
-    >
-    <v-container>
-      <nuxt />
-    </v-container>
-    </v-sheet>
+    <v-content id="scrolling-techniques-3" class="overflow-y-auto" style="max-height:100vh">
+      <v-container>
+        <nuxt />
+      </v-container>
+    </v-content>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
@@ -202,7 +198,7 @@ $shadows-big:    multiple-box-shadow(100)
   overflow: hidden
 
 #scrolling-techniques-3
-  padding-top:240px
+  padding-top:240px!important
 .cj-k span
   font-family: Hiragino Mincho Pro,ヒラギノ明朝 Pro W3,ＭＳ 明朝,ＭＳ Ｐ明朝,serif
 
