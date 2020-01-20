@@ -99,26 +99,10 @@ export default {
       })
       .then();
     let searchkey = params.id;
-    let webo = await $axios
-      .get(`/api/dic?id=${encodeURIComponent(searchkey)}`)
-      .then(r => {
-        return r.data.html;
-      }); // webo = webo.includes(encodeURIComponent(searchkey)) ? webo : "";
+    let webo = ""
     let tab = searchkey.length > 1 ? "tab-1" : null;
 
-    let gTranslate = await $axios
-      .$post(
-        "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-        {
-          q: searchkey,
-          source: "ja",
-          target: "vi",
-          format: "text"
-        }
-      )
-      .then(r => {
-        return r.data.translations[0].translatedText;
-      });
+    let gTranslate = "";
     return {
       searchkey,
       email,
@@ -392,7 +376,7 @@ ${this.gTranslate}
             this.tabs[1].text = `## ${response.data[0].word} 
 ### ${response.data[0].phonetic}
 ${strmean}
-* ${this.gTranslate}         
+${this.gTranslate?("* " + this.gTranslate):""}         
             `;
           }
         })
@@ -475,6 +459,28 @@ ${strmean}
         this.insertMtoF();
       });
     }
+    this.$axios
+      .get(`/api/dic?id=${encodeURIComponent(this.searchkey)}`)
+      .then(r => {
+        this.webo=r.data.html;
+        this.tabs[1].webo = this.webo;
+      }); 
+    this.$axios
+      .$post(
+        "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
+        {
+          q: this.searchkey,
+          source: "ja",
+          target: "vi",
+          format: "text"
+        }
+      )
+      .then(r => {
+        this.gTranslate= r.data.translations[0].translatedText;
+        this.tabs[1].text += `
+* ${this.gTranslate}        
+        `;
+      });
   },
   watch: {
     tab(val) {}
