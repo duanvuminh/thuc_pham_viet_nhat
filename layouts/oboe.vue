@@ -193,6 +193,9 @@ $shadows-small:  multiple-box-shadow(700)
 $shadows-medium: multiple-box-shadow(200)
 $shadows-big:    multiple-box-shadow(100)
 
+html
+  overflow-y: auto
+
 #app-bar
   background: radial-gradient(ellipse at bottom, #1B2735 0%, black 100%)
   overflow: hidden
