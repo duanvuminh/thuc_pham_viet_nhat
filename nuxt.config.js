@@ -192,7 +192,7 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     //treeShake: false,
     theme: {
-      disable: true,
+      // disable: true,
       // themes: {
       //   dark: {
       //     primary: colors.blue.darken2,
