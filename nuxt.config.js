@@ -190,7 +190,7 @@ export default {
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    treeShake: false,
+    //treeShake: false,
     theme: {
       disable: true,
       // themes: {
