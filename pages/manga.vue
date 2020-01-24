@@ -31,7 +31,7 @@ export default {
     let posts = [];
     let lastId = "";
     let limit = 5;
-
+    try {
     await firebase
       .firestore()
       .collection("manga")
@@ -52,6 +52,9 @@ export default {
           lastId = doc.id;
         });
       });
+    }catch (err) {
+      console.log(err);
+    }
     return { posts, lastId, limit };
   },
   beforeCreate() {},
@@ -59,6 +62,7 @@ export default {
     HtmlParser
   },
   created() {
+    if(this.lastId){
     firebase
       .firestore()
       .collection("manga")
@@ -73,6 +77,35 @@ export default {
           .startAfter(this.last)
           .limit(this.limit);
       });
+    }else{
+     firebase
+      .firestore()
+      .collection("manga")
+      .orderBy("edited", "desc")
+      .limit(5)
+      .get()
+      .then(documentSnapshots => {
+        // Get the last visible document
+        // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+        // Construct a new query starting at this document,
+        // get the next 25 cities.
+        documentSnapshots.forEach(doc => {
+          this.posts.push({
+            id: doc.id,
+            url: doc.data().url,
+            content: doc.data().content
+          });
+          this.lastId = doc.id;
+          this.last = doc;
+      });
+      this.next = firebase
+            .firestore()
+            .collection("manga")
+            .orderBy("edited", "desc")
+            .startAfter(this.last)
+            .limit(this.limit);
+        });
+    }
   },
   computed: {
     ...mapState(["user", "connectedFirebase"])
