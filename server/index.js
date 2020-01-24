@@ -87,8 +87,26 @@ app.get("/api/dic", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   // console.log(util.inspect(req, {showHidden: false, depth: 1}))
   // console.log(`/select: ${req.params}`);
+  let result=""
   let params = req.query;
-  let url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
+  let url = `https://kotobank.jp/word/${encodeURIComponent(params.id)}`;
+  try {
+    let body = await rp(url).then();
+    const $ = cheerio.load(body);
+    $("a").map(function(i, el) {
+      // this === el
+      return $(this).attr("href", `/show/${$(this).text()}`);
+    });
+    $(".pc-iframe-ad").remove();
+    $(".dictype.cf").map(function(i, el) {
+      // this === el
+      //return $(this).attr("href", `/show/${$(this).text()}`);
+      result+=$(this).html()
+    });
+  } catch (e) {
+    return res.json({ html: "", message: e.message });
+  }
+  url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
   try {
     let body = await rp(url).then();
     const $ = cheerio.load(body);
@@ -97,7 +115,9 @@ app.get("/api/dic", async (req, res) => {
       return $(this).attr("href", `/show/${$(this).text()}`);
     });
     $(".kijiWrp .kiji .SsdSmlR").remove();
-    return res.json({ html: $(".kijiWrp .kiji").html() });
+    return res.json({ html: `
+${result}    
+${$(".kijiWrp .kiji").html()}` });
   } catch (e) {
     return res.json({ html: "", message: e.message });
   }
