@@ -33,6 +33,28 @@ app.get("/api/get_all_primatives", async (req, res) => {
   res.json(desserts);
 });
 
+//admin.auth().getUserByEmail(email)
+app.get("/api/user", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  try {
+    let user = await admin.auth().getUserByEmail(req.query.id)
+    let name = user.displayName
+      ? user.displayName
+      : user.providerData[0].displayName;
+    let email = user.email ? user.email : user.providerData[0].email;
+    if (!name) {
+      name = email.split("@")[0];
+    }
+    let photoURL = user.photoURL
+      ? user.photoURL
+      : user.providerData[0].photoURL;
+    res.json({ name, email, photoURL });
+  } catch (ex) {
+    console.log(ex)
+    res.json({ name: "", email: "", photoURL: "" })
+  }
+});
+
 app.get("/api/get_random_primatives", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   let db = admin.firestore();
@@ -87,40 +109,45 @@ app.get("/api/dic", async (req, res) => {
   // console.log(`/select: ${req.params}`);
   // console.log(util.inspect(req, {showHidden: false, depth: 1}))
   // console.log(`/select: ${req.params}`);
-  let result=""
+  let result = ""
   let params = req.query;
   let url = `https://kotobank.jp/word/${encodeURIComponent(params.id)}`;
   try {
     let body = await rp(url).then();
     const $ = cheerio.load(body);
-    $("a").map(function(i, el) {
+    $("a").map(function (i, el) {
       // this === el
       return $(this).attr("href", `/show/${$(this).text()}`);
     });
     $(".pc-iframe-ad").remove();
-    $(".dictype.cf").map(function(i, el) {
+    $("img").remove();
+    $(".dictype.cf").map(function (i, el) {
       // this === el
       //return $(this).attr("href", `/show/${$(this).text()}`);
-      result+=$(this).html()
+      result += $(this).html()
     });
   } catch (e) {
-    return res.json({ html: "", message: e.message });
+    // return res.json({ html: "", message: e.message });
   }
   url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
   try {
     let body = await rp(url).then();
     const $ = cheerio.load(body);
-    $("a").map(function(i, el) {
+    $("a").map(function (i, el) {
       // this === el
       return $(this).attr("href", `/show/${$(this).text()}`);
     });
+    $("img").remove();
     $(".kijiWrp .kiji .SsdSmlR").remove();
-    return res.json({ html: `
+    return res.json({
+      html: `
 ${result}    
-${$(".kijiWrp .kiji").html()}` });
+${$(".kijiWrp .kiji").html()}`
+    });
   } catch (e) {
-    return res.json({ html: "", message: e.message });
+    // return res.json({ html: "", message: e.message });
   }
+  return res.json({ html: "", message: e.message });
 });
 
 app.get("/api/strokes", async (req, res) => {

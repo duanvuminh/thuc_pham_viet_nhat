@@ -487,3 +487,8 @@ ${this.gTranslate?("* " + this.gTranslate):""}
   }
 };
 </script>
+<style > 
+table{
+  width: auto
+}
+</style>

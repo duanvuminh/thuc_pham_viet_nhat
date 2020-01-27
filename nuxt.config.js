@@ -167,7 +167,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://oboemasu.com/',
+    // baseURL: 'https://oboemasu.com/',
     // baseURL: 'http://localhost:3000/',
     // proxy: true,
     // proxyHeaders: false,

@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
-    <v-row align="center" justify="center">
+    <v-row align="start" justify="center">
       <template v-for="(post,index) in posts">
           <v-card style="margin-bottom: 2rem;" :key="index" class="ma-2" elevation="0">
             <v-card-text>

@@ -1,0 +1,28 @@
+<template>
+  <div>
+    <v-avatar :size="size" v-if="photoURL" class="ma-2">
+      <img :src="photoURL" :alt="name" />
+    </v-avatar>
+    <v-avatar :size="size" v-else color="indigo">
+      <span class="white--text headline">{{name.split("")[0]}}</span>
+    </v-avatar>
+  </div>
+</template>
+<script>
+import firebase from "firebase/app";
+import "firebase/auth";
+export default {
+  async mounted() {
+    let {name,email,photoURL} = await this.$axios.get(`/api/user?id=${this.email}`).then(r=>{ return r.data})
+    this.name = name
+    this.photoURL = photoURL
+  },
+  data() {
+    return {
+      name: "",
+      photoURL: ""
+    };
+  },
+  props: ["size","email"]
+};
+</script>
