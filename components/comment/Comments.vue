@@ -7,18 +7,30 @@
       <add :size="40" :rows="3" :never_hide="true"></add>
     </v-col>
     <v-col cols="12">
-      <comment v-for="(item,index) in comments" :key="index" :comment="item"></comment>
+      <comment v-for="(item,index) in comments" :key="index" :comment="item" @add="add(val,item.id)" :isRoot="true">
+        <v-col cols="12" class="mt-0 pt-0">
+          <div class="d-flex justify-start">
+            <div class="ml-9 flex-grow-1">
+              <comment
+                v-for="(item_sub,index_sub) in item.commentSub"
+                :key="index_sub"
+                :comment="item_sub"
+                @add="add(val,item.id)"
+                :isRoot="false"
+              ></comment>
+            </div>
+          </div>
+        </v-col>
+      </comment>
     </v-col>
   </v-row>
 </template>
 <script>
-const avartar = () => import("./Avartar");
 const comment = () => import("./Comment");
 const add = () => import("./Add");
 
 export default {
   components: {
-    avartar,
     comment,
     add
   },
@@ -29,34 +41,50 @@ export default {
       email: this.$store.state.user.email,
       comments: [
         {
+          id:1,
           userEmail: "duanvuminh@gmail.com",
+          time: "2020/01/28 23:30",
           comment: "Ghét nhất bọn azumi",
           liked: 3,
           dislike: 1,
+          for:null,
           commentSub: [
             {
+              id:2,
               userEmail: "tes2@gmail.com",
+              time: "2020/01/28 23:30",
               comment: "Ghét nhất bọn azumi",
               liked: 3,
-              dislike: 1
+              dislike: 1,
+              for:null
             },
             {
+              id:3,
               userEmail: "tes3@gmail.com",
+              time: "2020/01/28 23:30",
               comment: "Ghét nhất bọn azumi",
-              for: "tes2@gmail.com",
+              for: "duanvuminh@gmail.com",
               liked: 3,
-              dislike: 1
+              dislike: 1,
             }
           ]
         },
         {
+          id:4,
           userEmail: "tes4@gmail.com",
+          time: "2020/01/28 23:30",
           comment: "Ghét nhất đội thám tử nhí chưa gì đã ra kết luận",
           liked: 3,
-          dislike: 1
+          dislike: 1,
+          for:null,
         }
       ]
     };
+  },
+  methods:{
+    add(val,id){
+      let parent = this.comments.filter(x=>x.id==id)
+    }
   }
 };
 </script>

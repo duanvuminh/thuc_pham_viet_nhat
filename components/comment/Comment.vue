@@ -1,75 +1,56 @@
 <template>
   <v-row>
-    <v-col cols="12">
-      <v-hover v-slot:default="{ hover }">
-        <div class="d-flex justify-start">
+    <v-col cols="12" class="mb-0 pb-0">
+      <div class="d-flex justify-start">
+        <template>
           <avartar :size="size" :email="comment.userEmail"></avartar>
-          <div class="ml-1">
+          <div class="ml-1 flex-grow-1">
             <article>
               <header>
-                <b>Vũ Minh Duẩn</b>
-                <small>2020/1/25 23:30</small>
+                <b>{{comment.userName}}</b>
+                <small>{{comment.time}}</small>
               </header>
-              <div>Paris is the capital and most populous city of France.Paris is the capital and most populous city of France.</div>
+              <div>
+                <v-chip small color="red" text-color="white" v-if="comment.for">{{from}}</v-chip>
+                {{comment.comment}}
+              </div>
               <footer></footer>
             </article>
-            <div class="d-flex justify-start">
-              <v-btn text icon>
-                <v-icon>mdi-thumb-up</v-icon>
-              </v-btn>
-              <span></span>
-              <v-btn text icon>
-                <v-icon>mdi-thumb-down</v-icon>
-              </v-btn>
-              <span></span>
-              <v-btn text @click="showAdd=!showAdd">Trả lời</v-btn>
-            </div>
-            <add :size="25" :rows="1" v-if="showAdd" @setShowAdd="setShowAdd"></add>
-          </div>
-          <v-menu left bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" v-if="hover">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-              <v-btn icon v-on="on" v-else disabled></v-btn>
-            </template>
 
-            <v-list>
-              <v-list-item-group color="primary">
-                <template v-if="email==comment.userEmail">
-                  <v-list-item dense>
-                    <v-list-item-icon>
-                      <v-icon>edit</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>Chỉnh sửa</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item dense>
-                    <v-list-item-icon>
-                      <v-icon>delete</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>Xoá</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-                <template v-else>
-                  <v-list-item dense>
-                    <v-list-item-icon>
-                      <v-icon>flag</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>Báo cáo</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-hover>
+            <div class="d-flex justify-start align-center">
+              <v-btn text icon>
+                <v-icon small>mdi-thumb-up</v-icon>
+              </v-btn>
+              <span>{{comment.liked}}</span>
+              <v-btn text icon>
+                <v-icon small>mdi-thumb-down</v-icon>
+              </v-btn>
+              <span>{{comment.dislike}}</span>
+              <v-btn text @click="showAdd=!showAdd" small>Trả lời</v-btn>
+              <v-btn
+                text
+                v-if="comment.commentSub&&comment.commentSub.length>0"
+                small
+                @click="showComment=!showComment"
+                fab
+              >
+                <v-icon dark>{{showComment?"mdi-menu-up":" mdi-menu-down"}}</v-icon>
+              </v-btn>
+            </div>
+            <add
+              :size="30"
+              :rows="1"
+              v-if="showAdd"
+              @setShowAdd="setShowAdd"
+              @add="add"
+              :isRoot="isRoot"
+              :from="comment.userName"
+            ></add>
+          </div>
+        </template>
+      </div>
     </v-col>
+    <slot v-if="showComment"></slot>
   </v-row>
 </template>
 <script>
@@ -83,20 +64,62 @@ export default {
     avartar,
     add
   },
+  computed: {
+    editMode() {
+      if (this.action == "edit") {
+        return true;
+      }
+      return false;
+    }
+  },
   data() {
     return {
+      action: null,
       email: this.$store.state.user.email,
       size: 40,
       showAdd: false,
-      value: true
+      showComment: false,
+      value: true,
+      from: ""
     };
   },
-  mounted() {},
-  methods: {
-    setShowAdd(val) {
-      this.showAdd = val;
+  async mounted() {
+    if (this.comment.for) {
+      let { name, email, photoURL } = await this.$axios
+        .get(`/api/user?id=${this.comment.for}`)
+        .then(r => {
+          return r.data;
+        });
+      this.from = name;
+    }
+    let { name, email, photoURL } = await this.$axios
+      .get(`/api/user?id=${this.comment.userEmail}`)
+      .then(r => {
+        return r.data;
+      });
+    this.comment.userName = name;
+    if (!this.comment.isRoot) {
+      this.size = 30;
     }
   },
-  props: ["comment"]
+  methods: {
+    add(comment) {
+      this.$emit("add", comment);
+    },
+    setShowAdd(val) {
+      this.showAdd = val;
+    },
+    setShowEdit(val) {
+      this.action = null;
+    }
+  },
+  props: ["comment","isRoot"],
+  watch: {
+    action(val) {
+      if (val == "delete") {
+        this.$emit("deleteComment", this.comment);
+      }
+    }
+  }
 };
 </script>
