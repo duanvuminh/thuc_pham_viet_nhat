@@ -7,7 +7,7 @@
       <add :size="40" :rows="3" :never_hide="true" @add="addRoot"></add>
     </v-col>
     <v-col cols="12">
-      <comment v-for="(item,index) in comments" :key="index" :comment="item" @add="add" :isRoot="true" :rootId="item.id">
+      <comment v-for="item in comments" :key="item.id" :comment="item" @add="add" :isRoot="true" :rootId="item.id">
         <v-col cols="12" class="mt-0 pt-0">
           <div class="d-flex justify-start">
             <div class="ml-9 flex-grow-1">
