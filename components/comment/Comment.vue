@@ -8,7 +8,7 @@
             <article>
               <header>
                 <b>{{comment.userName}}</b>
-                <small>{{comment.time}}</small>
+                <small>{{timeText}}</small>
               </header>
               <div>
                 <v-chip small color="red" text-color="white" v-if="comment.for">{{from}}</v-chip>
@@ -69,19 +69,50 @@ export default {
       if (this.action == "edit") {
         return true;
       }
-      return false;
-    }
+    },
+    timeText(){
+      var seconds = Math.floor((this.now - this.comment.time) / 1000);
+
+      var interval = Math.floor(seconds / 31536000);
+
+      if (interval > 1) {
+        return this.formatDate(this.comment.time);
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+        return this.formatDate(this.comment.time);
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+        return this.formatDate(this.comment.time);
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+        return interval + " giờ trước";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+        return interval + " phút trước";
+      }
+      return (Math.floor(seconds)>0 ? Math.floor(seconds) : 1) + " giây trước";
+   }
   },
   data() {
     return {
       action: null,
       email: this.$store.state.user.email,
+      now: Date.now(),
       size: 40,
       showAdd: false,
       showComment: false,
       value: true,
       from: ""
     };
+  },
+  created(){
+   setInterval(()=> {
+         this.now = Date.now()
+      }, 30000)
   },
   async mounted() {
     if (this.comment.for) {
@@ -104,7 +135,20 @@ export default {
   },
   methods: {
     add(comment) {
+      comment.rootId = this.rootId;
+      comment.for = this.comment.userEmail;
       this.$emit("add", comment);
+      this.showComment = true;
+    },
+    formatDate(date) {
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      let strTime = hours + ':' + minutes + ' ' + ampm;
+      return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
     },
     setShowAdd(val) {
       this.showAdd = val;
@@ -113,7 +157,7 @@ export default {
       this.action = null;
     }
   },
-  props: ["comment","isRoot"],
+  props: ["comment","isRoot","rootId"],
   watch: {
     action(val) {
       if (val == "delete") {

@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" class="mb-1 py-0 pr-3">
       <v-textarea
-        placeholder="Bạn hãy viết gì đó"
+        :placeholder="`${email?'Bạn hãy viết gì đó':'Đăng nhập'}`"
         :rows="rows"
         auto-grow
         v-model="commentText"
@@ -10,6 +10,7 @@
         @click="showAction=true"
         :hint="`Trả lời ${from}`"
         persistent-hint
+        :readonly= "!email"
       >
         <div slot="prepend">
           <avartar :size="size" :email="email"></avartar>
@@ -20,7 +21,7 @@
       <template v-if="showAction">
         <v-spacer></v-spacer>
         <v-btn text small @click="reset">Huỷ</v-btn>
-        <v-btn text small>Thêm</v-btn>
+        <v-btn text small @click="$emit('add',messageAdd)">Thêm</v-btn>
       </template>
     </v-col>
     <v-col cols="12" class="d-flex ma-0 pa-0 pr-3" v-else>
@@ -61,7 +62,7 @@ export default {
     messageAdd() {
       return {
         userEmail: this.email,
-        time: "vài giây trước",
+        time: new Date(),
         comment: this.commentText,
         for: this.from,
         liked: 0,
