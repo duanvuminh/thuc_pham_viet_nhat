@@ -18,16 +18,16 @@
       </v-textarea>
     </v-col>
     <v-col cols="12" class="d-flex ma-0 pa-0 pr-3" v-if="never_hide">
-      <template v-if="showAction">
+      <template v-if="showAction && email">
         <v-spacer></v-spacer>
         <v-btn text small @click="reset">Huỷ</v-btn>
-        <v-btn text small @click="$emit('add',messageAdd)">Thêm</v-btn>
+        <v-btn text small @click="$emit('add',messageAdd)" :disabled="!commentText">Thêm</v-btn>
       </template>
     </v-col>
-    <v-col cols="12" class="d-flex ma-0 pa-0 pr-3" v-else>
+    <v-col cols="12" class="d-flex ma-0 pa-0 pr-3" v-else-if="email">
       <v-spacer></v-spacer>
       <v-btn text small @click="$emit('setShowAdd', false)">Huỷ</v-btn>
-      <v-btn text small @click="$emit('add', messageAdd)">Thêm</v-btn>
+      <v-btn text small @click="$emit('add', messageAdd)" :disabled="!commentText">Thêm</v-btn>
     </v-col>
   </v-row>
 </template>
