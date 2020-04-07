@@ -44,12 +44,14 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-
         <v-list>
           <v-list-item v-if="!loggedIn" to="/login">
             <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
-          <template v-else>
+          <v-list-item to="/manga">
+              <v-list-item-title>Blog</v-list-item-title>
+          </v-list-item>
+          <template v-if="loggedIn">
             <v-list-item v-for="item in items" :key="item.title" :to="item.link">
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
@@ -64,7 +66,6 @@
         <v-tabs align-with-title background-color="transparent">
           <v-tab to="/">Home</v-tab>
           <v-tab to="/9gag">Otaku</v-tab>
-          <v-tab to="/manga">Blog</v-tab>
           <v-tab to="/forum">Forum</v-tab>
         </v-tabs>
       </template>
@@ -182,8 +183,7 @@ export default {
 };
 </script>
 <style lang="sass">
-/* @import compass */
-@function multiple-box-shadow ($n) 
+@function multiple-box-shadow ($n)
   $value: '#{random(2000)}px #{random(2000)}px #FFF'
   @for $i from 2 through $n
     $value: '#{$value} , #{random(2000)}px #{random(2000)}px #FFF'
@@ -202,7 +202,7 @@ html
   overflow: hidden
 
 #scrolling-techniques-3
-  padding-top:240px!important
+  padding-top: 240px!important
 .cj-k span
   font-family: Hiragino Mincho Pro,ヒラギノ明朝 Pro W3,ＭＳ 明朝,ＭＳ Ｐ明朝,serif
 
@@ -212,14 +212,14 @@ html
 
 img
   max-width: 100%
- 
+
 #stars
   width: 1px
   height: 1px
   background: transparent
   box-shadow: $shadows-small
   animation         : animStar 50s linear infinite
-    
+
   &:after
     content: " "
     position: absolute
@@ -228,14 +228,14 @@ img
     height: 1px
     background: transparent
     box-shadow: $shadows-small
-    
+
 #stars2
   width: 2px
   height: 2px
   background: transparent
   box-shadow: $shadows-medium
   animation         : animStar 100s linear infinite
-    
+
   &:after
     content: " "
     position: absolute
@@ -244,14 +244,14 @@ img
     height: 2px
     background: transparent
     box-shadow: $shadows-medium
-    
+
 #stars3
   width: 3px
   height: 3px
   background: transparent
   box-shadow: $shadows-big
   animation         : animStar 150s linear infinite
-    
+
   &:after
     content: " "
     position: absolute
@@ -266,26 +266,25 @@ img
   top: 50%
   left: 0
   right: 0
-  
+
   color: #FFF
   text-align: center
   font-family: 'lato',sans-serif
   font-weight: 300
   font-size: 50px
   letter-spacing: 10px
-  
+
   margin-top: -60px
   padding-left: 10px
-  
+
   span
     background: -webkit-linear-gradient(white, #38495a)
     -webkit-background-clip: text
     -webkit-text-fill-color: transparent
-    
+
 @keyframes animStar
-  from  
+  from
     transform: translateY(0px)
-  to        
+  to
     transform: translateY(-2000px)
-    
 </style>

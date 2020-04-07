@@ -1,8 +1,9 @@
 <template>
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
-    <v-row align="start" justify="center">
-      <template v-for="(post,index) in posts">
-          <v-card style="margin-bottom: 2rem;" :key="index" class="ma-2" elevation="0">
+    <v-col cols="12">
+      <v-row align="start" justify="center">
+        <template v-for="(post,index) in posts">
+          <v-card style="margin-bottom: 2rem;width:100%" :key="index" class="ma-2" elevation="0">
             <v-card-text>
               <v-img
                 v-if="post.url"
@@ -15,8 +16,9 @@
               <b>{{post.id}}</b>
             </v-card-text>
           </v-card>
-      </template>
-    </v-row>
+        </template>
+      </v-row>
+    </v-col>
   </div>
 </template>
 <script>
@@ -32,27 +34,27 @@ export default {
     let lastId = "";
     let limit = 5;
     try {
-    await firebase
-      .firestore()
-      .collection("manga")
-      .orderBy("edited", "desc")
-      .limit(5)
-      .get()
-      .then(documentSnapshots => {
-        // Get the last visible document
-        // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        // Construct a new query starting at this document,
-        // get the next 25 cities.
-        documentSnapshots.forEach(doc => {
-          posts.push({
-            id: doc.id,
-            url: doc.data().url,
-            content: doc.data().content
+      await firebase
+        .firestore()
+        .collection("manga")
+        .orderBy("edited", "desc")
+        .limit(5)
+        .get()
+        .then(documentSnapshots => {
+          // Get the last visible document
+          // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+          // Construct a new query starting at this document,
+          // get the next 25 cities.
+          documentSnapshots.forEach(doc => {
+            posts.push({
+              id: doc.id,
+              url: doc.data().url,
+              content: doc.data().content
+            });
+            lastId = doc.id;
           });
-          lastId = doc.id;
         });
-      });
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
     return { posts, lastId, limit };
@@ -62,43 +64,43 @@ export default {
     HtmlParser
   },
   created() {
-    if(this.lastId){
-    firebase
-      .firestore()
-      .collection("manga")
-      .doc(this.lastId)
-      .get()
-      .then(doc => {
-        this.last = doc;
-        this.next = firebase
-          .firestore()
-          .collection("manga")
-          .orderBy("edited", "desc")
-          .startAfter(this.last)
-          .limit(this.limit);
-      });
-    }else{
-     firebase
-      .firestore()
-      .collection("manga")
-      .orderBy("edited", "desc")
-      .limit(5)
-      .get()
-      .then(documentSnapshots => {
-        // Get the last visible document
-        // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        // Construct a new query starting at this document,
-        // get the next 25 cities.
-        documentSnapshots.forEach(doc => {
-          this.posts.push({
-            id: doc.id,
-            url: doc.data().url,
-            content: doc.data().content
-          });
-          this.lastId = doc.id;
+    if (this.lastId) {
+      firebase
+        .firestore()
+        .collection("manga")
+        .doc(this.lastId)
+        .get()
+        .then(doc => {
           this.last = doc;
-      });
-      this.next = firebase
+          this.next = firebase
+            .firestore()
+            .collection("manga")
+            .orderBy("edited", "desc")
+            .startAfter(this.last)
+            .limit(this.limit);
+        });
+    } else {
+      firebase
+        .firestore()
+        .collection("manga")
+        .orderBy("edited", "desc")
+        .limit(5)
+        .get()
+        .then(documentSnapshots => {
+          // Get the last visible document
+          // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+          // Construct a new query starting at this document,
+          // get the next 25 cities.
+          documentSnapshots.forEach(doc => {
+            this.posts.push({
+              id: doc.id,
+              url: doc.data().url,
+              content: doc.data().content
+            });
+            this.lastId = doc.id;
+            this.last = doc;
+          });
+          this.next = firebase
             .firestore()
             .collection("manga")
             .orderBy("edited", "desc")
@@ -124,7 +126,7 @@ export default {
       titleTemplate: `%s - Học tiếng nhật với manga`
     };
   },
-  layout: "oboe",
+  layout: "forum",
   methods: {
     loadMore() {
       if (!this.next.firestore) return;
