@@ -1,6 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
 import getAppRoutes from './server/modules/getRoutes';
+import axios from 'axios';
+import { cacheAdapterEnhancer } from 'axios-extensions';
 
 const modifyHtml = (html) => {
   // Add amp-custom tag to added CSS
@@ -46,6 +48,7 @@ export default {
   */
   css: [
     // 'vuetify/dist/vuetify.css'
+    'simplemde/dist/simplemde.min.css',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -167,11 +170,17 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    // baseURL: 'https://oboemasu.com/',
+    baseURL: 'https://oboemasu.com/',
     // baseURL: 'http://localhost:3000/',
     // proxy: true,
     // proxyHeaders: false,
     // credentials: false
+    headers: { "Cache-Control": "no-cache" },
+    // disable the default cache and set the cache flag
+    adapter: cacheAdapterEnhancer(axios.defaults.adapter, {
+      enabledByDefault: false,
+      cacheFlag: "useCache"
+    })
   },
   /*
   ** compress
@@ -202,8 +211,8 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
-         }
-       }
+        }
+      }
     }
   },
   /*

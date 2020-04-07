@@ -65,6 +65,7 @@
           <v-tab to="/">Home</v-tab>
           <v-tab to="/9gag">Otaku</v-tab>
           <v-tab to="/manga">Blog</v-tab>
+          <v-tab to="/forum">Forum</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>

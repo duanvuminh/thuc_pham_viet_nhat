@@ -97,7 +97,7 @@ export default {
       titleTemplate: `%s - Danh sách các nét cơ bản của Kanji`
     };
   },
-  layout: "oboe",
+  layout: "forum",
   methods: {}
 };
 </script>

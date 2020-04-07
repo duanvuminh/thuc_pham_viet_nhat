@@ -180,7 +180,7 @@ export default {
       titleTemplate: `%s - cách nhớ ${this.searchkey}`
     };
   },
-  layout: "oboe",
+  layout: "forum",
   methods: {
     async saveandshare() {
       this.loading = true;

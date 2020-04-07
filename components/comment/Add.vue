@@ -21,13 +21,13 @@
       <template v-if="showAction && email">
         <v-spacer></v-spacer>
         <v-btn text small @click="reset">Huỷ</v-btn>
-        <v-btn color="primary" small @click="$emit('add',messageAdd)" :disabled="!commentText">Thêm</v-btn>
+        <v-btn color="primary" small @click="$emit('add',messageAdd);commentText='';" :disabled="!commentText">Thêm</v-btn>
       </template>
     </v-col>
     <v-col cols="12" class="d-flex ma-0 pa-0 pr-3" v-else>
       <v-spacer></v-spacer>
-      <v-btn text small @click="$emit('setShowAdd', false)">Huỷ</v-btn>
-      <v-btn color="primary" small @click="$emit('add', messageAdd)" :disabled="!commentText">Thêm</v-btn>
+      <v-btn text small @click="$emit('setShowAdd', false);commentText='';">Huỷ</v-btn>
+      <v-btn color="primary" small @click="$emit('add', messageAdd);commentText='';$emit('setShowAdd', false);" :disabled="!commentText">Thêm</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     reset() {
-      this.text = "";
+      this.commentText = "";
       this.showAction = false;
     }
   },

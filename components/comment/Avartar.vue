@@ -13,7 +13,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 export default {
   async mounted() {
-    let {name,email,photoURL} = await this.$axios.get(`/api/user?id=${this.email}`).then(r=>{ return r.data})
+    let {name,email,photoURL} = await this.$axios.get(`/api/user?id=${this.email}`,{ useCache: true }).then(r=>{ return r.data})
     this.name = name
     this.photoURL = photoURL
   },

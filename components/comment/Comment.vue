@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" class="mb-0 pb-0">
+    <v-col cols="12" class="mb-0 pb-0 pt-0">
       <div class="d-flex justify-start">
         <template>
           <avartar :size="size" :email="comment.userEmail"></avartar>
@@ -21,20 +21,22 @@
               <v-btn text icon>
                 <v-icon small>mdi-thumb-up</v-icon>
               </v-btn>
-              <span>{{comment.liked}}</span>
+              <span v-if="liked">{{liked}}</span>
               <v-btn text icon>
                 <v-icon small>mdi-thumb-down</v-icon>
               </v-btn>
-              <span>{{comment.dislike}}</span>
-              <v-btn text @click="showAdd=!showAdd" small>Trả lời</v-btn>
+              <span v-if="dislike">{{dislike}}</span>
+              <v-btn text @click="showAdd=!showAdd" small fab>
+                <v-icon dark small>mdi-message-reply-text</v-icon>
+              </v-btn>
               <v-btn
                 text
                 v-if="comment.commentSub&&comment.commentSub.length>0"
                 small
                 @click="showComment=!showComment"
-                fab
+                color="primary"
               >
-                <v-icon dark>{{showComment?"mdi-menu-up":" mdi-menu-down"}}</v-icon>
+                <v-icon dark>{{showComment?"mdi-menu-up":" mdi-menu-down"}}</v-icon><small>{{showComment?"Ẩn trả lời":"Hiện trả lời"}}</small>
               </v-btn>
             </div>
             <add
@@ -44,7 +46,7 @@
               @setShowAdd="setShowAdd"
               @add="add"
               :isRoot="isRoot"
-              :from="comment.userName"
+              :from="replyFrom"
             ></add>
           </div>
         </template>
@@ -95,18 +97,25 @@ export default {
         return interval + " phút trước";
       }
       return (Math.floor(seconds)>0 ? Math.floor(seconds) : 1) + " giây trước";
+   },
+   replyFrom(){
+     console.log(this.rootEmail)
+     console.log(this.$store.state.user.email)
+     return this.rootEmail!=this.$store.state.user.email? this.comment.userName:'chính mình';
    }
   },
   data() {
     return {
       action: null,
+      dislike:"",
       email: this.$store.state.user.email,
+      liked:"",
       now: Date.now(),
-      size: 40,
+      size: 30,
       showAdd: false,
       showComment: false,
       value: true,
-      from: ""
+      from: "",
     };
   },
   created(){
@@ -129,8 +138,8 @@ export default {
         return r.data;
       });
     this.comment.userName = name;
-    if (!this.comment.isRoot) {
-      this.size = 30;
+    if (this.comment.isRoot) {
+      this.size = 40;
     }
   },
   methods: {
@@ -157,7 +166,7 @@ export default {
       this.action = null;
     }
   },
-  props: ["comment","isRoot","rootId"],
+  props: ["comment","isRoot","rootId","rootEmail"],
   watch: {
     action(val) {
       if (val == "delete") {
