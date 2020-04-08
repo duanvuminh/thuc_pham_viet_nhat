@@ -67,7 +67,7 @@ async function url() {
     let routes2 = result1.map(x => {
         return `/articles/${x.id}`;
     })
-    routes = routes1.concat(routes2);
+    let routes = routes1.concat(routes2);
     routes.push('/')
     return routes;
 }
