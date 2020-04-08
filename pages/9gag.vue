@@ -2,7 +2,7 @@
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
     <v-row align="start" justify="center">
       <template v-for="(post,index) in posts">
-        <v-card style="margin-bottom: 2rem;" class="ma-2" elevation="0" :key="index">
+        <v-card style="margin-bottom: 2rem; width:100%" class="ma-2" elevation="0" :key="index">
           <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
           <v-card-text>
             <v-img class="orange--text align-end" :src="post.url" contain></v-img>
