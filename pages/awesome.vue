@@ -51,7 +51,7 @@ Bạn tìm câu tiếng nhật bạn thích học thuộc lòng và cố đọc 
       titleTemplate: `%s - Tổng hợp tài liệu học tiếng Nhật`
     };
   },
-  layout: "oboe",
+  layout: "forum",
   methods: {
     
   },

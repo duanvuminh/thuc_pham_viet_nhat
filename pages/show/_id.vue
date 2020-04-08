@@ -18,7 +18,6 @@
               v-for="(item,index) in tabs"
               :key="index"
               :href="`#tab-${index}`"
-              @click="tabclick(`tab-${index}`)"
             >{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
@@ -159,16 +158,6 @@ export default {
           webo: "",
           text: "",
           label: "Nghĩa"
-        },
-        {
-          webo: "",
-          text: "",
-          label: "Kanji"
-        },
-        {
-          webo: "",
-          text: "",
-          label: "Mẫu"
         }
       ],
       valid: true,
@@ -201,209 +190,6 @@ export default {
         }
       });
       this.loading = false;
-    },
-    insertMtoF() {
-      //insert mazzi to firestore
-      if (!this.fireObj.isavaiable) return;
-      firebase
-        .firestore()
-        .collection("opendic")
-        .doc(this.searchkey.toLowerCase())
-        .set(this.fireObj, { merge: true });
-    },
-    getKanji() {
-      //kanji
-      return this.$axios
-        .$post("https://mazii.net/api/search", {
-          dict: "javi",
-          type: "kanji",
-          query: this.searchkey,
-          page: 1
-        })
-        .then(response => {
-          //console.log(response);
-          if (!response.results) return;
-          this.fireObj.isavaiable = true;
-          this.fireObj.kanji = response.results;
-          let strG = "";
-          response.results.map(x => {
-            let str = "";
-            x.compDetail
-              ? x.compDetail.map(x => {
-                  str = `${str} ${x.w}: ${x.h}`;
-                })
-              : "";
-            strG = `${strG}
-## ${x.kanji}
-KunYomi: ${x.kun ? x.kun : ""}        
-OnYomi: ${x.on ? x.on : ""} 
-Bộ: ${x.mean}  
-Bộ con: ${str}  
-${x.detail.replace(/##/g, "")}        
-            `;
-          });
-          this.tabs[2].text = strG;
-        })
-        .catch(err => {
-          console.log("error", err.response);
-        });
-    },
-    getExample() {
-      // ví dụ
-      return this.$axios
-        .$post("https://mazii.net/api/search", {
-          dict: "javi",
-          type: "word",
-          query: this.searchkey,
-          page: 1
-        })
-        .then(response => {
-          //console.log(response);
-          if (!response.found) return;
-          this.fireObj.isavaiable = true;
-          this.fireObj.example = response.data;
-          // ví dụ
-          let str = "";
-          response.data.map(x => {
-            str = `${str}
-* ${x.word.replace(/````/g, "")}[${x.phonetic}]
-${x.means[0].mean.replace(/````/g, "")}
-            `;
-          });
-          this.tabs[3].text = `
-${str}
-            `;
-        })
-        .catch(err => {
-          console.log("error", err.response);
-        });
-    },
-    getExample1() {
-      // ví dụ
-      return this.$axios
-        .get("/api/9gag", {
-          params: {
-            id: `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(
-              this.searchkey
-            )}`
-          }
-        })
-        .then(response => {
-          if (response.data.data.length == 0) return;
-          let str = "";
-          response.data.data.map(x => {
-            str = `${str}
-* ${x.slug.replace(/````/g, "")}[${x.japanese.map(x => x.reading).toString()}]
-${x.senses
-  .map(x => {
-    return x.english_definitions.toString();
-  })
-  .toString()}
-            `;
-          });
-          this.tabs[3].text += `
-${str}
-            `;
-        })
-        .catch(err => {
-          console.log("error", err.response);
-        });
-    },
-    getExample2() {
-      // ví dụ
-      this.$axios
-        .$post("https://mazii.net/api/search", {
-          dict: "javi",
-          type: "example",
-          query: this.searchkey,
-          page: 1
-        })
-        .then(response => {
-          //console.log(response);
-          if (!response.results) return;
-          this.fireObj.isavaiable = true;
-          this.fireObj.example1 = response.results;
-          // ví dụ
-          this.$axios
-            .$post("https://mazii.net/api/search", {
-              dict: "javi",
-              type: "example",
-              query: this.searchkey,
-              page: 1
-            })
-            .then(response => {
-              let str = "";
-              response.results.map(x => {
-                str = `${str}
-* ${x.content.replace(/````/g, "")}
-${x.mean.replace(/````/g, "")}
-            `;
-              });
-              this.tabs[3].text += `
-${str}
-            `;
-            });
-        });
-    },
-    getMean() {
-      // nghĩa
-      return this.$axios
-        .$post("https://mazii.net/api/search", {
-          dict: "javi",
-          type: "word",
-          query: this.searchkey,
-          limit: 20,
-          page: 1
-        })
-        .then(response => {
-          if (!response.found) {
-            if (!this.webo) return;
-            this.tabs[1].webo = this.webo;
-            this.tabs[1].text = `## ${this.searchkey}
-${this.gTranslate}            
-            `;
-          } else {
-            this.fireObj.isavaiable = true;
-            this.fireObj.mean = response.data[0];
-            // console.log(response);
-            let strmean = "";
-            response.data[0].means.map(x => {
-              strmean = `${strmean}
-* ${x.mean}(${x.kind ? x.kind : "-"})            
-            `;
-            });
-            this.tabs[1].webo = this.webo;
-            this.tabs[1].text = `## ${response.data[0].word} 
-### ${response.data[0].phonetic}
-${strmean}
-${this.gTranslate?("* " + this.gTranslate):""}         
-            `;
-          }
-        })
-        .catch(err => {
-          console.log("error", err.response);
-        });
-    },
-    tabclick(val) {
-      if (val == "tab-1") {
-        this.getMean().then(() => {
-          this.insertMtoF();
-        });
-      }
-      if (val == "tab-2") {
-        this.getKanji().then(() => {
-          this.insertMtoF();
-        });
-      }
-      if (val == "tab-3") {
-        this.getExample().then(() => {
-          this.insertMtoF();
-        });
-        this.getExample2().then(() => {
-          this.insertMtoF();
-        });
-        this.getExample1();
-      }
     }
   },
   mounted() {
@@ -454,33 +240,12 @@ ${this.gTranslate?("* " + this.gTranslate):""}
     //    console.log(this.tabs)
     //  }
     //);
-    if (this.tab === "tab-1") {
-      this.getMean().then(() => {
-        this.insertMtoF();
-      });
-    }
     this.$axios
       .get(`/api/dic?id=${encodeURIComponent(this.searchkey)}`)
       .then(r => {
         this.webo=r.data.html;
         this.tabs[1].webo = this.webo;
       }); 
-    this.$axios
-      .$post(
-        "https://translation.googleapis.com/language/translate/v2?key=AIzaSyCgybxabzEcfCXOeZHVrwVenvrtY7OkV3M",
-        {
-          q: this.searchkey,
-          source: "ja",
-          target: "vi",
-          format: "text"
-        }
-      )
-      .then(r => {
-        this.gTranslate= r.data.translations[0].translatedText;
-        this.tabs[1].text += `
-* ${this.gTranslate}        
-        `;
-      });
   },
   watch: {
     tab(val) {}
