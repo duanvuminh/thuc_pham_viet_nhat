@@ -49,10 +49,25 @@ async function url() {
             });
             return docs;
         });
-
-    let routes = result.map(x => {
+    let result1 = await db
+        .collection("forum")
+        .get()
+        .then((querySnapshot) => {
+            let docs = [];
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                //console.log(doc.id, " => ", doc.data());
+                docs.push({ id: doc.id, ...doc.data() })
+            });
+            return docs;
+        });
+    let routes1 = result.map(x => {
         return `/show/${x.id}`;
     })
+    let routes2 = result1.map(x => {
+        return `/articles/${x.id}`;
+    })
+    routes = routes1.concat(routes2);
     routes.push('/')
     return routes;
 }
