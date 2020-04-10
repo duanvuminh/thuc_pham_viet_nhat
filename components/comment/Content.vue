@@ -32,8 +32,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="save">Save</v-btn>
               <v-btn text @click="dialog = false">Close</v-btn>
+              <v-btn color="primary" text @click="save" :disabled="checkLength">Thêm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -45,7 +45,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 const avartar = () => import("./Avartar");
-const HtmlParser=()=>import("@/components/HtmlParser")
+const HtmlParser = () => import("@/components/HtmlParser");
 
 export default {
   components: {
@@ -53,6 +53,13 @@ export default {
     HtmlParser
   },
   computed: {
+    checkLength() {
+      if (!this.commentText) {
+        return true;
+      } else {
+        return !(this.commentText.length > 10);
+      }
+    },
     timeText() {
       var seconds = Math.floor((this.now - this.content.time) / 1000);
 

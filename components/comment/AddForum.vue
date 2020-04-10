@@ -36,13 +36,13 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
+                  <v-btn text @click="dialog = false">Close</v-btn>
                   <v-btn
                     color="primary"
                     text
                     @click="$emit('add',messageAdd);commentText='';dialog = false"
                     :disabled="checkLength"
-                  >Save</v-btn>
-                  <v-btn text @click="dialog = false">Close</v-btn>
+                  >Thêm</v-btn> 
                 </v-card-actions>
               </v-card>
             </v-dialog>
