@@ -16,7 +16,7 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </header>
-              <div v-html="$md.render(content.content)"></div>
+              <HtmlParser :content="$md.render(content.content)"></HtmlParser>
             </article>
           </div>
         </template>
@@ -45,10 +45,12 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 const avartar = () => import("./Avartar");
+const HtmlParser=()=>import("@/components/HtmlParser")
 
 export default {
   components: {
-    avartar
+    avartar,
+    HtmlParser
   },
   computed: {
     timeText() {

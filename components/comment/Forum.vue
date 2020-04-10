@@ -17,15 +17,14 @@ export default {
     oContent
   },
   created() {},
+  computed: {},
   data() {
     return {
       busy: false,
       contents: [],
       email: this.$store.state.user.email,
       limit: 10,
-      last: null,
       lastID: null,
-      next: null,
       now: 1
     };
   },
@@ -43,50 +42,71 @@ export default {
     loadMore() {
       if (!this.lastID) return;
       this.busy = true;
-      this.next.get().then(documentSnapshots => {
-        // Get the last visible document
-        documentSnapshots.forEach(async doc => {
-          this.contents.push({
-            id: doc.id,
-            creator: doc.data().creator,
-            content: doc.data().content,
-            time: new Date(doc.data().time.seconds * 1e3),
-            type: doc.data().type
-          });
+      firebase
+        .firestore()
+        .collection(this.collectionUrl)
+        .doc(this.lastID)
+        .get()
+        .then(last => {
+          if (this.type != "mypage") {
+            return firebase
+              .firestore()
+              .collection(this.collectionUrl)
+              .where("type", "==", this.type)
+              .where(
+                "date",
+                this.date ? "==" : "<",
+                this.date ? this.date : "99999999"
+              )
+              .orderBy(this.date ? "time" : "date", "desc")
+              .startAfter(last)
+              .limit(this.limit)
+              .get()
+              .then(documentSnapshots => {
+                // Get the last visible document
+                documentSnapshots.forEach(doc => {
+                  this.lastID = doc.id;
+                  this.contents.push({
+                    id: doc.id,
+                    creator: doc.data().creator,
+                    content: doc.data().content,
+                    time: new Date(doc.data().time.seconds * 1e3),
+                    type: doc.data().type
+                  });
+                });
+                this.busy = false;
+              });
+          } else {
+            firebase
+              .firestore()
+              .collection(this.collectionUrl)
+              //.where("creator", "==", this.email)
+              .where("type", "==", this.type)
+              .where(
+                "date",
+                this.date ? "==" : "<",
+                this.date ? this.date : "99999999"
+              )
+              .orderBy(this.date ? "time" : "date", "desc")
+              .startAfter(last)
+              .limit(this.limit)
+              .get()
+              .then(documentSnapshots => {
+                // Get the last visible document
+                documentSnapshots.forEach(doc => {
+                  this.lastID = doc.id;
+                  this.contents.push({
+                    id: doc.id,
+                    creator: doc.data().creator,
+                    content: doc.data().content,
+                    time: new Date(doc.data().time.seconds * 1e3),
+                    type: doc.data().type
+                  });
+                });
+                this.busy = false;
+              });
+          }
         });
-        this.busy = false;
-        this.last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        if (!this.last) return;
-        // Construct a new query starting at this document,
-        // get the next 25 cities.
-        if (this.type != "mypage") {
-          this.next = firebase
-            .firestore()
-            .collection(this.collectionUrl)
-            .where("type", "==", this.type)
-            .where(
-              "date",
-              this.date ? "==" : "<",
-              this.date ? this.date : "99999999"
-            )
-            .orderBy(this.date ? "time" : "date", "desc")
-            .startAfter(this.last)
-            .limit(this.limit);
-        } else {
-          this.next = firebase
-            .firestore()
-            .collection(this.collectionUrl)
-            .where("creator", "==", this.email)
-            .where(
-              "date",
-              this.date ? "==" : "<",
-              this.date ? this.date : "99999999"
-            )
-            .orderBy(this.date ? "time" : "date", "desc")
-            .startAfter(this.last)
-            .limit(this.limit);
-        }
-      });
     }
   },
   mounted() {
@@ -118,25 +138,14 @@ export default {
                 type: doc.data().type,
                 time: new Date(doc.data().time.seconds * 1e3)
               });
-              this.next = firebase
-                .firestore()
-                .collection(this.collectionUrl)
-                .where("type", "==", this.type)
-                .where(
-                  "date",
-                  this.date ? "==" : "<",
-                  this.date ? this.date : "99999999"
-                )
-                .orderBy(this.date ? "time" : "date", "desc")
-                .startAfter(doc)
-                .limit(this.limit);
             });
           });
       } else {
         firebase
           .firestore()
           .collection(this.collectionUrl)
-          .where("creator", "==", this.email)
+          //.where("creator", "==", this.email)
+          .where("type", "==", this.type)
           .where(
             "date",
             this.date ? "==" : "<",
@@ -159,18 +168,6 @@ export default {
                 type: doc.data().type,
                 time: new Date(doc.data().time.seconds * 1e3)
               });
-              this.next = firebase
-                .firestore()
-                .collection(this.collectionUrl)
-                .where("creator", "==", this.email)
-                .where(
-                  "date",
-                  this.date ? "==" : "<",
-                  this.date ? this.date : "99999999"
-                )
-                .orderBy(this.date ? "time" : "date", "desc")
-                .startAfter(doc)
-                .limit(this.limit);
             });
           });
       }

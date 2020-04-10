@@ -36,7 +36,12 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" text @click="$emit('add',messageAdd);commentText='';dialog = false">Save</v-btn>
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="$emit('add',messageAdd);commentText='';dialog = false"
+                    :disabled="checkLength"
+                  >Save</v-btn>
                   <v-btn text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
               </v-card>
@@ -65,7 +70,7 @@
               color="primary"
               small
               @click="$emit('add',messageAdd);commentText='';"
-              :disabled="!commentText"
+              :disabled="checkLength"
             >Thêm</v-btn>
           </template>
         </v-col>
@@ -150,6 +155,13 @@ export default {
         date: this.formatDate(new Date()),
         type: this.type
       };
+    },
+    checkLength() {
+      if (!this.commentText) {
+        return true;
+      } else {
+        return !(this.commentText.length > 10);
+      }
     }
   }
 };

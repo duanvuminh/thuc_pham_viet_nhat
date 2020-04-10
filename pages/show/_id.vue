@@ -14,11 +14,7 @@
           >
             <v-tabs-slider></v-tabs-slider>
 
-            <v-tab
-              v-for="(item,index) in tabs"
-              :key="index"
-              :href="`#tab-${index}`"
-            >{{item.label}}</v-tab>
+            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
             <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
@@ -98,17 +94,17 @@ export default {
       })
       .then();
     let searchkey = params.id;
-    let webo = ""
+    let webo = "";
     let tab = searchkey.length > 1 ? "tab-1" : null;
-
-    let gTranslate = "";
+    await $axios.get(`/api/dic?id=${encodeURIComponent(searchkey)}`).then(r => {
+      webo = r.data.html;
+    });
     return {
       searchkey,
       email,
       items,
       tab,
-      webo,
-      gTranslate
+      webo
     };
   },
   beforeCreate() {},
@@ -207,6 +203,7 @@ export default {
           this.commentvi = doc.data().vi;
         }
       });
+    this.tabs[1].webo = this.webo;
     // init tab
     // hiển thị nghĩa
     // hiển thị ví dụ
@@ -240,20 +237,14 @@ export default {
     //    console.log(this.tabs)
     //  }
     //);
-    this.$axios
-      .get(`/api/dic?id=${encodeURIComponent(this.searchkey)}`)
-      .then(r => {
-        this.webo=r.data.html;
-        this.tabs[1].webo = this.webo;
-      }); 
   },
   watch: {
     tab(val) {}
   }
 };
 </script>
-<style > 
-table{
-  width: auto
+<style >
+table {
+  width: auto;
 }
 </style>
