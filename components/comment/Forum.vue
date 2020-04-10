@@ -80,7 +80,7 @@ export default {
             firebase
               .firestore()
               .collection(this.collectionUrl)
-              //.where("creator", "==", this.email)
+              .where("creator", "==", this.email)
               .where("type", "==", this.type)
               .where(
                 "date",
@@ -144,7 +144,7 @@ export default {
         firebase
           .firestore()
           .collection(this.collectionUrl)
-          //.where("creator", "==", this.email)
+          .where("creator", "==", this.email)
           .where("type", "==", this.type)
           .where(
             "date",
