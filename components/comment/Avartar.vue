@@ -3,8 +3,8 @@
     <v-avatar :size="size" v-if="photoURL" class="ma-2">
       <img :src="photoURL" :alt="name" />
     </v-avatar>
-    <v-avatar :size="size" v-else color="indigo" class="ma-2">
-      <span class="white--text headline">{{name.split("")[0]}}</span>
+    <v-avatar :size="size" v-else-if="name" color="indigo" class="ma-2">
+      <span class="white--text headline">{{name?name.split("")[0]:"^_^"}}</span>
     </v-avatar>
   </div>
 </template>

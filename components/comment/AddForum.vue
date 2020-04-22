@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card :class="!showAction?'mx-auto elevation-0 mb-0':'mx-auto pa-5'" :outlined="showAction&&email">
+    <v-card :class="!(showAction&&email)?'mx-auto elevation-0 mb-0':'mx-auto pa-5'" :outlined="showAction&&email">
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">
           <v-textarea
