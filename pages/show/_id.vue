@@ -13,7 +13,6 @@
             ref="tabs"
           >
             <v-tabs-slider></v-tabs-slider>
-
             <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" touchless>
@@ -22,38 +21,43 @@
                 <v-card-text class="pa-2">
                   <template v-if="index==0">
                     <Strockes :kanji="$route.params.id" />
-                    <v-textarea
-                      :outlined="!readonly"
-                      :solo="readonly"
-                      :flat="readonly"
-                      label="Thêm cách nhớ của bạn"
-                      auto-grow
-                      v-model="commentvi"
-                      rows="1"
-                      :loading="loading"
-                      :readonly="readonly"
-                      :placeholder="placeholder"
-                      @focus="show = true"
-                      hide-details
-                    />
-                    <v-row v-if="show1">
-                      <v-spacer />
-                      <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-                      <v-btn
-                        class="ma-2"
-                        color="success"
-                        @click="saveandshare"
-                        small
-                        text
-                      >Lưu&chia sẻ</v-btn>
-                      <v-btn class="ma-2" text @click="show=false" small>Huỷ</v-btn>
-                    </v-row>
-                    <HtmlParser
-                      v-show="show1"
-                      class="elevation-1 pa-2 mb-3"
-                      v-if="commentvi!=''"
-                      :content="$md.render(commentvi)"
-                    ></HtmlParser>
+                    <v-btn icon @click="showEdit=!showEdit">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <div v-if="$store.state.loggedIn" v-show="showEdit">
+                      <v-textarea
+                        :outlined="!readonly"
+                        :solo="readonly"
+                        :flat="readonly"
+                        label="Thêm cách nhớ của bạn"
+                        :auto-grow="showEdit"
+                        v-model="commentvi"
+                        :loading="loading"
+                        :readonly="readonly"
+                        @focus="show = true"
+                        hide-details
+                      />
+                      <v-row v-if="show1">
+                        <v-spacer />
+                        <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+                        <v-btn
+                          class="ma-2"
+                          color="success"
+                          @click="saveandshare"
+                          small
+                          text
+                        >Lưu&chia sẻ</v-btn>
+                        <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
+                      </v-row>
+                      <HtmlParser
+                        v-show="show1"
+                        class="elevation-1 pa-2 mb-3 deep-purple accent-1"
+                        v-if="commentvi!=''"
+                        :content="$md.render(commentvi)"
+                      >
+                        <h3>Preview</h3>
+                      </HtmlParser>
+                    </div>
                     <v-row>
                       <v-col cols="12" v-for="(oboe,i) in items" :key="i">
                         <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
@@ -95,15 +99,10 @@ export default {
       .then();
     let searchkey = params.id;
     let webo = "";
-    let tab = searchkey.length > 1 ? "tab-1" : null;
-    await $axios.get(`/api/dic?id=${encodeURIComponent(searchkey)}`).then(r => {
-      webo = r.data.html;
-    });
     return {
       searchkey,
       email,
       items,
-      tab,
       webo
     };
   },
@@ -142,8 +141,9 @@ export default {
       loading: false,
       loading1: false,
       show: false,
+      showEdit: false,
       searchkey: "",
-      tab: null,
+      tab: "",
       tabs: [
         {
           webo: "",
@@ -155,9 +155,7 @@ export default {
           text: "",
           label: "Nghĩa"
         }
-      ],
-      valid: true,
-      fireObj: {}
+      ]
     };
   },
   head() {
@@ -203,7 +201,13 @@ export default {
           this.commentvi = doc.data().vi;
         }
       });
-    this.tabs[1].webo = this.webo;
+    this.$axios
+      .get(`/api/dic?id=${encodeURIComponent(this.searchkey)}`)
+      .then(r => {
+        this.webo = r.data.html;
+        this.tabs[1].webo = this.webo;
+      });
+
     // init tab
     // hiển thị nghĩa
     // hiển thị ví dụ
@@ -238,9 +242,7 @@ export default {
     //  }
     //);
   },
-  watch: {
-    tab(val) {}
-  }
+  watch: {}
 };
 </script>
 <style >

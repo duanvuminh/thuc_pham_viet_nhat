@@ -2,6 +2,7 @@
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
     <v-row class="mb-5 pb-5">
       <v-col cols="12">
+        <h4 v-if="type=='mypage'" class="mb-3 text-center">Put your stuff here to note</h4>
         <oContent v-for="item in contents" :key="item.id" :content="item"></oContent>
       </v-col>
     </v-row>
