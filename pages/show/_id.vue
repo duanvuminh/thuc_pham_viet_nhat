@@ -93,7 +93,7 @@ export default {
     let items = await $axios
       .$get("/api/get_post_by_id", {
         params: {
-          id: params.id
+          id: params.id[0]
         }
       })
       .then();
@@ -169,7 +169,7 @@ export default {
       this.loading = true;
       let items = await this.$axios.$post("/api/post1", null, {
         params: {
-          searchkey: this.searchkey,
+          searchkey: this.searchkey[0],
           vi: this.commentvi
         }
       });
@@ -179,7 +179,7 @@ export default {
       this.loading = true;
       let items = await this.$axios.$post("/api/post", null, {
         params: {
-          searchkey: this.searchkey,
+          searchkey: this.searchkey[0],
           vi: this.commentvi
         }
       });
@@ -192,7 +192,7 @@ export default {
     firebase
       .firestore()
       .collection("kanji")
-      .doc(this.searchkey)
+      .doc(this.searchkey[0])
       .collection("oboe")
       .doc(this.email)
       .get()
