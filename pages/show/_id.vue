@@ -20,7 +20,7 @@
               <v-card flat tile>
                 <v-card-text class="pa-2">
                   <template v-if="index==0">
-                    <Strockes :kanji="$route.params.id" />
+                    <Strockes :kanji="$route.params.id[0]" />
                     <v-btn icon @click="showEdit=!showEdit">
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
