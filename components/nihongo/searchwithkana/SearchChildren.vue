@@ -5,7 +5,8 @@
       label="Search"
       prepend-inner-icon="mdi-magnify"
       clearable
-      @keydown="search"
+      @blur="search"
+      @keypress="search1"
       v-model="textModel"
       :loading="loading"
       :disabled="disabled"
@@ -46,9 +47,9 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-import 'firebase/storage';
+import "firebase/storage";
 // import Handwriting from "@/components/Handwriting";
-const Handwriting = ()=>import("@/components/Handwriting")
+const Handwriting = () => import("@/components/Handwriting");
 export default {
   components: {
     Handwriting
@@ -59,8 +60,8 @@ export default {
       sheet: false,
       loading: false,
       textModel: "",
-      dialog:false,
-      files: [],
+      dialog: false,
+      files: []
     };
   },
   computed: {
@@ -69,11 +70,11 @@ export default {
     }
   },
   methods: {
-    emitActive(){
+    emitActive() {
       this.$emit("active", !this.active);
     },
     handwriting(value) {
-      this.textModel=this.textModel?this.text:"";
+      this.textModel = this.textModel ? this.text : "";
       this.textModel += value;
       this.sheet = false;
     },
@@ -89,7 +90,7 @@ export default {
       if (!files.length) return;
       Promise.all(
         // Array of "Promises"
-      [files[0]].map(item => {
+        [files[0]].map(item => {
           var ref = firebase
             .storage()
             .ref("vision/" + this.$store.state.user.email + "/visionimg");
@@ -99,9 +100,18 @@ export default {
         })
       ).then(url => {
         //console.log(encodeURI(url[0]))
-        this.$store.commit("setVision",url[0])
+        this.$store.commit("setVision", url[0]);
         this.$router.push("/auth/vision");
       });
+    },
+    search(e) {
+      this.$emit("keydown", e);
+      if (!this.textModel) return;
+      this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (this.textModel && this.$route.params.id != this.textModel) {
+        this.loading = true;
+        this.$router.push(`/show/${this.textModel.toLowerCase()}`);
+      }
     },
     search(e) {
       this.$emit("keydown", e);

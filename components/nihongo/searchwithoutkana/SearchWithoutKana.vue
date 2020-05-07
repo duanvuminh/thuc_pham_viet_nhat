@@ -5,7 +5,8 @@
       label="Search"
       prepend-inner-icon="mdi-magnify"
       clearable
-      @keypress="search"
+      @blur="search"
+      @keypress="search1"
       v-model="text"
       :loading="loading"
       :disabled="disabled"
@@ -104,6 +105,14 @@ export default {
       });
     },
     search(e) {
+      if (!this.text) return;
+      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
+      if (this.text && this.$route.params.id != this.text) {
+        this.loading = true;
+        this.$router.push(`/show/${this.text.toLowerCase()}`);
+      }
+    },
+    search1(e) {
       if (!this.text) return;
       this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
       if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {

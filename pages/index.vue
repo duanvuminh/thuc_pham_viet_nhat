@@ -16,20 +16,10 @@ export default {
   },
   data() {
     return {
-      introdue: `
-## Kanji ngẫu nhiên ”必”
-#### かなら.ず ヒツ 必 - TẤT
-##### 心 TÂM 丿 PHIỆT, TRIỆT
-1. Tâm
-2. Chia 
-
-trong tình yêu **tất nhiên** phải có sóng gió, chia rẽ nhưng quan trong là cách chúng ta vượt qua.
-
-## Oboe awesome
+      introdue: ` 
+#### Cách để nhớ kanji dễ dàng hơn
 * [Kanji Primitive Elements](/main)
 * [awesome 日本語](/awesome)
-* [markdown](https://lithong.com/howto)
-* [Gõ tiếng Nhật](https://typing.lithong.com/)
       `
     };
   },
