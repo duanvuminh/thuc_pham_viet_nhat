@@ -21,10 +21,14 @@
                 <v-card-text class="pa-2">
                   <template v-if="index==0">
                     <Strockes :kanji="$route.params.id[0]" />
-                    <v-btn icon @click="showEdit=!showEdit" style="position:absolute;right:0;top:0">
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
                     <div v-if="$store.state.loggedIn" v-show="showEdit">
+                      <v-btn
+                        icon
+                        @click="showEdit=!showEdit"
+                        style="position:absolute;right:0;top:0"
+                      >
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
                       <v-textarea
                         :outlined="!readonly"
                         :solo="readonly"
