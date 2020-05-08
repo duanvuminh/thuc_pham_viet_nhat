@@ -22,8 +22,8 @@
   </div>
 </template>
 <script>
-// import HtmlParser from "@/components/HtmlParser";
-const HtmlParser = () => import("@/components/HtmlParser");
+import HtmlParser from "@/components/HtmlParser";
+//const HtmlParser = () => import("@/components/HtmlParser");
 
 import firebase from "firebase/app";
 import "firebase/firestore";

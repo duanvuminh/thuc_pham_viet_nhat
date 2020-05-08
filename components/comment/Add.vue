@@ -32,7 +32,8 @@
   </v-row>
 </template>
 <script>
-const avartar = () => import("./Avartar");
+//const avartar = () => import("./Avartar");
+import avartar from "./Avartar";
 export default {
   components: {
     avartar

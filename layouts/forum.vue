@@ -54,7 +54,8 @@
 
 <script>
 import { mapState } from "vuex";
-const HtmlParser = () => import("@/components/HtmlParser");
+//const HtmlParser = () => import("@/components/HtmlParser");
+import HtmlParser from "@/components/HtmlParser";
 
 export default {
   components: {

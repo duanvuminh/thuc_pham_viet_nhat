@@ -27,8 +27,8 @@
   </div>
 </template>
 <script>
-//import Search from "./SearchChildren";
-const Search = ()=>import("./SearchChildren")
+import Search from "./SearchChildren";
+//const Search = ()=>import("./SearchChildren")
 import * as wanakana from "wanakana";
 var getCaretCoordinates = require("textarea-caret");
 

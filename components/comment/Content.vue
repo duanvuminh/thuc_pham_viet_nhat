@@ -44,7 +44,9 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
+//const avartar = () => import("./Avartar");
 const avartar = () => import("./Avartar");
+//const HtmlParser = () => import("@/components/HtmlParser");
 const HtmlParser = () => import("@/components/HtmlParser");
 
 export default {

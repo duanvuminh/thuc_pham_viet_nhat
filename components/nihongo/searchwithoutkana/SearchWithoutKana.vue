@@ -49,8 +49,8 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-//import Handwriting from "@/components/Handwriting";
-const Handwriting = () => import("@/components/Handwriting");
+import Handwriting from "@/components/Handwriting";
+//const Handwriting = () => import("@/components/Handwriting");
 export default {
   components: {
     Handwriting

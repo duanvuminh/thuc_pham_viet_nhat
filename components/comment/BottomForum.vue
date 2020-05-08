@@ -22,7 +22,8 @@
   </div>
 </template>
 <script>
-const tags = () => import("./TagsForum");
+//const tags = () => import("./TagsForum");
+import tags from "./TagsForum";
 export default {
   mounted() {
     // setInterval(() => {

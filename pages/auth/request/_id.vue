@@ -20,8 +20,8 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-//import HtmlParser from "@/components/HtmlParser";
-const HtmlParser =()=> import("@/components/HtmlParser")
+import HtmlParser from "@/components/HtmlParser";
+//const HtmlParser =()=> import("@/components/HtmlParser")
 
 export default {
   async asyncData({ params, store }) {

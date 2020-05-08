@@ -58,8 +58,10 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-const avartar = () => import("./Avartar");
-const add = () => import("./Add");
+//const avartar = () => import("./Avartar");
+import avartar from "./Avartar";
+//const add = () => import("./Add");
+import add from "./Add";
 
 export default {
   components: {

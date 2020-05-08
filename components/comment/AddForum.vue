@@ -83,9 +83,12 @@
   </div>
 </template>
 <script>
-const avartar = () => import("./Avartar");
-const tags = () => import("./TagsForum");
-const datepicker = () => import("./DatePicker");
+//const avartar = () => import("./Avartar");
+import avartar from "./Avartar";
+//const tags = () => import("./TagsForum");
+import tags from "./TagsForum";
+//const datepicker = () => import("./DatePicker");
+import datepicker from "./DatePicker";
 
 export default {
   components: {

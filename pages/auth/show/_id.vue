@@ -104,8 +104,8 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
-//import HtmlParser from "@/components/HtmlParser";
-const HtmlParser = ()=>import("@/components/HtmlParser")
+import HtmlParser from "@/components/HtmlParser";
+//const HtmlParser = ()=>import("@/components/HtmlParser")
 export default {
   async asyncData({ params, store }) {
     let email = store.state.user.email;
