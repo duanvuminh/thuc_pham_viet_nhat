@@ -7,8 +7,10 @@
   </v-row>
 </template>
 <script>
-const Search =()=> import("@/components/nihongo/Search");
-const HtmlParser =()=> import("@/components/HtmlParser");
+import HtmlParser from "@/components/HtmlParser";
+//const HtmlParser = () => import("@/components/HtmlParser");
+import Search from "@/components/nihongo/Search";
+// const Search = () => import("@/components/nihongo/Search");
 export default {
   components: {
     Search,
