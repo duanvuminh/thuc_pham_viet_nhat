@@ -2,7 +2,13 @@
   <v-row justify="center">
     <Search />
     <v-col cols="12">
-      <HtmlParser :content="$md.render(introdue)"/>
+      <HtmlParser :content="$md.render(introdue)" />
+      <a text @click="getfulllistkanji">
+        <small>{{showmore?"show less":"show more"}}</small>
+      </a>
+      <template v-if="showmore">
+        <HtmlParser :content="all" />
+      </template>
     </v-col>
   </v-row>
 </template>
@@ -18,18 +24,23 @@ export default {
   },
   data() {
     return {
+      all: "",
       introdue: ` 
-#### Cách để nhớ kanji dễ dàng hơn
-* [Kanji Primitive Elements](/main)
-* [awesome 日本語](/awesome)
-      `
+[池](/show/池)｜[北](/show/北)｜[姦](/show/姦)｜...
+      `,
+      showmore: false
     };
   },
   layout: "oboe",
   methods: {
-    
+    getfulllistkanji() {
+      this.showmore = !this.showmore;
+      if (!this.showmore) return;
+      this.$axios.get(`/api/all`).then(r => {
+        this.all = this.$md.render(r.data.html);
+      });
+    }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>

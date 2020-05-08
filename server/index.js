@@ -1,6 +1,7 @@
 import admin from "./modules/admin";
 import express from "express";
 import cookieparser from "cookieparser";
+import fulllistkanji from "./listkanji";
 
 var rp = require('request-promise');
 const fs = require('fs');
@@ -263,5 +264,12 @@ app.post("/api/post1", async (req, res) => {
 //   next();
 // });
 
+app.get("/api/all", async (req, res) => {
+  // console.log(`/select: ${req.params}`);
+  // console.log(util.inspect(req, {showHidden: false, depth: 1}))
+  // console.log(`/select: ${req.params}`);
+  return res.json({ html: fulllistkanji })
+
+});
 
 export default app;
