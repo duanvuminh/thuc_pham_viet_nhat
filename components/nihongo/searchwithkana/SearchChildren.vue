@@ -113,7 +113,7 @@ export default {
         this.$router.push(`/show/${this.textModel.toLowerCase()}`);
       }
     },
-    search(e) {
+    search1(e) {
       this.$emit("keydown", e);
       if (!this.textModel) return;
       this.textModel = this.textModel.replace(/(\r\n|\n|\r)/gm, "").trim();
