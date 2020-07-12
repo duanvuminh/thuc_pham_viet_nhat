@@ -3,7 +3,7 @@
     <v-app-bar app color="white" elevation="0">
       <!-- <img src="~/assets/logo.png" height="100%"/> -->
       <nuxt-link to="/" class="nuxt-link-logo">
-       <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
+        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
       <v-spacer></v-spacer>
       <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
@@ -16,9 +16,6 @@
         <v-list>
           <v-list-item v-if="!loggedIn" to="/login">
             <v-list-item-title>Login</v-list-item-title>
-          </v-list-item>
-          <v-list-item to="/manga">
-            <v-list-item-title>Blog</v-list-item-title>
           </v-list-item>
           <template v-if="loggedIn">
             <v-list-item v-for="item in items" :key="item.title" :to="item.link">
@@ -157,6 +154,9 @@ export default {
   text-decoration: underline;
 }
 .nuxt-link-logo {
-  height:100%
+  height: 100%;
+}
+img {
+  max-width: 100%;
 }
 </style>

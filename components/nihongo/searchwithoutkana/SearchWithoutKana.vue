@@ -90,6 +90,7 @@ export default {
       this.search2 = this.search2 ? this.search2 : "";
       this.search2 += value;
       this.sheet = false;
+       this.text=2;
     },
     openImage() {
       if (!this.$store.state.loggedIn) {

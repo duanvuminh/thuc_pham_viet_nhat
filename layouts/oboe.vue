@@ -13,9 +13,6 @@
           <v-list-item v-if="!loggedIn" to="/login">
             <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/manga">
-            <v-list-item-title>Blog</v-list-item-title>
-          </v-list-item>
           <template v-if="loggedIn">
             <v-list-item v-for="item in items" :key="item.title" :to="item.link">
               <v-list-item-title>{{ item.title }}</v-list-item-title>

@@ -126,7 +126,7 @@ export default {
       titleTemplate: `%s - Học tiếng nhật với manga`
     };
   },
-  layout: "forum",
+  layout: "simple",
   methods: {
     loadMore() {
       if (!this.next.firestore) return;
