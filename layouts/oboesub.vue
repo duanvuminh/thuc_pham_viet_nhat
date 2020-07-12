@@ -1,13 +1,42 @@
 <template>
-  <v-app light ontouchstart>
+  <v-app>
     <v-app-bar app color="white" elevation="0">
+      <!-- <img src="~/assets/logo.png" height="100%"/> -->
       <nuxt-link to="/" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
+       <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
+      <v-spacer></v-spacer>
+      <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-if="!loggedIn" to="/login">
+            <v-list-item-title>Login</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/manga">
+            <v-list-item-title>Blog</v-list-item-title>
+          </v-list-item>
+          <template v-if="loggedIn">
+            <v-list-item v-for="item in items" :key="item.title" :to="item.link">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item to="/logout">
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
     </v-app-bar>
-    <v-main id="scrolling-techniques-4">
-      <v-container>
-        <nuxt />
+
+    <v-main>
+      <v-container fluid>
+        <v-row class="fill-height" align="start" justify="center">
+          <nuxt />
+        </v-row>
       </v-container>
     </v-main>
     <v-dialog v-model="dialog" max-width="290">
@@ -37,8 +66,7 @@ export default {
       selectedTextApi: {
         vi: ""
       },
-      dialog: false,
-      drawer: false
+      dialog: false
     };
   },
   mounted() {
@@ -70,14 +98,14 @@ export default {
           //   link: "/auth/random"
           // },
           //{ title: "About", icon: "question_answer" }
-          // {
-          //   title: "Request",
-          //   link: "/auth/request/"
-          // },
-          // {
-          //   title: "Manga",
-          //   link: "/auth/manga/"
-          // }
+          {
+            title: "Request",
+            link: "/auth/request/"
+          },
+          {
+            title: "Manga",
+            link: "/auth/manga/"
+          }
           //{ title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {
@@ -119,10 +147,16 @@ export default {
   }
 };
 </script>
-<style lang="sass">
-#scrolling-techniques-4
-  padding-top: 50px!important
-
-img
-  max-width: 100%
+<style>
+.nuxt-link {
+  color: rgba(0, 0, 0, 0.87) !important;
+  text-decoration: none;
+}
+.nuxt-link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+.nuxt-link-logo {
+  height:100%
+}
 </style>

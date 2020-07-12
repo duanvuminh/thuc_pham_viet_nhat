@@ -50,6 +50,9 @@ export default {
     reset() {
       this.commentText = "";
       this.showAction = false;
+    },
+    blur(){
+      console.log(11111);
     }
   },
   mounted() {

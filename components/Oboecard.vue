@@ -1,9 +1,8 @@
 <template>
-  <v-card class="mx-auto">
+  <v-card class="mx-auto" elevation="1">
     <v-card-text class="pb-0">
       <HtmlParser :content="$md.render(item.vi)"/>
     </v-card-text>
-
     <v-card-actions class="pt-0">
       <v-btn v-if="item.id=='duanvuminh@gmail.com'" text color="deep-purple accent-4" small>
         <v-icon left>mdi-star-outline</v-icon>Offical

@@ -85,7 +85,7 @@ app.get("/api/get_post_by_id", async (req, res) => {
     .collection("kanji")
     .doc(params.id)
     .collection("oboe")
-    .where("display", "==", true)
+    // .where("display", "==", true)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
@@ -140,15 +140,16 @@ app.get("/api/dic", async (req, res) => {
     });
     $("img").remove();
     $(".kijiWrp .kiji .SsdSmlR").remove();
+    let html = `
+    ${result}    
+    ${$(".kijiWrp .kiji").html() ? $(".kijiWrp .kiji").html() : ""}`;
+    html ? html : "Không có dữ liệu";
     return res.json({
-      html: `
-${result}    
-${$(".kijiWrp .kiji").html()}`
+      html: html
     });
   } catch (e) {
-    // return res.json({ html: "", message: e.message });
   }
-  return res.json({ html: "", message: e.message });
+  return res.json({ html: "", message: "ok" });
 });
 
 app.get("/api/strokes", async (req, res) => {

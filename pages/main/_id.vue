@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12">
-      <v-card>
+      <v-card class="pa-2 ma-2">
         <v-card-subtitle>Kanji: Primitive Elements</v-card-subtitle>
         <v-card-title>
           <v-text-field
@@ -97,7 +97,7 @@ export default {
       titleTemplate: `%s - Danh sách các nét cơ bản của Kanji`
     };
   },
-  layout: "forum",
+  layout: "oboesub",
   methods: {}
 };
 </script>

@@ -1,84 +1,62 @@
 <template>
-  <v-row justify="center">
-    <Search :text="searchkey" />
-    <v-col cols="12">
-      <v-row>
-        <v-col cols="12">
-          <v-tabs
-            v-model="tab"
-            background-color="deep-purple accent-4"
-            class="elevation-0"
-            dark
-            show-arrows
-            ref="tabs"
+  <v-col cols="12">
+    <v-row align="end" justify="center">
+      <Search :text="searchkey" />
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-card flat tile>
+          <Strockes :kanji="$route.params.id[0]" />
+          <v-btn
+            v-if="$store.state.loggedIn"
+            icon
+            @click="showEdit=!showEdit"
+            style="position:absolute;right:0;top:0"
           >
-            <v-tabs-slider></v-tabs-slider>
-            <v-tab v-for="(item,index) in tabs" :key="index" :href="`#tab-${index}`">{{item.label}}</v-tab>
-          </v-tabs>
-          <v-tabs-items v-model="tab" touchless>
-            <v-tab-item v-for="(item,index) in tabs" :key="index" :value="'tab-' + index">
-              <v-card flat tile>
-                <v-card-text class="pa-2">
-                  <template v-if="index==0">
-                    <Strockes :kanji="$route.params.id[0]" />
-                    <v-btn v-if="$store.state.loggedIn" icon @click="showEdit=!showEdit" style="position:absolute;right:0;top:0">
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                    <div v-if="$store.state.loggedIn" v-show="showEdit">
-                      <v-textarea
-                        :outlined="!readonly"
-                        :solo="readonly"
-                        :flat="readonly"
-                        label="Thêm cách nhớ của bạn"
-                        :auto-grow="showEdit"
-                        v-model="commentvi"
-                        :loading="loading"
-                        :readonly="readonly"
-                        @focus="show = true"
-                        hide-details
-                      />
-                      <v-row v-if="show1">
-                        <v-spacer />
-                        <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-                        <v-btn
-                          class="ma-2"
-                          color="success"
-                          @click="saveandshare"
-                          small
-                          text
-                        >Lưu&chia sẻ</v-btn>
-                        <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
-                      </v-row>
-                      <HtmlParser
-                        v-show="show1"
-                        class="elevation-1 pa-2 mb-3 deep-purple accent-1"
-                        v-if="commentvi!=''"
-                        :content="$md.render(commentvi)"
-                      >
-                        <h3>Preview</h3>
-                      </HtmlParser>
-                    </div>
-                    <v-row>
-                      <v-col cols="12" v-for="(oboe,i) in items" :key="i">
-                        <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
-                      </v-col>
-                    </v-row>
-                  </template>
-                  <div v-else v-html="$md.render(item.text)"></div>
-                  <HtmlParser v-show="item.webo" :content="item.webo"></HtmlParser>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-row>
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <div v-if="$store.state.loggedIn" v-show="showEdit">
+            <v-textarea
+              :outlined="!readonly"
+              :solo="readonly"
+              :flat="readonly"
+              label="Thêm cách nhớ của bạn"
+              :auto-grow="showEdit"
+              v-model="commentvi"
+              :loading="loading"
+              :readonly="readonly"
+              @focus="show = true"
+              hide-details
+            />
+            <v-row v-if="show1">
+              <v-spacer />
+              <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+              <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
+            </v-row>
+            <HtmlParser
+              v-show="show1"
+              class="elevation-1 pa-2 mb-3 deep-purple accent-1"
+              v-if="commentvi!=''"
+              :content="$md.render(commentvi)"
+            >
+              <h3>Preview</h3>
+            </HtmlParser>
+          </div>
+          <v-row>
+            <v-col cols="12" md="6" v-for="(oboe,i) in items" :key="i">
+              <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-col>
 </template>
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
 import HtmlParser from "@/components/HtmlParser";
+import Logo from "@/components/Logo";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import Strockes from "@/components/Strockes";
 // const Strockes = () => import("@/components/Strockes");
@@ -98,12 +76,10 @@ export default {
       })
       .then();
     let searchkey = params.id;
-    let webo = "";
     return {
       searchkey,
       email,
-      items,
-      webo
+      items
     };
   },
   beforeCreate() {},
@@ -111,7 +87,8 @@ export default {
     Ocard,
     Search,
     HtmlParser,
-    Strockes
+    Strockes,
+    Logo
   },
   computed: {
     readonly() {
@@ -142,20 +119,7 @@ export default {
       loading1: false,
       show: false,
       showEdit: false,
-      searchkey: "",
-      tab: "",
-      tabs: [
-        {
-          webo: "",
-          text: "",
-          label: "Oboe"
-        },
-        {
-          webo: "",
-          text: "",
-          label: "Nghĩa"
-        }
-      ]
+      searchkey: ""
     };
   },
   head() {
@@ -163,7 +127,7 @@ export default {
       titleTemplate: `%s - cách nhớ ${this.searchkey}`
     };
   },
-  layout: "forum",
+  layout: "oboesub",
   methods: {
     async saveandshare() {
       this.loading = true;
@@ -201,13 +165,6 @@ export default {
           this.commentvi = doc.data().vi;
         }
       });
-    this.$axios
-      .get(`/api/dic?id=${encodeURIComponent(this.searchkey)}`)
-      .then(r => {
-        this.webo = r.data.html;
-        this.tabs[1].webo = this.webo;
-      });
-
     // init tab
     // hiển thị nghĩa
     // hiển thị ví dụ

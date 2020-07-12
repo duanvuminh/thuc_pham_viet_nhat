@@ -56,7 +56,7 @@ export default {
     }
     return { posts, next, url };
   },
-  layout: "oboe",
+  layout: "oboesub",
   beforeCreate() {},
   data() {
     return {

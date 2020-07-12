@@ -38,7 +38,7 @@ export default {
       titleTemplate: `%s - Forum`
     };
   },
-  layout: "forum",
+  layout: "simple",
   methods: {
     add(message){
       this.$refs.forum.add(message)

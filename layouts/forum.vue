@@ -36,11 +36,11 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-content id="scrolling-techniques-4">
+    <v-main id="scrolling-techniques-4">
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">{{selectedTextShow}}</v-card-title>

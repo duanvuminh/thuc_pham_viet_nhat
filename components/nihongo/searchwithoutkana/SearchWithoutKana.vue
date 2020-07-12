@@ -1,19 +1,23 @@
 <template>
   <div>
-    <v-text-field
+    <v-autocomplete
       solo
       label="Search"
       prepend-inner-icon="mdi-magnify"
       clearable
-      @blur="search"
-      @keypress="search1"
       v-model="text"
-      :loading="loading"
       :disabled="disabled"
       hide-details
+      :items="items"
+      :search-input.sync="search2"
+      hide-no-data
+      item-text="name"
+      item-value="key"
+      @change="search"
+      @keydown="search1"
     >
       <template slot="append">
-        <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn>
+        <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->
         <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet=!sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -22,7 +26,15 @@
           <input @change="onFileChange" ref="file" type="file" style="display: none" />
         </v-btn>
       </template>
-    </v-text-field>
+      <template v-slot:item="data">
+        <v-list-item @click="search3(data.item)">
+        <v-list-item-content>
+          <v-list-item-title v-text="data.item.name"></v-list-item-title>
+          <v-list-item-subtitle v-text="data.item.label"></v-list-item-subtitle>
+        </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-autocomplete>
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
@@ -66,7 +78,8 @@ export default {
       files: [],
       sheet: false,
       text: "",
-      loading: false
+      items: [],
+      search2: null
     };
   },
   methods: {
@@ -74,8 +87,8 @@ export default {
       this.$emit("active", !this.active);
     },
     handwriting(value) {
-      this.text = this.text ? this.text : "";
-      this.text += value;
+      this.search2 = this.search2 ? this.search2 : "";
+      this.search2 += value;
       this.sheet = false;
     },
     openImage() {
@@ -105,26 +118,65 @@ export default {
       });
     },
     search(e) {
-      if (!this.text) return;
-      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (this.text && this.$route.params.id != this.text) {
-        this.loading = true;
-        this.$router.push(`/show/${this.text.toLowerCase()}`);
+      if (!this.search2) return;
+      if (this.search2) {
+        this.text == 1
+          ? this.$router.push(`/show/${this.search2.toLowerCase()}`)
+          : this.$router.push(`/mean/${this.search2.toLowerCase()}`);
       }
     },
     search1(e) {
-      if (!this.text) return;
-      this.text = this.text.replace(/(\r\n|\n|\r)/gm, "").trim();
-      if (e.key == "Enter" && this.text && this.$route.params.id != this.text) {
-        this.loading = true;
-        this.$router.push(`/show/${this.text.toLowerCase()}`);
+      if (!this.search2) return;
+      if (e.key == "Enter" && this.search2) {
+        
+        this.text == 2
+          ? this.$router.push(`/mean/${this.search2.toLowerCase()}`)
+          : this.$router.push(`/show/${this.search2[0].toLowerCase()}`);
+      }
+    },
+    search3(item) {
+      if (this.search2) {
+        item.key == 2
+          ? this.$router.push(`/mean/${this.search2.toLowerCase()}`)
+          : this.$router.push(`/show/${this.search2.toLowerCase()}`);
       }
     }
   },
   mounted() {
-    this.text = this.$route.params.id;
+    let id = this.$route.params.id;
+    this.search2 = id;
+    let path = this.$route.path;
+    if (id) {
+      if (id.trim().length == 1) {
+        this.items = [
+          { name: this.search2, key: 1, label: "Cách nhớ" },
+          { name: this.search2, key: 2, label: "Tra từ" }
+        ];
+        if (path.includes("mean")) {
+          this.text = 2;
+        } else {
+          this.text = 1;
+        }
+      } else if (id.trim().length > 1) {
+        this.items = [{ name: this.search2, key: 2, label: "Tra từ" }];
+        this.text = 2;
+      }
+    }
   },
   props: ["active"],
-  watch: {}
+  watch: {
+    search2(val) {
+      if (val) {
+        if (val.trim().length == 1) {
+          this.items = [
+            { name: val, key: 1, label: "Cách nhớ" },
+            { name: val, key: 2, label: "Tra từ" }
+          ];
+        } else if (val.trim().length > 1) {
+          this.items = [{ name: val, key: 2, label: "Tra từ" }];
+        }
+      }
+    }
+  }
 };
 </script>

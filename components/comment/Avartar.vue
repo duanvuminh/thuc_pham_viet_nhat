@@ -23,6 +23,7 @@ export default {
       photoURL: ""
     };
   },
+  name: 'avarta',
   props: ["size","email"]
 };
 </script>

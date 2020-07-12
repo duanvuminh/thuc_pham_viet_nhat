@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-card :class="!(showAction&&email)?'mx-auto elevation-0 mb-0':'mx-auto pa-5'" :outlined="showAction&&email">
+    <v-card
+      :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-2':'pa-0 mx-auto elevation-0'"
+      
+    >
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">
           <v-textarea
@@ -42,7 +45,7 @@
                     text
                     @click="$emit('add',messageAdd);commentText='';dialog = false"
                     :disabled="checkLength"
-                  >Thêm</v-btn> 
+                  >Thêm</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -150,6 +153,14 @@ export default {
   },
   props: ["size", "rows", "type"],
   computed: {
+    outlinedCheck() {
+      if (this.showAction) {
+        if (this.email) {
+          return true;
+        }
+      }
+      return false;
+    },
     messageAdd() {
       return {
         creator: this.email,
