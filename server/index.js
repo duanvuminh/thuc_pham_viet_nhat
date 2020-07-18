@@ -81,16 +81,55 @@ app.get("/api/get_post_by_id", async (req, res) => {
   let params = req.query
   let db = admin.firestore();
   let items = [];
+  // db
+  //   .collection("kanji")
+  //   .get()
+  //   .then(
+  //     querySnapshot => {
+  //       querySnapshot.forEach(doc => {
+  //         // doc.data() is never undefined for query doc snapshots
+  //         db
+  //           .collection("kanji")
+  //           .doc(doc.id)
+  //           .collection("oboe")
+  //           .doc("duanvuminh@gmail.com")
+  //           .set(
+  //             {
+  //               total_likeds: 0,
+  //             },
+  //             { merge: true }
+  //           );
+  //       db
+  //           .collection("kanji")
+  //           .doc(doc.id)
+  //           .collection("oboe")
+  //           .doc("vuminhduan@yahoo.com")
+  //           .set(
+  //             {
+  //               total_likeds: 0,
+  //             },
+  //             { merge: true }
+  //           );
+  //       });
+  //     });
   await db
     .collection("kanji")
     .doc(params.id)
     .collection("oboe")
     // .where("display", "==", true)
+    .orderBy("total_likeds", "desc")
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
         // doc.data() is never undefined for query doc snapshots
-        items.push({ id: doc.id, ...doc.data() });
+        if (doc.data().vi) {
+          if (doc.id == "duanvuminh@gmail.com") {
+            items.unshift({ id: doc.id, ...doc.data() });
+          } else {
+            items.push({ id: doc.id, ...doc.data() });
+          }
+
+        }
       });
     });
   res.json(items);
@@ -211,13 +250,37 @@ app.post("/api/post", async (req, res) => {
             .doc(params.searchkey)
             .collection("oboe")
             .doc(decodedToken.email)
-            .set(
-              {
-                request: false,
-                vi: params.vi,
-                display: decodedToken.email == "duanvuminh@gmail.com" ? true : false
-              }, { merge: true }
-            )
+            .get()
+            .then(doc => {
+              if (!doc.exists) {
+                db
+                  .collection("kanji")
+                  .doc(params.searchkey)
+                  .collection("oboe")
+                  .doc(decodedToken.email)
+                  .set(
+                    {
+                      total_likeds: 0,
+                      request: false,
+                      vi: params.vi,
+                      display: decodedToken.email == "duanvuminh@gmail.com" ? true : false
+                    }, { merge: true }
+                  )
+              } else {
+                db
+                  .collection("kanji")
+                  .doc(params.searchkey)
+                  .collection("oboe")
+                  .doc(decodedToken.email)
+                  .set(
+                    {
+                      request: false,
+                      vi: params.vi,
+                      display: decodedToken.email == "duanvuminh@gmail.com" ? true : false
+                    }, { merge: true }
+                  )
+              }
+            })
         });
     })
   res.json({ message: "ok" });

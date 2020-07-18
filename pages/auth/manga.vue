@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid" onSubmit="return false;">
+  <v-form ref="form" v-model="valid" onSubmit="return false;" class="pa-2">
     <v-card>
       <v-card-title>
         <span class="headline">Học tiếng nhật với manga</span>
@@ -75,7 +75,7 @@ export default {
       loading:false
     };
   },
-  layout: "oboe",
+  layout: "simple",
   methods: {
     taomanga() {
       if (!this.$refs.form.validate()) {

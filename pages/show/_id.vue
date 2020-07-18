@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12">
+  <v-col cols="12" md="8">
     <v-row align="end" justify="center">
       <Search :text="searchkey" />
     </v-row>
@@ -15,39 +15,45 @@
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <div v-if="$store.state.loggedIn" v-show="showEdit">
-            <v-textarea
-              :outlined="!readonly"
-              :solo="readonly"
-              :flat="readonly"
-              label="Thêm cách nhớ của bạn"
-              :auto-grow="showEdit"
-              v-model="commentvi"
-              :loading="loading"
-              :readonly="readonly"
-              @focus="show = true"
-              hide-details
-            />
-            <v-row v-if="show1">
-              <v-spacer />
-              <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-              <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
-            </v-row>
-            <HtmlParser
-              v-show="show1"
-              class="elevation-1 pa-2 mb-3 deep-purple accent-1"
-              v-if="commentvi!=''"
-              :content="$md.render(commentvi)"
-            >
-              <h3>Preview</h3>
-            </HtmlParser>
-          </div>
           <v-row>
-            <v-col cols="12" md="6" v-for="(oboe,i) in items" :key="i">
+            <v-col cols="12" v-for="(oboe,i) in items" :key="i">
               <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
             </v-col>
           </v-row>
         </v-card>
+        <v-dialog v-model="dialog" fullscreen>
+          <v-card>
+            <v-card-title>
+              <span class="title font-weight-light">Cảm ơn bạn đã đóng góp ý kiến</span>
+            </v-card-title>
+            <v-card-text>
+              <v-textarea
+                :outlined="!readonly"
+                :solo="readonly"
+                :flat="readonly"
+                label="Thêm cách nhớ của bạn"
+                :auto-grow="showEdit"
+                v-model="commentvi"
+                :loading="loading"
+                :readonly="readonly"
+                @focus="show = true"
+                hide-details
+              />
+              <v-row>
+                <v-spacer />
+                <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
+                <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
+              </v-row>
+              <HtmlParser
+                class="elevation-1 pa-2 mb-3 deep-purple accent-1"
+                v-if="commentvi!=''"
+                :content="$md.render(commentvi)"
+              >
+                <h3>Preview</h3>
+              </HtmlParser>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-col>
@@ -91,6 +97,9 @@ export default {
     Logo
   },
   computed: {
+    dialog() {
+      return this.$store.state.loggedIn && this.showEdit;
+    },
     readonly() {
       return !this.$store.state.loggedIn;
     },

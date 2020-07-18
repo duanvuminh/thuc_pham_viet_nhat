@@ -80,7 +80,7 @@ export default {
       titleTemplate: `%s - Forum`
     };
   },
-  layout: "simple",
+  layout: "simpleF",
   methods: {
     fbtime(timestamp) {
       // console.log(timestamp);

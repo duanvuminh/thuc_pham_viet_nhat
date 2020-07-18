@@ -19,6 +19,9 @@
         </template>
       </v-row>
     </v-col>
+    <v-btn color="pink" dark fixed bottom right fab v-if="user.email == 'duanvuminh@gmail.com'" to="/auth/manga/">
+      <v-icon>mdi-pencil</v-icon>
+    </v-btn>
   </div>
 </template>
 <script>
