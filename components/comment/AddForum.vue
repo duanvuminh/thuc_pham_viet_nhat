@@ -1,8 +1,7 @@
 <template>
   <div>
     <v-card
-      :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-2':'pa-0 mx-auto elevation-0'"
-      
+      :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-3':'pa-0 mx-auto elevation-0'"
     >
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">

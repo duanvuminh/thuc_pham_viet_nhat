@@ -77,7 +77,15 @@ export default {
   },
   head() {
     return {
-      titleTemplate: `%s - Forum`
+      titleTemplate: `%s - Forum`,
+      // title: `Oboe - cách học kanji với cách nhớ đơn giản`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Forum hỏi đáp về tiếng nhật và cuộc sống ở nhật"
+        }
+      ]
     };
   },
   layout: "simpleF",

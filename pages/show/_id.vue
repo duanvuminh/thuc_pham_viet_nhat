@@ -133,7 +133,7 @@ export default {
   },
   head() {
     return {
-      titleTemplate: `%s - cách nhớ ${this.searchkey}`
+      titleTemplate: `%s - cách nhớ kanji ${this.searchkey}`
     };
   },
   layout: "oboesub",
@@ -150,13 +150,18 @@ export default {
     },
     async save() {
       this.loading = true;
-      let items = await this.$axios.$post("/api/post", null, {
-        params: {
-          searchkey: this.searchkey[0],
-          vi: this.commentvi
-        }
-      });
+      let items = await this.$axios
+        .$post("/api/post", null, {
+          params: {
+            searchkey: this.searchkey[0],
+            vi: this.commentvi
+          }
+        })
+        .then(x => {
+          this.items[0].vi = this.commentvi;
+        });
       this.loading = false;
+      this.showEdit = false;
     }
   },
   mounted() {

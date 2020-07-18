@@ -9,9 +9,7 @@
           <nuxt-link to="/manga" class="nuxt-link">Blog</nuxt-link>
           <nuxt-link to="/main" class="nuxt-link">Bộ kanji</nuxt-link>
           <a href="https://simplemde.com/markdown-guide" class="nuxt-link">Cách viết bài</a>
-          <a text @click="getfulllistkanji">
-            {{showmore?"Ẩn":"Kanji cơ bản"}}
-          </a>
+          <a text @click="getfulllistkanji">{{showmore?"Ẩn":"Kanji cơ bản"}}</a>
         </v-row>
       </v-col>
       <v-col cols="12">
@@ -41,6 +39,19 @@ export default {
 [池](/show/池)｜[北](/show/北)｜[姦](/show/姦)｜...
       `,
       showmore: false
+    };
+  },
+  head() {
+    return {
+      titleTemplate: `%s - cách học kanji với cách nhớ đơn giản`,
+      // title: `Oboe - cách học kanji với cách nhớ đơn giản`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Cách học kanji qua những câu chuyện thú vị cho người mới bắt đầu, kanji n1,n2,n3,n4,n5"
+        }
+      ]
     };
   },
   layout: "oboe",
