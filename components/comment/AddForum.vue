@@ -15,7 +15,7 @@
             @click="showAction=true;"
             persistent-hint
             :readonly="!email"
-            append-icon="mdi-text-shadow"
+            :append-icon="$store.state.loggedIn?'mdi-text-shadow':null"
             dense
           >
             <div slot="prepend">

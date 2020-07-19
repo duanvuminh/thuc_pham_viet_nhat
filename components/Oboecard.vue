@@ -9,11 +9,7 @@
       </v-btn>
       <v-btn v-else color="orange" text dark small>{{name}}</v-btn>
       <v-spacer></v-spacer>
-      <!-- color="blue lighten-2" -->
-      <v-btn text icon :color="is_liked==1?'blue':null" @click="upvote">
-        <v-icon small>mdi-thumb-up</v-icon>
-      </v-btn>
-      <span v-if="liked">{{liked}}</span>
+      <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
       <client-only>
         <social-sharing
           :url="`https://oboemasu.com${$route.path}`"
@@ -35,99 +31,32 @@
 <script>
 //const HtmlParser = ()=>import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
+import Like from "@/components/comment/Like";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
 export default {
   props: ["item", "searchkey", "email"],
   components: {
-    HtmlParser
+    HtmlParser,
+    Like
   },
   data() {
     return {
       name: null,
-      liked: 0,
-      is_liked: -1
     };
   },
-  computed: {},
-  methods: {
-    upvote() {
-      this.is_liked = -1 * this.is_liked;
-      this.liked += this.is_liked;
-      firebase
-        .firestore()
-        .collection("kanji")
-        .doc(this.searchkey)
-        .collection("oboe")
-        .doc(this.item.id)
-        .set(
-          {
-            total_likeds: firebase.firestore.FieldValue.increment(this.is_liked)
-          },
-          { merge: true }
-        );
-      firebase
-        .firestore()
-        .collection("kanji")
-        .doc(this.searchkey)
-        .collection("oboe")
-        .doc(this.item.id)
-        .collection("liked")
-        .doc(this.email)
-        .set(
-          {
-            date: new Date(),
-            is_liked: this.is_liked == 1 ? true : false
-          },
-          { merge: true }
-        );
+  computed: {
+    path(){
+      return `kanji/${this.searchkey}/oboe/${this.item.id}`;
     }
+  },
+  methods: {
   },
   mounted() {
     this.$axios.get(`/api/user?id=${this.email}`).then(r => {
       this.name = r.data.name;
     });
-    firebase
-      .firestore()
-      .collection("kanji")
-      .doc(this.searchkey)
-      .collection("oboe")
-      .doc(this.item.id)
-      .get()
-      .then(doc => {
-        this.liked = doc.data().total_likeds;
-      });
-    firebase
-      .firestore()
-      .collection("kanji")
-      .doc(this.searchkey)
-      .collection("oboe")
-      .doc(this.item.id)
-      .collection("liked")
-      .doc(this.email)
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          if (doc.data().is_liked) {
-            this.is_liked = 1;
-          } else {
-            this.is_liked = -1;
-          }
-        } else {
-          this.is_liked = -1;
-        }
-      });
-    // .then(documentSnapshots => {
-    //   documentSnapshots.forEach(doc => {
-    //     posts.push({
-    //       id: doc.id,
-    //       url: doc.data().url,
-    //       content: doc.data().content
-    //     });
-    //     lastId = doc.id;
-    //   });
-    // });
   }
 };
 </script>

@@ -16,6 +16,7 @@
           :isRoot="true"
           :rootId="item.id"
           :rootEmail="item.userEmail"
+          :path="`${collectionUrl}/${item.id}`"
         >
           <v-col cols="12" class="mt-0 pt-0">
             <div class="d-flex justify-start">
@@ -28,6 +29,7 @@
                   :isRoot="false"
                   :rootId="item.id"
                   :rootEmail="item.userEmail"
+                  :path="`${collectionUrl}/${item.id}/${collectionSubUrl}/${item_sub.id}`"
                 ></comment>
               </div>
             </div>

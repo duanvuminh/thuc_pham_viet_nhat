@@ -95,14 +95,14 @@ export default {
           //   link: "/auth/random"
           // },
           //{ title: "About", icon: "question_answer" }
-          {
-            title: "Request",
-            link: "/auth/request/"
-          },
-          {
-            title: "Manga",
-            link: "/auth/manga/"
-          }
+          // {
+          //   title: "Request",
+          //   link: "/auth/request/"
+          // },
+          // {
+          //   title: "Manga",
+          //   link: "/auth/manga/"
+          // }
           //{ title: "Logout", icon: "mdi-logout", link: "/logout" }
         ];
       } else {

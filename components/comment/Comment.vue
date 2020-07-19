@@ -18,14 +18,7 @@
             </article>
 
             <div class="d-flex justify-start align-center">
-              <v-btn text icon>
-                <v-icon small>mdi-thumb-up</v-icon>
-              </v-btn>
-              <span v-if="liked">{{liked}}</span>
-              <v-btn text icon>
-                <v-icon small>mdi-thumb-down</v-icon>
-              </v-btn>
-              <span v-if="dislike">{{dislike}}</span>
+              <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
               <v-btn text @click="showAdd=!showAdd" small fab>
                 <v-icon dark small>mdi-message-reply-text</v-icon>
               </v-btn>
@@ -62,11 +55,13 @@ import "firebase/auth";
 import avartar from "./Avartar";
 //const add = () => import("./Add");
 import add from "./Add";
+import Like from "@/components/comment/Like";
 
 export default {
   components: {
     avartar,
-    add
+    add,
+    Like
   },
   computed: {
     editMode() {
@@ -109,9 +104,7 @@ export default {
   data() {
     return {
       action: null,
-      dislike:"",
       email: this.$store.state.user.email,
-      liked:"",
       now: Date.now(),
       size: 30,
       showAdd: false,
@@ -168,7 +161,7 @@ export default {
       this.action = null;
     }
   },
-  props: ["comment","isRoot","rootId","rootEmail"],
+  props: ["comment","isRoot","rootId","rootEmail","path"],
   watch: {
     action(val) {
       if (val == "delete") {

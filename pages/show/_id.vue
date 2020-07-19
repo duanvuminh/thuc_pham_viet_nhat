@@ -158,7 +158,12 @@ export default {
           }
         })
         .then(x => {
-          this.items[0].vi = this.commentvi;
+          for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].id == this.email) {
+              this.items[i].vi = this.commentvi;
+              break;
+            }
+          }
         });
       this.loading = false;
       this.showEdit = false;
