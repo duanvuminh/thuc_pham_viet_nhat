@@ -1,10 +1,10 @@
 <template>
   <v-app ontouchstart>
-    <v-app-bar app elevation="0">
+    <!-- <v-app-bar app elevation="0">
       <nuxt-link to="/" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
+        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
-    </v-app-bar>
+    </v-app-bar> -->
     <v-main>
       <v-container>
         <nuxt />

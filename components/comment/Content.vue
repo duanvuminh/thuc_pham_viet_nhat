@@ -8,16 +8,17 @@
             <article style="overflow: hidden;">
               <header>
                 <b>{{content.userName}}</b>
-                <small>
-                  {{timeText}}
-                  <nuxt-link :to="`/articles/${content.id}`" v-if="!$route.params.id">Chi tiết</nuxt-link>
-                </small>
-                <v-btn small fab text @click="dialog=true" v-if="show">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
+                <small>{{timeText}}</small>
               </header>
               <HtmlParser :content="$md.render(content.content)"></HtmlParser>
             </article>
+            <Tooltip
+              :id="content.id"
+              @setId="val=>{$emit('setId',val)}"
+              :inApp="inApp"
+              @openDialog="dialog=true"
+              ref="tooltip"
+            ></Tooltip>
           </div>
         </template>
       </div>
@@ -26,15 +27,15 @@
       <v-col cols="12" class="mb-0 py-0 pr-3">
         <v-dialog v-model="dialog" fullscreen>
           <v-card>
-            <vue-simplemde v-model="commentText" />
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text @click="dialog = false">Close</v-btn>
-              <v-btn color="primary" text @click="save" :disabled="checkLength">Thêm</v-btn>
-            </v-card-actions>
+            <v-container>
+              <v-textarea auto-grow v-model="commentText" hide-details dense></v-textarea>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="dialog = false">Close</v-btn>
+                <v-btn color="primary" text @click="save" :disabled="checkLength">Thêm</v-btn>
+              </v-card-actions>
+            </v-container>
           </v-card>
         </v-dialog>
       </v-col>
@@ -44,15 +45,18 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-//const avartar = () => import("./Avartar");
-const avartar = () => import("./Avartar");
+ //const avartar = () => import("./Avartar");
+import avartar from './Avartar';
+//const Tooltip = () => import("./Tooltip");
+import Tooltip from './Tooltip';
 //const HtmlParser = () => import("@/components/HtmlParser");
-const HtmlParser = () => import("@/components/HtmlParser");
+import HtmlParser from '@/components/HtmlParser';
 
 export default {
   components: {
     avartar,
-    HtmlParser
+    HtmlParser,
+    Tooltip,
   },
   computed: {
     checkLength() {
@@ -91,20 +95,24 @@ export default {
       );
     },
     show() {
-      if (!this.$route.params.id) {
-        return false;
-      } else if (this.content.creator != this.$store.state.user.email) {
-        return false;
+      let result = true;
+      if (this.$route.params.id || this.inApp) {
+        if (this.content.creator != this.$store.state.user.email) {
+          result = false;
+        } else {
+          result = true;
+        }
       } else {
-        return true;
+        result = false;
       }
-    }
+      this.$refs.tooltip.setShow(result);
+      return result;
+    },
   },
   data() {
     return {
       commentText: "",
       dislike: "",
-      dialog: false,
       email: this.$store.state.user.email,
       liked: "",
       now: Date.now(),
@@ -112,7 +120,7 @@ export default {
       showAdd: false,
       value: true,
       from: "",
-      dialog: false
+      dialog: false,
     };
   },
   created() {
@@ -123,7 +131,7 @@ export default {
   async mounted() {
     let { name, email, photoURL } = await this.$axios
       .get(`/api/user?id=${this.content.creator}`)
-      .then(r => {
+      .then((r) => {
         return r.data;
       });
     this.content.userName = name;
@@ -153,9 +161,9 @@ export default {
       this.$emit("edit", this.commentText, this.content.id);
       this.commentText = "";
       this.dialog = false;
-    }
+    },
   },
-  props: ["content"],
-  watch: {}
+  props: ["content", "inApp"],
+  watch: {},
 };
 </script>

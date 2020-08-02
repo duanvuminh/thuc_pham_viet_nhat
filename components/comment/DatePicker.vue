@@ -18,7 +18,6 @@
           :close-icon="date?'mdi-close':'mdi-menu-down'"
           @click:close="date=null"
           outlined
-          color="deep-purple accent-4"
           v-on="on"
         >
           <v-icon left x-small>event</v-icon>
@@ -31,6 +30,7 @@
         :max="new Date().toISOString().substr(0, 10)"
         min="1950-01-01"
         @change="save"
+        type="date"
       ></v-date-picker>
     </v-menu>
   </v-col>
@@ -42,9 +42,9 @@ export default {
     menu: false
   }),
   watch: {
-    menu(val) {
-      val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
-    },
+    // menu(val) {
+    //   val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+    // },
     date(val) {
       this.$emit("datechange", this.formatDate(val));
     }

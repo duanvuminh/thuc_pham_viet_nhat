@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" elevation="0">
+    <v-app-bar app elevation="0">
       <!-- <img src="~/assets/logo.png" height="100%"/> -->
       <nuxt-link to="/" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
+        <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
       <v-spacer></v-spacer>
       <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
@@ -146,7 +146,6 @@ export default {
 </script>
 <style>
 .nuxt-link {
-  color: rgba(0, 0, 0, 0.87) !important;
   text-decoration: none;
 }
 .nuxt-link:hover {

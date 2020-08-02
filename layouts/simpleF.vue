@@ -1,8 +1,8 @@
 <template>
   <v-app light ontouchstart>
-    <v-app-bar app color="white" elevation="0">
+    <v-app-bar app elevation="0">
       <nuxt-link to="/forum" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
+        <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
     </v-app-bar>
     <v-main id="scrolling-techniques-4">

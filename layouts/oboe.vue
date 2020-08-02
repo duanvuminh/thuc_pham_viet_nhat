@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" elevation="0" dense>
+    <v-app-bar app elevation="0" dense>
       <v-spacer></v-spacer>
       <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
       <v-menu bottom left>
@@ -142,7 +142,6 @@ export default {
 </script>
 <style>
 .nuxt-link {
-  color: rgba(0, 0, 0, 0.87) !important;
   text-decoration: none;
 }
 .nuxt-link:hover {

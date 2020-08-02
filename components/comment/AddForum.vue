@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-card
-      :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-3':'pa-0 mx-auto elevation-0'"
-    >
+    <v-card :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-3':'pa-1 mx-auto elevation-0'">
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">
           <v-textarea
@@ -11,15 +9,15 @@
             auto-grow
             v-model="commentText"
             hide-details
-            @click:append="setdialog"
             @click="showAction=true;"
             persistent-hint
-            :readonly="!email"
-            :append-icon="$store.state.loggedIn?'mdi-text-shadow':null"
+            :readonly="!email"         
             dense
           >
             <div slot="prepend">
-              <avartar :size="size" :email="email"></avartar>
+              <v-expand-transition>
+                <avartar :size="size" :email="email"></avartar>
+              </v-expand-transition>
             </div>
           </v-textarea>
         </v-col>
@@ -28,30 +26,8 @@
           <v-combobox v-model="select" :items="items" label="Chọn chủ đề" dense hide-details></v-combobox>
         </template>
         </v-col>-->
-        <client-only>
-          <v-col cols="12" class="mb-0 py-0 pr-3">
-            <v-dialog v-model="dialog" fullscreen>
-              <v-card>
-                <vue-simplemde v-model="commentText" />
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn text @click="dialog = false">Close</v-btn>
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="$emit('add',messageAdd);commentText='';dialog = false"
-                    :disabled="checkLength"
-                  >Thêm</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-col>
-        </client-only>
-        <v-col cols="12" class="d-flex ma-0 pr-3">
-          <template v-if="showAction && email">
+        <v-col v-if="showAction && email" cols="12" class="d-flex ma-0 pr-3">
+          <template>
             <!-- <v-chip
             class="ma-2"
             label
@@ -76,11 +52,11 @@
             >Thêm</v-btn>
           </template>
         </v-col>
+        <v-col class="pa-0 ma-0">
+          <datepicker @datechange="datechange"></datepicker>
+        </v-col>
       </v-row>
       <!-- <tags @setDialogTag="setDialogTag" :dialogTag="dialogTag" @setTagName="setTagName" :full="true"></tags> -->
-    </v-card>
-    <v-card class="mx-auto elevation-0 mb-0">
-      <datepicker @datechange="datechange"></datepicker>
     </v-card>
   </div>
 </template>
@@ -96,7 +72,7 @@ export default {
   components: {
     avartar,
     tags,
-    datepicker
+    datepicker,
   },
   data() {
     return {
@@ -107,7 +83,8 @@ export default {
       focusTab: "",
       showAction: false,
       commentText: "",
-      content: ""
+      content: "",
+      type: null,
     };
   },
   methods: {
@@ -118,9 +95,6 @@ export default {
       this.commentText = "";
       this.showAction = false;
       this.focusTab = "";
-    },
-    setdialog() {
-      this.dialog = true;
     },
     setDialogTag(val) {
       this.dialogTag = val;
@@ -142,7 +116,10 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return `${year}${month}${day}`;
-    }
+    },
+    setType(val) {
+      this.type = val;
+    },
   },
   mounted() {
     this.commentText = this.text;
@@ -150,7 +127,7 @@ export default {
     //   this.text = this.from ? `**${this.from}**` : "";
     // }
   },
-  props: ["size", "rows", "type"],
+  props: ["size", "rows"],
   computed: {
     outlinedCheck() {
       if (this.showAction) {
@@ -166,7 +143,7 @@ export default {
         time: new Date(),
         content: this.commentText,
         date: this.formatDate(new Date()),
-        type: this.type
+        type: this.type,
       };
     },
     checkLength() {
@@ -175,8 +152,8 @@ export default {
       } else {
         return !(this.commentText.length > 10);
       }
-    }
-  }
+    },
+  },
 };
 </script>
  

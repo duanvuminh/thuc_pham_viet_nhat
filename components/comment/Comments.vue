@@ -2,10 +2,10 @@
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
     <v-row>
       <v-col cols="12">
-        <h1>Bình luận</h1>
+        <h2>Trả lời</h2>
       </v-col>
       <v-col cols="12">
-        <add :size="40" :rows="3" :never_hide="true" @add="addRoot"></add>
+        <add :size="40" :rows="2" :never_hide="true" @add="addRoot"></add>
       </v-col>
       <v-col cols="12">
         <comment
@@ -42,8 +42,10 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-const comment = () => import("./Comment");
-const add = () => import("./Add");
+//const comment = () => import("./Comment");
+import comment from './Comment';
+//const add = () => import("./Add");
+import add from "./Add";
 
 export default {
   components: {

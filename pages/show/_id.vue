@@ -150,7 +150,7 @@ export default {
     },
     async save() {
       this.loading = true;
-      let items = await this.$axios
+      await this.$axios
         .$post("/api/post", null, {
           params: {
             searchkey: this.searchkey[0],
@@ -158,11 +158,18 @@ export default {
           }
         })
         .then(x => {
-          for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].id == this.email) {
-              this.items[i].vi = this.commentvi;
-              break;
+          if (this.items.lenght > 0) {
+            for (let i = 0; i < this.items.length; i++) {
+              if (this.items[i].id == this.email) {
+                this.items[i].vi = this.commentvi;
+                break;
+              }
             }
+          } else {
+            this.items[0] = {
+              id: this.email,
+              vi: this.commentvi
+            };
           }
         });
       this.loading = false;

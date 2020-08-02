@@ -2,7 +2,6 @@
   <v-app light ontouchstart>
     <v-app-bar
       absolute
-      color="teal lighten-3"
       dense
       dark
       hide-on-scroll

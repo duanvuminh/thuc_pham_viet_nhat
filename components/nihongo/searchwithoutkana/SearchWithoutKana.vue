@@ -136,11 +136,9 @@ export default {
       }
     },
     search3(item) {
-      if (this.search2) {
         item.key == 2
-          ? this.$router.push(`/mean/${this.search2.toLowerCase()}`)
-          : this.$router.push(`/show/${this.search2.toLowerCase()}`);
-      }
+          ? this.$router.push(`/mean/${item.name}`)
+          : this.$router.push(`/show/${item.name}`);
     }
   },
   mounted() {
