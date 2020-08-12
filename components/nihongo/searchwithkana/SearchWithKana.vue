@@ -53,7 +53,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs);
+    // console.log(this.$refs);
     // var input = document.getElementById("ime");
     // wanakana.bind(input);
     setInterval(() => {
@@ -108,8 +108,8 @@ export default {
       });
     },
     openDg(e) {
-      console.log(this.lastKey);
-      console.log(e.key);
+      // console.log(this.lastKey);
+      // console.log(e.key);
       var specialKeys = [
         "F1",
         "F2",
@@ -140,7 +140,7 @@ export default {
         e.preventDefault();
         if (e.key == "Backspace") {
           this.item = null;
-          console.log(this.textreal);
+          // console.log(this.textreal);
           this.textreal =
             this.textreal.length > 1
               ? this.textreal.substr(0, this.textreal.length - 1)
@@ -221,7 +221,7 @@ export default {
           `https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${convertText}`
         )
         .then(r => {
-          console.log(r);
+          // console.log(r);
           this.items = [
             ...r[0][1],
             wanakana.toKatakana(this.textreal),

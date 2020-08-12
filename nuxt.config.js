@@ -27,10 +27,18 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', href: 'logo.png' },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
     ]
   },
   // hooks: {
@@ -105,11 +113,24 @@ export default {
 
   ],
   pwa: {
+    meta: {
+      mobileAppIOS:true
+    },
     manifest: {
       name: 'Oboe',
+      background_color: "#ffffff",
       lang: 'en',
       description: "cách nhớ kanji",
-      prefer_related_applications: true
+      display: "standalone",
+      orientation: "portrait",
+      prefer_related_applications: true,
+      icons: [
+        {
+          "src": "icon_1024.png.png",
+          "sizes": "1024x1024",
+          "type": "image/png"
+        }
+      ]
     },
     workbox: {
       runtimeCaching: [
@@ -204,7 +225,7 @@ export default {
     theme: {
       // disable: true,
       // this.$vuetify.theme.dark = true;
-      dark:true,
+      dark: true,
       // themes: {
       //   dark: {
       //     primary: colors.blue.darken2,

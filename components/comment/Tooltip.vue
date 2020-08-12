@@ -1,46 +1,51 @@
 <template>
   <div class="d-flex">
-    <template v-if="!inApp">
-      <v-btn text @click="$emit('setId',id)" small fab>
-        <v-icon dark small>mdi-message-reply-text</v-icon>
-      </v-btn>
-      {{messageCount>0?messageCount:""}}
+    <template v-if="showMessage">
+      <div>
+        <v-btn text :to="`/articles/${this.id}`" small fab>
+          <v-icon dark small>mdi-message-reply-text</v-icon>
+        </v-btn>
+        {{messageCount>0?messageCount:""}}
+      </div>
     </template>
     <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
     <v-btn text small fab @click="save" :color="is_saved==1?'blue':null">
       <v-icon dark small>mdi-bookmark-multiple</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
-    <v-menu v-if="show&&inApp" bottom left>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on">
-          <v-icon color="grey darken-1" small>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item @click="$emit('openDialog')">
-          <v-list-item-title>
-            <v-icon color="grey darken-1" small>mdi-pencil-circle-outline</v-icon>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+    <ActionPure
+      v-if="editable"
+      :_add="false"
+      :_edit="true"
+      :_delete="true"
+      @edit="$emit('open-dialog')"
+      @delete="$emit('delete-article')"
+    ></ActionPure>
   </div>
 </template>
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Like from "./Like";
+import ActionPure from "./ActionPure";
+
 export default {
   components: {
     Like,
+    ActionPure,
+  },
+  computed: {
+    path() {
+      return `forum/${this.id}`;
+    },
+    showMessage() {
+      return this.$route.params.id ? false : true;
+    },
   },
   data() {
     return {
       messageCount: 0,
       is_saved: false,
-      show: true,
     };
   },
   methods: {
@@ -58,9 +63,6 @@ export default {
           { merge: true }
         );
     },
-    setShow(val) {
-      this.show = val;
-    },
   },
   mounted() {
     firebase
@@ -72,12 +74,15 @@ export default {
           this.is_saved = doc.data().is_saved;
         }
       });
+    firebase
+      .firestore()
+      .doc(`forum/${this.id}`)
+      .collection("comments")
+      .get()
+      .then((snap) => {
+        this.messageCount = snap.size;
+      });
   },
-  props: ["id", "inApp"],
-  computed: {
-    path() {
-      return `forum/${this.id}`;
-    },
-  },
+  props: ["editable", "id"],
 };
 </script>

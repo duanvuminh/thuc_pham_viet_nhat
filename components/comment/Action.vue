@@ -1,30 +1,13 @@
 <template>
-  <div>
-    <v-menu bottom left>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on">
-          <v-icon color="grey darken-1" small>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item v-if="add" @click="dialog=true">
-          <v-list-item-title>
-            <v-icon color="grey darken-1" small>mdi-plus-circle-outline</v-icon>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="dialog1=true">
-          <v-list-item-title>
-            <v-icon color="grey darken-1" small>mdi-pencil-circle-outline</v-icon>
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="deleteMenu">
-          <v-list-item-title>
-            <v-icon color="grey darken-1" small>mdi-delete-circle-outline</v-icon>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+  <div class="d-none d-md-block">
+    <ActionPure
+    :_add="_add"
+    :_edit="_edit"
+    :_delete="_delete"
+    @add="dialog=true"
+    @edit="dialog1=true"
+    @delete="deleteMenu"
+    ></ActionPure>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-form ref="form" v-model="valid" lazy-validation onsubmit="return false;">
         <v-card>
@@ -85,9 +68,16 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
+import {mapState} from 'vuex'
+const ActionPure = () => import("./ActionPure");
 
 export default {
-  components: {},
+  components: {
+    ActionPure
+  },
+  computed: {
+    ...mapState(["mypage"])
+  },
   data() {
     return {
       dialog: false,
@@ -106,7 +96,7 @@ export default {
     validate() {
       this.$refs.form.validate();
       if (this.valid) {
-        if (this.type.level1 == "4PisKFBkxDzV7voklXYA") {
+        if (this.type.level1 == this.mypage) {
           firebase
             .firestore()
             .collection("topic")
@@ -156,7 +146,7 @@ export default {
     validate1() {
       this.$refs.form.validate();
       if (this.valid) {
-        if (this.type.level1 == "4PisKFBkxDzV7voklXYA") {
+        if (this.type.level1 == this.mypage) {
           if (this.id) {
             firebase
               .firestore()
@@ -244,7 +234,7 @@ export default {
       }
     },
     deleteMenu() {
-      if (this.type.level1 == "4PisKFBkxDzV7voklXYA") {
+      if (this.type.level1 == this.mypage) {
         if (this.id) {
           firebase
             .firestore()
@@ -325,7 +315,7 @@ export default {
   },
   mounted() {},
   // type: {level1,topic}
-  props: ["add", "type", "id", "value"],
-  computed: {},
+  props: ["_add","_edit","_delete", "type", "id", "value"],
+  
 };
 </script>

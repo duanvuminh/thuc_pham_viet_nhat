@@ -3,11 +3,17 @@ import cookieparser from "cookieparser";
 
 export const state = () => ({
   count: 0,
+  contents: [],
+  date: null,
   japanesInput: false,
-  connectedFirebase:false,
+  connectedFirebase: false,
   loggedIn: false,
-  visionurl:"",
-  user: {}
+  visionurl: "",
+  user: {},
+  topic: '8ZeUI85LG6OtNTeDDIqT',
+  // const variable
+  mypage: "4PisKFBkxDzV7voklXYA",
+  defaultTopic: "8ZeUI85LG6OtNTeDDIqT"
 })
 
 export const mutations = {
@@ -26,6 +32,27 @@ export const mutations = {
   setConnectedFirebase(state, value) {
     state.connectedFirebase = value;
   },
+  setTopic(state, value) {
+    state.topic = value;
+  },
+  setContent(state, value) {
+    state.contents = value;
+  },
+  pushContent(state, value) {
+    state.contents.push(value);
+  },
+  unshiftContent(state, value) {
+    state.contents.unshift(value);
+  },
+  spliceContent(state, index) {
+    state.contents.splice(index, 1);
+  },
+  editContent(state, index, val) {
+    state.contents[index].content = val;
+  },
+  setDate(state, val) {
+    state.date = val;
+  }
 }
 
 export const actions = {
@@ -37,25 +64,6 @@ export const actions = {
     const emailCookie = parsed.email;
     if (!emailCookie) return;
     commit("setLoginState", true);
-    commit("setUser", {email: emailCookie});
+    commit("setUser", { email: emailCookie });
   },
-  // nuxtServerInit({ commit }, { req }) {
-  //   if (process.server && process.static) return;
-  //   if (!req.headers.cookie) return;
-
-  //   const parsed = cookieparser.parse(req.headers.cookie);
-  //   const accessTokenCookie = parsed.access_token;
-
-  //   if (!accessTokenCookie) return;
-
-  //   const decoded = JWTDecode(accessTokenCookie);
-
-  //   if (decoded) {
-  //     commit("setUser", {
-  //       uid: decoded.user_id,
-  //       email: decoded.email
-  //     });
-  //     commit("setLoginState",true);
-  //   }
-  // }
 };

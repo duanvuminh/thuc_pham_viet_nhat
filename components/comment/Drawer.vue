@@ -1,66 +1,32 @@
 <template>
-  <div>
-    <v-navigation-drawer v-model="drawerSelf" app width="350">
-      <v-row class="fill-height" no-gutters>
-        <v-navigation-drawer dark mini-variant mini-variant-width="80" v-model="drawerSelf">
-          <v-list-item-group v-model="item" color="white">
-            <Topic v-for="item in tags" :key="item.id" :item="item" @setLevel1="setLevel1"></Topic>
-            <v-list-item class="px-2" disabled>
-              <v-list-item-avatar color="pink">
-                <v-icon>mdi-plus</v-icon>
-              </v-list-item-avatar>
+  <v-navigation-drawer v-model="drawer" app width="310">
+    <v-row class="fill-height" no-gutters>
+      <v-navigation-drawer dark mini-variant mini-variant-width="50" v-model="drawer">
+        <v-list-item-group v-model="item" color="white">
+          <Topic v-for="item in tags" :key="item.id" :item="item" @set-level1="setLevel1"></Topic>
+        </v-list-item-group>
+      </v-navigation-drawer>
+      <v-list class="grow">
+        <nuxt-link to="/" class="nuxt-link-logo">
+          <v-img :src="require('@/assets/logo2.png')" contain position="left" width="100"></v-img>
+        </nuxt-link>
+        <v-list-item-group v-model="item1" color="white">
+          <v-subheader class="d-none d-md-flex">
+            Thêm Channels
+            <v-spacer></v-spacer>
+            <v-btn icon @click="addChanel">
+              <v-icon color="grey darken-1" small>mdi-plus-circle-outline</v-icon>
+            </v-btn>
+          </v-subheader>
+          <template v-if="mypave_save">
+            <v-list-item @click="openTopic('save')" dense>
+              <v-list-item-title>💾 Đã lưu</v-list-item-title>
             </v-list-item>
-          </v-list-item-group>
-        </v-navigation-drawer>
-        <v-list class="grow">
-          <nuxt-link to="/" class="nuxt-link-logo">
-            <v-img :src="require('@/assets/logo2.png')" contain position="left" width="100"></v-img>
-          </nuxt-link>
-          <v-list-item-group v-model="item1" color="white">
-            <v-subheader>
-              Thêm Channels
-              <v-spacer></v-spacer>
-              <v-btn icon @click="addChanel">
-                <v-icon color="grey darken-1" small>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </v-subheader>
-            <Topic1
-              v-for="(item,key) in topic1"
-              :key="item.id"
-              :item0="key"
-              :item="item"
-              :level1="level1"
-              @selecTopic1="selecTopic1"
-              @selecTopic="selecTopic"
-              @selecItem1="val=>{item1=val}"
-            ></Topic1>
-          </v-list-item-group>
-        </v-list>
-      </v-row>
-    </v-navigation-drawer>
-    <v-dialog v-model="dialogTag1" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card>
-        <v-toolbar color="teal lighten-3" dark dense>
-          <v-btn icon dark @click="$emit('setDialogTag', false); dialogTag1=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Chọn chủ đề</v-toolbar-title>
-        </v-toolbar>
-        <!-- <v-col cols="12">
-        <v-text-field label="Tìm kiếm" outlined dense hide-details></v-text-field>
-        </v-col>-->
-        <div class="text-left">
-          <v-chip
-            v-for="item in tags"
-            :key="item.id"
-            class="ma-2"
-            :color="item.name=='home'||item.name=='mypage'?'red':''"
-            outlined
-            @click="selectTopic(item.name)"
-          >{{rename(item.name)}}</v-chip>
-        </div>
-      </v-card>
-    </v-dialog>
+          </template>
+          <Topic1 v-for="item in topic1" :key="item.id" :item="item" :level1="level1"></Topic1>
+        </v-list-item-group>
+      </v-list>
+    </v-row>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-form ref="form" v-model="valid" lazy-validation onsubmit="return false;">
         <v-card>
@@ -89,17 +55,23 @@
         </v-card>
       </v-form>
     </v-dialog>
-  </div>
+  </v-navigation-drawer>
 </template>
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
+import { mapState } from "vuex";
 import Topic from "./Topic";
 import Topic1 from "./Topic1";
 
 export default {
   async mounted() {},
-  computed: {},
+  computed: {
+    ...mapState(["mypage"]),
+    mypave_save() {
+      return this.level1 == this.mypage ? true : false;
+    },
+  },
   components: {
     Topic,
     Topic1,
@@ -107,16 +79,15 @@ export default {
   data() {
     return {
       dialog: false,
-      dialogTag1: false,
       //form
       full_name: "",
       valid: false,
       //end form
       tags: [],
       topic1: [],
-      drawerSelf: this.drawer,
+      drawer: true,
       level1: null,
-      item: null,
+      item: 0,
       item1: null,
     };
   },
@@ -124,33 +95,20 @@ export default {
     addChanel() {
       this.dialog = true;
     },
+    openTopic(item) {
+      if (item == this.topic) return;
+      this.$store.commit("setTopic", item);
+      this.$store.commit("setContent", []);
+      this.$store.commit("setDate", null);
+      this.$router.push("/forum");
+    },
     setLevel1(val) {
       this.level1 = val;
-    },
-    selectTopic(topic) {
-      this.$emit("setDialogTag", false);
-      this.dialogTag1 = false;
-      this.$emit("setTagName", topic);
-    },
-    selecTopic1(level1, topic, topic1) {
-      this.$emit("selecTopic1", level1, topic, topic1);
-    },
-    selecTopic(level1, topic) {
-      this.$emit("selecTopic", level1, topic);
-    },
-    rename(name) {
-      if (name == "home") {
-        return "Chủ đề chung";
-      }
-      if (name == "mypage") {
-        return "Nơi bạn ghi lại cho riêng bạn";
-      }
-      return name;
     },
     validate() {
       this.$refs.form.validate();
       if (this.valid) {
-        if (this.level1 == "4PisKFBkxDzV7voklXYA") {
+        if (this.level1 == this.mypage) {
           firebase
             .firestore()
             .collection("topic")
@@ -212,20 +170,14 @@ export default {
           }
         });
         this.level1 = this.tags[0].id;
-        this.item = 1;
       });
   },
-  props: ["dialogTag", "full", "drawer"],
+  props: [],
   watch: {
-    dialogTag(val) {
-      this.dialogTag1 = val;
-    },
-    drawerSelf(val) {
-      this.$emit("setDrawer", val);
-    },
     level1(val) {
       this.topic1 = [];
-      if (this.level1 == "4PisKFBkxDzV7voklXYA") {
+      this.item1 = null;
+      if (this.level1 == this.mypage) {
         firebase
           .firestore()
           .collection("topic")

@@ -1,11 +1,6 @@
 <template>
   <div v-if="item!=null">
-    <v-toolbar dense color="transparent" flat>
-      <v-btn icon @click="$emit('setId',null)">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-    </v-toolbar>
-    <oContent :content="item" @edit="edit" :inApp="true"></oContent>
+    <oContent :content="item" @edit="edit" @deleteArticle="deleteArticle" :inApp="true"></oContent>
     <Comments
       :comments="comments"
       :collectionSubUrl="collectionSubUrl"
@@ -64,6 +59,9 @@ export default {
       });
       this.item.content = content;
     },
+    deleteArticle(id){
+      
+    }
   },
   mounted() {
     if (!this.id) {

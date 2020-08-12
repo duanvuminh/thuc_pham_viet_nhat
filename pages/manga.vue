@@ -58,7 +58,7 @@ export default {
           });
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     return { posts, lastId, limit };
   },
@@ -153,7 +153,7 @@ export default {
         });
         this.busy = false;
         this.last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        console.log("last", this.posts);
+        // console.log("last", this.posts);
         if (!this.last) return;
         // Construct a new query starting at this document,
         // get the next 25 cities.

@@ -6,7 +6,9 @@
         <v-spacer></v-spacer>
         <v-list-item-action>
           <Action
-            :add="true"
+            :_add="true"
+            :_edit="true"
+            :_delete="true"
             :type="type"
             @addMenu="addMenu"
             @deleteMenu="val=>{item.isShow=false}"
@@ -17,11 +19,13 @@
       </v-subheader>
     </template>
     <template v-else>
-      <v-list-item @click="$emit('selecTopic',level1,item.id)" dense>
+      <v-list-item @click="openTopic(item)" dense>
         <v-list-item-title>{{item.full_name}}</v-list-item-title>
         <v-list-item-action>
           <Action
-            :add="true"
+            :_add="true"
+            :_edit="true"
+            :_delete="true"
             :type="type"
             @addMenu="addMenu"
             @deleteMenu="val=>{item.isShow=false}"
@@ -33,16 +37,13 @@
     </template>
     <template v-if="topics.length>0">
       <template v-for="item1 in topics">
-        <v-list-item
-          dense
-          :key="item1.id"
-          @click="$emit('selecTopic1',level1,item.id,item1.id)"
-          v-show="item1.isShow"
-        >
+        <v-list-item dense :key="item1.id" @click="openTopic(item1)" v-show="item1.isShow">
           <v-list-item-title>{{item1.full_name}}</v-list-item-title>
           <v-list-item-action>
             <Action
-              :add="false"
+              :_add="false"
+              :_edit="true"
+              :_delete="true"
               :type="type"
               @addMenu="addMenu"
               :id="item1.id"
@@ -57,9 +58,10 @@
   </div>
 </template>
 <script>
-import Action from "./Action";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import { mapState } from "vuex";
+const Action = () => import("./Action");
 
 export default {
   components: {
@@ -70,12 +72,21 @@ export default {
       topics: [],
     };
   },
+  name: "topic1",
   methods: {
     addMenu(topic) {
       this.topics.unshift(topic);
     },
+    openTopic(item) {
+      if (item.id == this.topic) return;
+      this.$store.commit("setTopic", item.id);
+      this.$store.commit("setContent", []);
+      this.$store.commit("setDate", null);
+      this.$router.push("/forum");
+    },
   },
   mounted() {
+    // console.log(this.item)
     if (!this.level1) {
       return;
     }
@@ -93,19 +104,14 @@ export default {
             let topic = { id: doc.id, ...doc.data() };
             this.topics.push(topic);
           }
-        });
-        if (this.item0 == 0) {
-          if(this.topics.length > 0){
-            this.$emit('selecTopic1',this.level1,this.item.id,this.topics[0].id);
-            this.$emit('selecItem1',1);
-          }else{
-            this.$emit('selecTopic',this.level1,this.item.id);
-            this.$emit('selecItem1',0);
+          if (this.item.name == "home") {
+            this.$store.commit("setTopic", this.topics[0].id);
           }
-        }
+        });
       });
   },
-  props: ["item", "level1", "item0"],
+  // topic
+  props: ["item", "level1"],
   computed: {
     show() {
       return this.topics.length > 0;
@@ -114,6 +120,7 @@ export default {
       // type: {level1,topic}
       return { level1: this.level1, topic: this.item.id };
     },
+    ...mapState(["topic"]),
   },
 };
 </script>

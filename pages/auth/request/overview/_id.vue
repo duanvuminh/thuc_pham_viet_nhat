@@ -50,7 +50,7 @@ export default {
     }
   },
   async mounted() {
-    console.log(this.params);
+    // console.log(this.params);
     let items = [];
     await firebase
       .firestore()

@@ -3,6 +3,21 @@
     <v-card :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-3':'pa-1 mx-auto elevation-0'">
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">
+          <v-text-field
+            v-if="showAction&&email"
+            class="text-h5"
+            placeholder="Tiêu đề"
+            :rows="1"
+            v-model="commentHeader"
+            hide-details
+            persistent-hint
+            :readonly="!email"
+            dense
+            solo
+            flat
+          >
+            <div slot="prepend"></div>
+          </v-text-field>
           <v-textarea
             :placeholder="`${email?'Bạn hãy viết gì đó':'Đăng nhập'}`"
             :rows="rows"
@@ -11,7 +26,7 @@
             hide-details
             @click="showAction=true;"
             persistent-hint
-            :readonly="!email"         
+            :readonly="!email"
             dense
           >
             <div slot="prepend">
@@ -61,17 +76,17 @@
   </div>
 </template>
 <script>
+import {mapState} from 'vuex';
 //const avartar = () => import("./Avartar");
 import avartar from "./Avartar";
 //const tags = () => import("./TagsForum");
-import tags from "./TagsForum";
+//import tags from "./TagsForum";
 //const datepicker = () => import("./DatePicker");
 import datepicker from "./DatePicker";
 
 export default {
   components: {
     avartar,
-    tags,
     datepicker,
   },
   data() {
@@ -82,9 +97,9 @@ export default {
       email: this.$store.state.user.email,
       focusTab: "",
       showAction: false,
+      commentHeader:null,
       commentText: "",
       content: "",
-      type: null,
     };
   },
   methods: {
@@ -103,7 +118,7 @@ export default {
       this.focusTab = val;
     },
     datechange(val) {
-      this.$emit("datechange", val);
+      this.$store.commit("setDate", val);
     },
     formatDate(date) {
       if (!date) return null;
@@ -117,9 +132,6 @@ export default {
 
       return `${year}${month}${day}`;
     },
-    setType(val) {
-      this.type = val;
-    },
   },
   mounted() {
     this.commentText = this.text;
@@ -129,6 +141,7 @@ export default {
   },
   props: ["size", "rows"],
   computed: {
+    ...mapState(["topic", "contents","date"]),
     outlinedCheck() {
       if (this.showAction) {
         if (this.email) {
@@ -138,12 +151,18 @@ export default {
       return false;
     },
     messageAdd() {
+      let comment = this.commentText;
+      if(this.commentHeader){
+        comment = `### ${this.commentHeader}
+${comment}
+        `
+      }
       return {
         creator: this.email,
         time: new Date(),
-        content: this.commentText,
+        content: comment,
         date: this.formatDate(new Date()),
-        type: this.type,
+        type: this.topic,
       };
     },
     checkLength() {

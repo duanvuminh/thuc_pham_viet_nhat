@@ -1,6 +1,6 @@
 <template>
   <v-app ontouchstart>
-    <v-app-bar app elevation="0">
+    <v-app-bar app elevation="0" color="transparent" dense>
       <nuxt-link to="/" class="nuxt-link-logo">
         <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
@@ -28,17 +28,17 @@ import HtmlParser from "@/components/HtmlParser";
 
 export default {
   components: {
-    HtmlParser
+    HtmlParser,
   },
   data() {
     return {
       selectedText: "",
       selectedTextShow: "",
       selectedTextApi: {
-        vi: ""
+        vi: "",
       },
       dialog: false,
-      drawer: true
+      drawer: true,
     };
   },
   mounted() {
@@ -54,7 +54,7 @@ export default {
         text = document.selection.createRange().text;
       }
       this.selectedText = text;
-    }
+    },
   },
   computed: {
     loggedIn() {
@@ -90,7 +90,7 @@ export default {
           //{ title: "About", icon: "question_answer" }
         ];
       }
-    }
+    },
   },
   scrollToTop: true,
   watch: {
@@ -104,10 +104,10 @@ export default {
         this.$axios
           .$get("/api/get_post_by_id", {
             params: {
-              id: value
-            }
+              id: value,
+            },
           })
-          .then(r => {
+          .then((r) => {
             if (r && r.length > 0) {
               this.selectedTextShow = this.selectedText;
               this.selectedTextApi = r[0];
@@ -115,8 +115,8 @@ export default {
             }
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="sass">

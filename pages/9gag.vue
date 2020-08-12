@@ -54,7 +54,7 @@ export default {
           next = response.data.data.nextCursor;
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     return { posts, next, url };
   },

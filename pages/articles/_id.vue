@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <oContent :content="item" @edit="edit"></oContent>
+  <div class="mt-1">
+    <v-app-bar app elevation="0" color="transparent" dense>
+      <v-spacer></v-spacer>
+      <v-btn fab small @click="$router.go(-1)">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <oContent :content="item" @edit="edit" @deleteArticle="deleteArticle"></oContent>
     <Comments
       :comments="comments"
       :collectionSubUrl="collectionSubUrl"
@@ -12,7 +18,9 @@
 <script>
 // import HtmlParser from "@/components/HtmlParser";
 import firebase from "firebase/app";
+import { mapState } from "vuex";
 import "firebase/firestore";
+
 const Comments = () => import("@/components/comment/Comments");
 const oContent = () => import("@/components/comment/Content");
 
@@ -27,7 +35,7 @@ export default {
         .collection("forum")
         .doc(params.id)
         .get()
-        .then(doc => {
+        .then((doc) => {
           item = doc.data();
           item.id = doc.id;
           item.time = new Date(item.time.seconds * 1e3);
@@ -40,12 +48,12 @@ export default {
         .orderBy("time")
         .limit(10)
         .get()
-        .then(documentSnapshots => {
+        .then((documentSnapshots) => {
           // Get the last visible document
           // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
           // Construct a new query starting at this document,
           // get the next 25 cities.
-          documentSnapshots.forEach(doc => {
+          documentSnapshots.forEach((doc) => {
             lastID = doc.id;
             comments.push({
               id: doc.id,
@@ -53,26 +61,28 @@ export default {
               comment: doc.data().comment,
               for: doc.data().for,
               time: new Date(doc.data().time.seconds * 1e3),
-              commentSub: []
+              commentSub: [],
             });
           });
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     return { comments, lastID, item };
   },
   beforeCreate() {},
   components: {
     Comments,
-    oContent
+    oContent,
   },
   created() {},
-  computed: {},
+  computed: {
+    ...mapState(["contents"]),
+  },
   data() {
     return {
       collectionSubUrl: "commentSub",
-      collectionUrl: `forum/${this.$route.params.id}/comments`
+      collectionUrl: `forum/${this.$route.params.id}/comments`,
     };
   },
   head() {
@@ -83,28 +93,29 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: "Forum hỏi đáp về tiếng nhật và cuộc sống ở nhật"
-        }
-      ]
+          content: "Forum hỏi đáp về tiếng nhật và cuộc sống ở nhật",
+        },
+      ],
     };
   },
-  layout: "simpleF",
+  layout: "simpleForum",
   methods: {
     fbtime(timestamp) {
       // console.log(timestamp);
       return new Date(timestamp.seconds * 1e3);
     },
     edit(content, id) {
-      firebase
-        .firestore()
-        .collection("forum")
-        .doc(id)
-        .update({
-          content: content
-        });
       this.item.content = content;
-    }
+    },
+    deleteArticle() {
+      for (let i = 0; i < this.contents.length; i++) {
+        if (this.contents[i].id == this.item.id) {
+          this.$store.commit("spliceContent", i);
+        }
+      }
+      this.$router.go(-1);
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>

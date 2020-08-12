@@ -89,7 +89,7 @@ export default {
       this.photoURL = user.photoURL
         ? user.photoURL
         : user.providerData[0].photoURL;
-      console.log(this.photoURL);
+      // console.log(this.photoURL);
     }
   }
 };

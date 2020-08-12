@@ -155,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.lastID);
+    // console.log(this.lastID);
     if (this.lastID) {
       firebase
         .firestore()

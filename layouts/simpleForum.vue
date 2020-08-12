@@ -1,10 +1,6 @@
 <template>
   <v-app ontouchstart>
-    <!-- <v-app-bar app elevation="0">
-      <nuxt-link to="/" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo.png')" height="100%" contain position="left"></v-img>
-      </nuxt-link>
-    </v-app-bar> -->
+    <Drawer></Drawer>
     <v-main>
       <v-container>
         <nuxt />
@@ -25,20 +21,21 @@
 import { mapState } from "vuex";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
+import Drawer from "@/components/comment/Drawer";
 
 export default {
   components: {
-    HtmlParser
+    HtmlParser,
+    Drawer,
   },
   data() {
     return {
       selectedText: "",
       selectedTextShow: "",
       selectedTextApi: {
-        vi: ""
+        vi: "",
       },
       dialog: false,
-      drawer: true
     };
   },
   mounted() {
@@ -54,7 +51,7 @@ export default {
         text = document.selection.createRange().text;
       }
       this.selectedText = text;
-    }
+    },
   },
   computed: {
     loggedIn() {
@@ -90,7 +87,7 @@ export default {
           //{ title: "About", icon: "question_answer" }
         ];
       }
-    }
+    },
   },
   scrollToTop: true,
   watch: {
@@ -104,10 +101,10 @@ export default {
         this.$axios
           .$get("/api/get_post_by_id", {
             params: {
-              id: value
-            }
+              id: value,
+            },
           })
-          .then(r => {
+          .then((r) => {
             if (r && r.length > 0) {
               this.selectedTextShow = this.selectedText;
               this.selectedTextApi = r[0];
@@ -115,8 +112,8 @@ export default {
             }
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="sass">

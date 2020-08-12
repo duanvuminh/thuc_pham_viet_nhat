@@ -1,56 +1,61 @@
 <template>
   <v-row>
-    <v-col cols="12" class="mb-0 pb-0 pt-0">
-      <div class="d-flex justify-start">
-        <template>
-          <avartar :size="size" :email="content.creator"></avartar>
-          <div class="ml-1 flex-grow-1">
-            <article style="overflow: hidden;">
-              <header>
-                <b>{{content.userName}}</b>
-                <small>{{timeText}}</small>
-              </header>
-              <HtmlParser :content="$md.render(content.content)"></HtmlParser>
-            </article>
-            <Tooltip
-              :id="content.id"
-              @setId="val=>{$emit('setId',val)}"
-              :inApp="inApp"
-              @openDialog="dialog=true"
-              ref="tooltip"
-            ></Tooltip>
-          </div>
-        </template>
-      </div>
+    <v-col cols="12" class="mb-2 pb-0 pt-0">
+      <v-hover v-slot:default="{ hover }">
+        <v-card class="mx-auto">
+          <v-card-text>
+            <div class="d-flex justify-start">
+              <template>
+                <avartar :size="size" :email="content.creator"></avartar>
+                <div class="ml-1 flex-grow-1">
+                  <article style="overflow: hidden;">
+                    <header>
+                      <b>{{content.userName}}</b>
+                      <small>{{timeText}}</small>
+                    </header>
+                    <HtmlParser :content="$md.render(content.content)"></HtmlParser>
+                  </article>
+                  <Tooltip
+                    :show="show"
+                    :id="content.id"
+                    @open-dialog="dialog=true"
+                    @delete-article="deleteArticle"
+                    ref="tooltip"
+                    :editable="show"
+                  ></Tooltip>
+                </div>
+              </template>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-hover>
     </v-col>
-    <client-only>
-      <v-col cols="12" class="mb-0 py-0 pr-3">
-        <v-dialog v-model="dialog" fullscreen>
-          <v-card>
-            <v-container>
-              <v-textarea auto-grow v-model="commentText" hide-details dense></v-textarea>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="dialog = false">Close</v-btn>
-                <v-btn color="primary" text @click="save" :disabled="checkLength">Thêm</v-btn>
-              </v-card-actions>
-            </v-container>
-          </v-card>
-        </v-dialog>
-      </v-col>
-    </client-only>
+    <v-col cols="12" class="mb-0 py-0 pr-3">
+      <v-dialog v-model="dialog" fullscreen>
+        <v-card>
+          <v-container>
+            <v-textarea auto-grow v-model="commentText" hide-details dense></v-textarea>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="dialog = false">Close</v-btn>
+              <v-btn color="primary" text @click="save" :disabled="checkLength">Thêm</v-btn>
+            </v-card-actions>
+          </v-container>
+        </v-card>
+      </v-dialog>
+    </v-col>
   </v-row>
 </template>
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
- //const avartar = () => import("./Avartar");
-import avartar from './Avartar';
+//const avartar = () => import("./Avartar");
+import avartar from "./Avartar";
 //const Tooltip = () => import("./Tooltip");
-import Tooltip from './Tooltip';
+import Tooltip from "./Tooltip";
 //const HtmlParser = () => import("@/components/HtmlParser");
-import HtmlParser from '@/components/HtmlParser';
+import HtmlParser from "@/components/HtmlParser";
 
 export default {
   components: {
@@ -95,23 +100,15 @@ export default {
       );
     },
     show() {
-      let result = true;
-      if (this.$route.params.id || this.inApp) {
-        if (this.content.creator != this.$store.state.user.email) {
-          result = false;
-        } else {
-          result = true;
-        }
+      if (this.content.creator != this.$store.state.user.email) {
+        return false;
       } else {
-        result = false;
+        return true;
       }
-      this.$refs.tooltip.setShow(result);
-      return result;
     },
   },
   data() {
     return {
-      commentText: "",
       dislike: "",
       email: this.$store.state.user.email,
       liked: "",
@@ -121,6 +118,7 @@ export default {
       value: true,
       from: "",
       dialog: false,
+      commentText: "",
     };
   },
   created() {
@@ -135,7 +133,6 @@ export default {
         return r.data;
       });
     this.content.userName = name;
-    this.commentText = this.content.content;
   },
   methods: {
     formatDate(date) {
@@ -157,13 +154,32 @@ export default {
         strTime
       );
     },
+    deleteArticle() {
+      firebase
+        .firestore()
+        .collection("forum")
+        .doc(this.content.id)
+        .delete()
+        .then((result) => {
+          // has parent?
+          this.$emit("deleteArticle", this.content.id);
+        });
+    },
     save() {
-      this.$emit("edit", this.commentText, this.content.id);
-      this.commentText = "";
+      firebase.firestore().collection("forum").doc(this.content.id).update({
+        content: this.commentText,
+      });
+      this.content.content = this.commentText;
       this.dialog = false;
+      // has parent?
+      this.$emit("edit", this.commentText, this.content.id);
     },
   },
-  props: ["content", "inApp"],
-  watch: {},
+  props: ["content"],
+  watch: {
+    dialog(val) {
+      this.commentText = this.content.content;
+    },
+  },
 };
 </script>
