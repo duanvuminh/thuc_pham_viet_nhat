@@ -6,8 +6,10 @@
       </nuxt-link>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <nuxt />
+      <v-container fluid>
+        <v-row class="fill-height" align="start" justify="center">
+          <nuxt />
+        </v-row>
       </v-container>
     </v-main>
     <v-dialog v-model="dialog" max-width="290">

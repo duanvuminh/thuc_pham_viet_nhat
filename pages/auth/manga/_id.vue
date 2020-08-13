@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid" onSubmit="return false;" class="pa-2">
+  <v-form ref="form" v-model="valid" onsubmit="return false;" class="pa-2">
     <v-card>
       <v-card-title>
         <span class="headline">Học tiếng nhật với manga</span>
@@ -44,8 +44,13 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="taomanga" :loading="loading"
-      :disabled="loading">Lưu</v-btn>
+        <v-btn
+          color="blue darken-1"
+          text
+          @click="taomanga"
+          :loading="loading"
+          :disabled="loading"
+        >Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -58,7 +63,7 @@ import "firebase/firestore";
 import "firebase/storage";
 export default {
   components: {
-    HtmlParser
+    HtmlParser,
   },
   data() {
     return {
@@ -72,7 +77,7 @@ export default {
       //   show: false,
       //   searchkey: "",
       valid: true,
-      loading:false
+      loading: false,
     };
   },
   layout: "simple",
@@ -82,20 +87,20 @@ export default {
         return;
       } else {
         if (this.files.length > 0) {
-          this.loading = true
+          this.loading = true;
           Promise.all(
             // Array of "Promises"
-            this.files.map(item => {
+            this.files.map((item) => {
               var ref = firebase
                 .storage()
                 .ref(
                   "manga/" + this.$store.state.user.email + "/" + this.basename
                 );
-              return ref.put(item).then(r => {
+              return ref.put(item).then((r) => {
                 return ref.getDownloadURL();
               });
             })
-          ).then(url => {
+          ).then((url) => {
             firebase
               .firestore()
               .collection("manga")
@@ -104,13 +109,14 @@ export default {
                 {
                   edited: new Date(),
                   content: this.basecomment,
-                  url: url[0]
+                  url: url[0],
                 },
                 { merge: true }
-              ).then(r=>this.loading=false);
+              )
+              .then((r) => (this.loading = false));
           });
         } else {
-          this.loading = true
+          this.loading = true;
           firebase
             .firestore()
             .collection("manga")
@@ -118,16 +124,20 @@ export default {
             .set(
               {
                 edited: new Date(),
-                content: this.basecomment
+                content: this.basecomment,
               },
               { merge: true }
-            ).then(r=>this.loading=false);
+            )
+            .then((r) => (this.loading = false));
         }
       }
-    }
+    },
   },
-  watch:{
-      basename() {
+  mounted() {
+    this.basename = this.$route.params.id ? this.$route.params.id : "";
+  },
+  watch: {
+    basename() {
       if (this.basename) {
         firebase
           .app()
@@ -135,13 +145,13 @@ export default {
           .collection("manga")
           .doc(this.basename)
           .get()
-          .then(r => {
+          .then((r) => {
             if (r.data()) {
               this.basecomment = r.data().content;
-            } 
+            }
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>

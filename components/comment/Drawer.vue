@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="drawer" app width="310">
     <v-row class="fill-height" no-gutters>
       <v-navigation-drawer dark mini-variant mini-variant-width="50" v-model="drawer">
-        <v-list-item-group v-model="item" color="white">
+        <v-list-item-group v-model="item" color="white" active-class="duan">
           <Topic v-for="item in tags" :key="item.id" :item="item" @set-level1="setLevel1"></Topic>
         </v-list-item-group>
       </v-navigation-drawer>

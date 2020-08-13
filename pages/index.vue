@@ -8,7 +8,6 @@
           <nuxt-link to="/9gag" class="nuxt-link">Otaku</nuxt-link>
           <nuxt-link to="/manga" class="nuxt-link">Blog</nuxt-link>
           <nuxt-link to="/main" class="nuxt-link">Bộ kanji</nuxt-link>
-          <a href="https://simplemde.com/markdown-guide" class="nuxt-link">Cách viết bài</a>
           <a text @click="getfulllistkanji">{{showmore?"Ẩn":"Kanji cơ bản"}}</a>
         </v-row>
       </v-col>

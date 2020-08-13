@@ -97,11 +97,6 @@ export default {
         return !(this.commentText.trim().length > 0);
       }
     },
-    editMode() {
-      if (this.action == "edit") {
-        return true;
-      }
-    },
     timeText() {
       var seconds = Math.floor((this.now - this.comment.time) / 1000);
 
@@ -140,7 +135,6 @@ export default {
   },
   data() {
     return {
-      action: null,
       commentText: null,
       dialog: false,
       email: this.$store.state.user.email,
@@ -232,11 +226,6 @@ export default {
   },
   props: ["comment", "isRoot", "rootId", "rootEmail", "path"],
   watch: {
-    action(val) {
-      if (val == "delete") {
-        this.$emit("deleteComment", this.comment);
-      }
-    },
     dialog(val) {
       this.commentText = this.comment.comment;
     },

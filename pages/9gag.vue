@@ -1,15 +1,20 @@
 <template>
-  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" style="width:100%">
+  <div
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="busy"
+    infinite-scroll-distance="20"
+    style="max-width:600px;width:100%"
+  >
     <v-row align="start" justify="center">
       <v-col cols="12">
-      <template v-for="(post,index) in posts">
-        <v-card style="margin-bottom: 2rem;" class="ma-1" elevation="0" :key="index">
-          <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
-          <v-card-text>
-            <v-img class="orange--text align-end" :src="post.url" contain></v-img>
-          </v-card-text>
-        </v-card>
-      </template>
+        <template v-for="(post,index) in posts">
+          <v-card style="margin-bottom: 2rem;" class="ma-1" elevation="0" :key="index">
+            <v-card-title v-show="post.title" v-html="post.title"></v-card-title>
+            <v-card-text>
+              <v-img class="orange--text align-end" :src="post.url" contain></v-img>
+            </v-card-text>
+          </v-card>
+        </template>
       </v-col>
     </v-row>
   </div>
@@ -23,7 +28,7 @@ export default {
       "https://m.9gag.com/v1/group-posts/group/japan/type/hot?",
       "https://m.9gag.com/v1/group-posts/group/animewallpaper/type/hot?",
       "https://m.9gag.com/v1/group-posts/group/anime-manga/type/hot?",
-      "https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?"
+      "https://m.9gag.com/v1/group-posts/group/animewaifu/type/hot?",
     ][Math.floor(Math.random() * 4)];
     // await $axios.get(`${url}${next}`).then(response => {
     //   let data = response.data.data.posts;
@@ -37,12 +42,12 @@ export default {
       await $axios
         .get("/api/9gag", {
           params: {
-            id: `${url}${next}`
-          }
+            id: `${url}${next}`,
+          },
         })
-        .then(response => {
+        .then((response) => {
           let data = response.data.data.posts;
-          data = data.map(x => {
+          data = data.map((x) => {
             return { title: x.title, url: x.images.image700.url };
           });
           // data.map( x=>  {
@@ -66,12 +71,12 @@ export default {
       next: "",
       limit: 10,
       busy: false,
-      url: ""
+      url: "",
     };
   },
   head() {
     return {
-      titleTemplate: `%s - japan, animewallpaper,animewaifu,anime-manga`
+      titleTemplate: `%s - japan, animewallpaper,animewaifu,anime-manga`,
     };
   },
   methods: {
@@ -80,12 +85,12 @@ export default {
       this.$axios
         .get("/api/9gag", {
           params: {
-            id: `${this.url}${this.next}`
-          }
+            id: `${this.url}${this.next}`,
+          },
         })
-        .then(response => {
+        .then((response) => {
           let data = response.data.data.posts;
-          data = data.map(x => {
+          data = data.map((x) => {
             return { title: x.title, url: x.images.image700.url };
           });
           // data.map( x=>  {
@@ -97,7 +102,7 @@ export default {
           this.busy = false;
           this.next = response.data.data.nextCursor;
         });
-    }
+    },
     // translate(title) {
     //   return this.$axios
     //     .$post(
@@ -115,6 +120,6 @@ export default {
     // }
   },
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>
