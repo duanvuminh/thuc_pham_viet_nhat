@@ -9,7 +9,8 @@
           <v-col cols="12">
             <v-card flat tile>
               <v-card-text class="pa-2">
-                <HtmlParser :content="webo"></HtmlParser>
+                <HtmlParser v-if="webo.length>20" :content="webo"></HtmlParser>
+                <template v-else>Đợi chút nhé...</template>
               </v-card-text>
             </v-card>
           </v-col>

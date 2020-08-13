@@ -22,6 +22,7 @@
                 <b>{{post.id}}</b>
                 <v-spacer></v-spacer>
                 <ActionPure
+                  v-if="user.email == 'duanvuminh@gmail.com'"
                   :_add="false"
                   :_edit="true"
                   :_delete="true"
@@ -157,7 +158,7 @@ export default {
   },
   layout: "simple",
   methods: {
-    deleteArticle(index,id) {
+    deleteArticle(index, id) {
       firebase
         .firestore()
         .collection("manga")

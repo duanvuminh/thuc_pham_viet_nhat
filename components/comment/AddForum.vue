@@ -23,17 +23,31 @@
             :rows="rows"
             auto-grow
             v-model="commentText"
-            hide-details
             @click="showAction=true;"
             persistent-hint
             :readonly="!email"
             dense
+            :loading="loading"
+            :disabled="loading"
           >
             <div slot="prepend">
               <v-expand-transition>
                 <avartar :size="size" :email="email"></avartar>
               </v-expand-transition>
             </div>
+            <template slot="append">
+              <div>
+                <v-icon @click="openImage">mdi-paperclip</v-icon>
+                <input
+                  name="file"
+                  @change="onFileChange"
+                  ref="file"
+                  type="file"
+                  style="display: none"
+                  accept="image/png, image/jpeg"
+                />
+              </div>
+            </template>
           </v-textarea>
         </v-col>
         <!-- <v-col cols="6">
@@ -43,20 +57,6 @@
         </v-col>-->
         <v-col v-if="showAction && email" cols="12" class="d-flex ma-0 pr-3">
           <template>
-            <!-- <v-chip
-            class="ma-2"
-            label
-            x-small
-            @click="openTag"
-            @click:close="openTag"
-            close
-            close-icon="mdi-menu-down"
-            outlined
-            color="deep-purple accent-4"
-          >
-            <v-icon left x-small>mdi-tag</v-icon>
-            {{focusTab?focusTab:'Tags'}}
-            </v-chip>-->
             <v-spacer></v-spacer>
             <v-btn text small @click="reset">Huỷ</v-btn>
             <v-btn
@@ -76,7 +76,9 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex';
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { mapState } from "vuex";
 //const avartar = () => import("./Avartar");
 import avartar from "./Avartar";
 //const tags = () => import("./TagsForum");
@@ -97,14 +99,40 @@ export default {
       email: this.$store.state.user.email,
       focusTab: "",
       showAction: false,
-      commentHeader:null,
+      commentHeader: null,
       commentText: "",
       content: "",
+      loading: false,
     };
   },
   methods: {
     openTag() {
       this.dialogTag = true;
+    },
+    openImage() {
+      this.$refs.file.click();
+    },
+    onFileChange(e) {
+      this.loading = true;
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      let d = new Date().toString();
+      Promise.all(
+        // Array of "Promises"
+        [files[0]].map((item) => {
+          var ref = firebase
+            .storage()
+            .ref(`forum/${this.$store.state.user.email}/${d}`);
+          return ref.put(item).then((r) => {
+            return ref.getDownloadURL();
+          });
+        })
+      ).then((url) => {
+        this.commentText = `${this.commentText?this.commentText:''}
+![ảnh bài viết](${url[0]})
+`;
+        this.loading = false;
+      });
     },
     reset() {
       this.commentText = "";
@@ -141,7 +169,7 @@ export default {
   },
   props: ["size", "rows"],
   computed: {
-    ...mapState(["topic", "contents","date"]),
+    ...mapState(["topic", "contents", "date"]),
     outlinedCheck() {
       if (this.showAction) {
         if (this.email) {
@@ -152,10 +180,10 @@ export default {
     },
     messageAdd() {
       let comment = this.commentText;
-      if(this.commentHeader){
+      if (this.commentHeader) {
         comment = `### ${this.commentHeader}
 ${comment}
-        `
+        `;
       }
       return {
         creator: this.email,

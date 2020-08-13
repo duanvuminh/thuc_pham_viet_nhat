@@ -1,5 +1,6 @@
 <template>
   <v-card class="mx-auto" elevation="1">
+    <slot></slot>
     <v-card-text class="pb-0">
       <HtmlParser :content="$md.render(item.vi)" />
     </v-card-text>

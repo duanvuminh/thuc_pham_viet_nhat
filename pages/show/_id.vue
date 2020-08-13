@@ -5,22 +5,14 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12">
-        <v-card flat tile>
-          <Strockes :kanji="$route.params.id[0]" />
-          <v-btn
-            v-if="$store.state.loggedIn"
-            icon
-            @click="showEdit=!showEdit"
-            style="position:absolute;right:0;top:0"
-          >
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-row>
-            <v-col cols="12" v-for="(oboe,i) in items" :key="i">
-              <Ocard :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
-            </v-col>
-          </v-row>
-        </v-card>
+        <v-row>
+          <v-col cols="12" v-for="(oboe,i) in items" :key="i">
+            <Ocard v-if="i==0" :item="oboe" :searchkey="searchkey" :email="email">
+              <Strockes :kanji="$route.params.id[0]" />
+            </Ocard>
+            <Ocard v-else :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
+          </v-col>
+        </v-row>
         <v-dialog v-model="dialog" fullscreen>
           <v-card>
             <v-card-title>
@@ -56,6 +48,18 @@
         </v-dialog>
       </v-col>
     </v-row>
+    <v-btn
+      v-if="$store.state.loggedIn"
+      color="pink"
+      dark
+      fixed
+      bottom
+      right
+      fab
+      @click="showEdit=!showEdit"
+    >
+      <v-icon>mdi-pencil</v-icon>
+    </v-btn>
   </v-col>
 </template>
 <script>
@@ -77,15 +81,15 @@ export default {
     let items = await $axios
       .$get("/api/get_post_by_id", {
         params: {
-          id: params.id[0]
-        }
+          id: params.id[0],
+        },
       })
       .then();
     let searchkey = params.id;
     return {
       searchkey,
       email,
-      items
+      items,
     };
   },
   beforeCreate() {},
@@ -94,7 +98,7 @@ export default {
     Search,
     HtmlParser,
     Strockes,
-    Logo
+    Logo,
   },
   computed: {
     dialog() {
@@ -112,7 +116,7 @@ export default {
       } else {
         return this.show;
       }
-    }
+    },
     // avartar() {
     //   return this.user.email ? this.user.email[0] : "^.^";
     // }
@@ -128,12 +132,12 @@ export default {
       loading1: false,
       show: false,
       showEdit: false,
-      searchkey: ""
+      searchkey: "",
     };
   },
   head() {
     return {
-      titleTemplate: `%s - cách nhớ kanji ${this.searchkey}`
+      titleTemplate: `%s - cách nhớ kanji ${this.searchkey}`,
     };
   },
   layout: "oboesub",
@@ -143,8 +147,8 @@ export default {
       let items = await this.$axios.$post("/api/post1", null, {
         params: {
           searchkey: this.searchkey[0],
-          vi: this.commentvi
-        }
+          vi: this.commentvi,
+        },
       });
       this.loading = false;
     },
@@ -154,10 +158,10 @@ export default {
         .$post("/api/post", null, {
           params: {
             searchkey: this.searchkey[0],
-            vi: this.commentvi
-          }
+            vi: this.commentvi,
+          },
         })
-        .then(x => {
+        .then((x) => {
           if (this.items.lenght > 0) {
             for (let i = 0; i < this.items.length; i++) {
               if (this.items[i].id == this.email) {
@@ -168,13 +172,13 @@ export default {
           } else {
             this.items[0] = {
               id: this.email,
-              vi: this.commentvi
+              vi: this.commentvi,
             };
           }
         });
       this.loading = false;
       this.showEdit = false;
-    }
+    },
   },
   mounted() {
     // console.log(this.webo);
@@ -186,7 +190,7 @@ export default {
       .collection("oboe")
       .doc(this.email)
       .get()
-      .then(doc => {
+      .then((doc) => {
         if (doc.exists) {
           this.commentvi = doc.data().vi;
         }
@@ -225,7 +229,7 @@ export default {
     //  }
     //);
   },
-  watch: {}
+  watch: {},
 };
 </script>
 <style >
