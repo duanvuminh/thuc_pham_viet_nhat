@@ -1,34 +1,39 @@
 <template>
   <v-row>
     <v-col cols="12" class="mb-2 pb-0 pt-0">
-      <v-hover v-slot:default="{ hover }">
-        <v-card class="mx-auto">
-          <v-card-text>
-            <div class="d-flex justify-start">
-              <template>
-                <avartar :size="size" :email="content.creator"></avartar>
-                <div class="ml-1 flex-grow-1">
-                  <article style="overflow: hidden;">
-                    <header>
-                      <b>{{content.userName}}</b>
-                      <small>{{timeText}}</small>
-                    </header>
-                    <HtmlParser :content="$md.render(content.content)"></HtmlParser>
-                  </article>
-                  <Tooltip
-                    :show="show"
-                    :id="content.id"
-                    @open-dialog="dialog=true"
-                    @delete-article="deleteArticle"
-                    ref="tooltip"
-                    :editable="show"
-                  ></Tooltip>
-                </div>
-              </template>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-hover>
+      <v-card class="mx-auto">
+        <v-card-text>
+          <div class="d-flex justify-start">
+            <template>
+              <avartar :size="size" :email="content.creator"></avartar>
+              <div class="ml-1 flex-grow-1">
+                <article style="overflow: hidden;">
+                  <header>
+                    <b>{{content.userName}}</b>
+                    <small>{{timeText}}</small>
+                  </header>
+                  <HtmlParser :content="$md.render(content.content?content.content:'')"></HtmlParser>
+                </article>
+                <component
+                  v-bind:is="content.cus_component"
+                  :items="content.data"
+                  :id="content.id"
+                  :index="$vnode.key"
+                  :creator="content.creator"
+                ></component>
+                <Tooltip
+                  :show="show"
+                  :id="content.id"
+                  @open-dialog="dialog=true"
+                  @delete-article="deleteArticle"
+                  ref="tooltip"
+                  :editable="show"
+                ></Tooltip>
+              </div>
+            </template>
+          </div>
+        </v-card-text>
+      </v-card>
     </v-col>
     <v-col cols="12" class="mb-0 py-0 pr-3">
       <v-dialog v-model="dialog" fullscreen>
@@ -62,6 +67,7 @@ export default {
     avartar,
     HtmlParser,
     Tooltip,
+    Timeline: () => import("./TimelineInner"),
   },
   computed: {
     checkLength() {
@@ -169,10 +175,9 @@ export default {
       firebase.firestore().collection("forum").doc(this.content.id).update({
         content: this.commentText,
       });
-      this.content.content = this.commentText;
       this.dialog = false;
       // has parent?
-      this.$emit("edit", this.commentText, this.content.id);
+      this.$emit("edit", this.commentText);
     },
   },
   props: ["content"],

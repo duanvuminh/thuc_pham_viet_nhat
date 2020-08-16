@@ -26,7 +26,7 @@ export default {
     oContent,
   },
   computed: {
-    ...mapState(["topic", "contents","date"]),
+    ...mapState(["topic", "contents", "date"]),
     key() {
       return [this.topic, this.date].join();
     },
@@ -55,9 +55,9 @@ export default {
     deleteArticle(index, id) {
       this.$store.commit("spliceContent", index);
     },
-    edit(index, newVal, id) {
+    edit(index, newVal) {
       // this.contents[index].content = newVal;
-      this.$store.commit("editContent", index, newVal);
+      this.$store.commit("editContent", { index, val: newVal });
     },
     loadMore() {
       if (!this.lastID) return;
@@ -91,6 +91,8 @@ export default {
                   content: doc.data().content,
                   time: new Date(doc.data().time.seconds * 1e3),
                   type: doc.data().type,
+                  data: doc.data().data,
+                  cus_component: doc.data().cus_component,
                 });
               });
               this.busy = false;
@@ -101,6 +103,7 @@ export default {
   mounted() {
     try {
       if (this.contents.length > 0) {
+        this.lastID = this.contents[this.contents.length - 1].id;
         return;
       }
       firebase
@@ -128,6 +131,8 @@ export default {
               content: doc.data().content,
               type: doc.data().type,
               time: new Date(doc.data().time.seconds * 1e3),
+              data: doc.data().data,
+              cus_component: doc.data().cus_component,
             });
           });
         });
@@ -158,12 +163,14 @@ export default {
             // get the next 25 cities.
             documentSnapshots.forEach((doc) => {
               this.lastID = doc.id;
-              this.$store.commit("pushContent",{
+              this.$store.commit("pushContent", {
                 id: doc.id,
                 creator: doc.data().creator,
                 content: doc.data().content,
                 type: doc.data().type,
                 time: new Date(doc.data().time.seconds * 1e3),
+                data: doc.data().data,
+                cus_component: doc.data().cus_component,
               });
             });
           });

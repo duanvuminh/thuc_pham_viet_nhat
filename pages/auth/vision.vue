@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="center" style="width:100%;max-width:600px">
     <v-img v-if="url" class="orange--text align-end" :src="url" contain></v-img>
     <div v-html="text"></div>
   </v-row>

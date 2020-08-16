@@ -44,7 +44,7 @@ export default {
     },
     edit(index, newVal, id) {
       // this.contents[index].content = newVal;
-      this.$store.commit("editContent", index, newVal);
+      this.$store.commit("editContent", { index, val: newVal });
     },
     loadMore() {
       if (!this.lastID) return;
@@ -76,6 +76,8 @@ export default {
                   content: doc.data().content,
                   time: new Date(doc.data().time.seconds * 1e3),
                   type: doc.data().type,
+                  data: doc.data().data,
+                  cus_component: doc.data().cus_component,
                 });
               });
               this.busy = false;
@@ -116,6 +118,8 @@ export default {
                 content: doc.data().content,
                 type: doc.data().type,
                 time: new Date(doc.data().time.seconds * 1e3),
+                data: doc.data().data,
+                cus_component: doc.data().cus_component,
               });
             });
           });

@@ -7,7 +7,6 @@
         <v-row align="start" justify="space-around">
           <nuxt-link to="/9gag" class="nuxt-link">Otaku</nuxt-link>
           <nuxt-link to="/manga" class="nuxt-link">Blog</nuxt-link>
-          <nuxt-link to="/main" class="nuxt-link">Bộ kanji</nuxt-link>
           <a text @click="getfulllistkanji">{{showmore?"Ẩn":"Kanji cơ bản"}}</a>
         </v-row>
       </v-col>

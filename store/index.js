@@ -47,9 +47,23 @@ export const mutations = {
   spliceContent(state, index) {
     state.contents.splice(index, 1);
   },
-  editContent(state, index, val) {
+  editContent(state, {index, val}) {
     state.contents[index].content = val;
   },
+  // data
+  pushData(state, {index,index1,val}) {
+    state.contents[index].data.splice(index1+1,0,val);
+  },
+  unshiftData(state, value) {
+    state.contents.data.unshift(value);
+  },
+  spliceData(state, {index,index1}) {
+    state.contents[index].data.splice(index1, 1);
+  },
+  editData(state, {index,index1, val}) {
+    state.contents[index].data[index1] = val;
+  },
+  // end data
   setDate(state, val) {
     state.date = val;
   }

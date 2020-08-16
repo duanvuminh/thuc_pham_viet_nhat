@@ -16,7 +16,15 @@
             solo
             flat
           >
-            <div slot="prepend"></div>
+            <div slot="append">
+              <v-chip
+                small
+                v-if="cus_component"
+                class="ma-2"
+                close
+                @click:close="resetTimeline"
+              >{{cus_component}}</v-chip>
+            </div>
           </v-text-field>
           <v-textarea
             :placeholder="`${email?'Bạn hãy viết gì đó':'Đăng nhập'}`"
@@ -35,7 +43,7 @@
                 <avartar :size="size" :email="email"></avartar>
               </v-expand-transition>
             </div>
-            <template slot="append">
+            <template v-if="email" slot="append">
               <div>
                 <v-icon @click="openImage">mdi-paperclip</v-icon>
                 <input
@@ -46,6 +54,23 @@
                   style="display: none"
                   accept="image/png, image/jpeg"
                 />
+                <v-menu bottom left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon color="grey darken-1" small>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <div class="d-flex">
+                    <v-list>
+                      <v-list-item @click="dialog=true;cus_component='Timeline'">
+                        <v-list-item-avatar>
+                          <v-icon color="grey darken-1" small>mdi-timeline</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-title>Tạo timeline quản lý quá trình học</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </div>
+                </v-menu>
               </div>
             </template>
           </v-textarea>
@@ -62,7 +87,7 @@
             <v-btn
               color="primary"
               small
-              @click="$emit('add',messageAdd);commentText='';"
+              @click="$emit('add',messageAdd);commentText='';commentHeader='';showAction=false"
               :disabled="checkLength"
             >Thêm</v-btn>
           </template>
@@ -70,6 +95,17 @@
         <v-col class="pa-0 ma-0">
           <datepicker @datechange="datechange"></datepicker>
         </v-col>
+        <v-dialog v-model="dialog" fullscreen>
+          <component
+            v-bind:is="cus_component"
+            @close-timeline="resetTimeline"
+            @extension="extension"
+            :items="[{
+        color: '#FF00FF',
+        icon: 'mdi-plus',
+      }]"
+          ></component>
+        </v-dialog>
       </v-row>
       <!-- <tags @setDialogTag="setDialogTag" :dialogTag="dialogTag" @setTagName="setTagName" :full="true"></tags> -->
     </v-card>
@@ -80,16 +116,15 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
 //const avartar = () => import("./Avartar");
-import avartar from "./Avartar";
 //const tags = () => import("./TagsForum");
 //import tags from "./TagsForum";
 //const datepicker = () => import("./DatePicker");
-import datepicker from "./DatePicker";
 
 export default {
   components: {
-    avartar,
-    datepicker,
+    avartar: () => import("./Avartar"),
+    datepicker: () => import("./DatePicker"),
+    Timeline: () => import("./Timeline"),
   },
   data() {
     return {
@@ -99,13 +134,20 @@ export default {
       email: this.$store.state.user.email,
       focusTab: "",
       showAction: false,
+      // add object
       commentHeader: null,
       commentText: "",
-      content: "",
+      cus_component: null,
+      data: null,
+      //end
       loading: false,
     };
   },
   methods: {
+    extension(ex) {
+      this.dialog = false;
+      this.data = ex.data;
+    },
     openTag() {
       this.dialogTag = true;
     },
@@ -128,7 +170,7 @@ export default {
           });
         })
       ).then((url) => {
-        this.commentText = `${this.commentText?this.commentText:''}
+        this.commentText = `${this.commentText ? this.commentText : ""}
 ![ảnh bài viết](${url[0]})
 `;
         this.loading = false;
@@ -138,6 +180,11 @@ export default {
       this.commentText = "";
       this.showAction = false;
       this.focusTab = "";
+    },
+    resetTimeline() {
+      this.dialog = false;
+      this.cus_component = null;
+      this.data = null;
     },
     setDialogTag(val) {
       this.dialogTag = val;
@@ -189,8 +236,10 @@ ${comment}
         creator: this.email,
         time: new Date(),
         content: comment,
-        date: this.formatDate(new Date()),
+        date: this.cus_component?'99999990':this.formatDate(new Date()),
         type: this.topic,
+        data: this.data,
+        cus_component: this.cus_component,
       };
     },
     checkLength() {
