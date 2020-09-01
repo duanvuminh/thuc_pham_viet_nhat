@@ -4,7 +4,7 @@
       <v-col cols="12">
         <oContent
           v-for="(item,index) in contents"
-          :key="index"
+          :key="index.id"
           :content="item"
           @deleteArticle="deleteArticle(index,...arguments)"
           @edit="edit(index,...arguments)"

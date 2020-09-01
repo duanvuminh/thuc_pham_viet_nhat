@@ -3,7 +3,7 @@
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
     infinite-scroll-distance="20"
-    style="max-width:600px;width:100%"
+    style="max-width:750px;width:100%"
   >
     <v-row align="start" justify="center">
       <v-col cols="12">

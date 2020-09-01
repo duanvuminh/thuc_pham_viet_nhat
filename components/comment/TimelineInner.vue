@@ -1,6 +1,7 @@
 <template>
-  <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
+  <v-timeline align-top :dense="$vuetify.breakpoint.xs">
     <TimelineItem
+      :controller="index>=0"
       v-for="(item, i) in itemLocals"
       :key="i"
       :item="item"

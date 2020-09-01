@@ -9,6 +9,7 @@
           @add="add(i)"
           @edit="edit(i)"
           @xoa="xoa(i)"
+          :controller="true"
         ></TimelineItem>
       </v-timeline>
       <v-divider></v-divider>

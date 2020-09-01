@@ -87,7 +87,7 @@
             <v-btn
               color="primary"
               small
-              @click="$emit('add',messageAdd);commentText='';commentHeader='';showAction=false"
+              @click="$emit('add',messageAdd);commentText='';commentHeader='';showAction=false;cus_component=null"
               :disabled="checkLength"
             >Thêm</v-btn>
           </template>

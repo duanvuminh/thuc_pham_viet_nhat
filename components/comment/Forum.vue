@@ -5,7 +5,7 @@
         <h4 v-if="topic=='mypage'" class="mb-3 text-center">Put your stuff here to note</h4>
         <oContent
           v-for="(item,index) in contents"
-          :key="index"
+          :key="item.id"
           :content="item"
           @deleteArticle="deleteArticle(index,...arguments)"
           @edit="edit(index,...arguments)"
@@ -144,6 +144,7 @@ export default {
     key() {
       try {
         this.$store.commit("setContent", []);
+        this.lastID = null;
         firebase
           .firestore()
           .collection(this.collectionUrl)

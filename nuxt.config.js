@@ -126,7 +126,7 @@ export default {
       prefer_related_applications: true,
       icons: [
         {
-          "src": "icon_1024.png.png",
+          "src": "/icon_1024.png",
           "sizes": "1024x1024",
           "type": "image/png"
         }

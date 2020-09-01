@@ -157,7 +157,7 @@ app.get("/api/dic", async (req, res) => {
     const $ = cheerio.load(body);
     $("a").map(function (i, el) {
       // this === el
-      return $(this).attr("href", `/show/${$(this).text()}`);
+      return $(this).attr("href", `/mean/${$(this).text()}`);
     });
     $(".pc-iframe-ad").remove();
     $("img").remove();
@@ -175,7 +175,7 @@ app.get("/api/dic", async (req, res) => {
     const $ = cheerio.load(body);
     $("a").map(function (i, el) {
       // this === el
-      return $(this).attr("href", `/show/${$(this).text()}`);
+      return $(this).attr("href", `/mean/${$(this).text()}`);
     });
     $("img").remove();
     $(".kijiWrp .kiji .SsdSmlR").remove();
