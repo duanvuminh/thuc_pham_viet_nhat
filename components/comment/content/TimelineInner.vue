@@ -18,7 +18,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 export default {
   components: {
-    TimelineItem: () => import("@/components/comment/TimelineItem"),
+    TimelineItem: () => import("@/components/comment/content/TimelineItem"),
   },
   data: () => ({
     itemLocals: null,
@@ -32,7 +32,7 @@ export default {
         index: this.index,
         index1: index,
         val: {
-          color: "#FF00FF",
+          color: "#000000",
           icon: "mdi-plus",
         },
       });

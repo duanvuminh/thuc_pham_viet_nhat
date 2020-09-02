@@ -66,7 +66,13 @@
                         <v-list-item-avatar>
                           <v-icon color="grey darken-1" small>mdi-timeline</v-icon>
                         </v-list-item-avatar>
-                        <v-list-item-title>Tạo timeline quản lý quá trình học</v-list-item-title>
+                        <v-list-item-title>Tạo timeline</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="dialog=true;cus_component='Word'">
+                        <v-list-item-avatar>
+                          W
+                        </v-list-item-avatar>
+                        <v-list-item-title>Tạo flash card</v-list-item-title>
                       </v-list-item>
                     </v-list>
                   </div>
@@ -100,10 +106,7 @@
             v-bind:is="cus_component"
             @close-timeline="resetTimeline"
             @extension="extension"
-            :items="[{
-        color: '#FF00FF',
-        icon: 'mdi-plus',
-      }]"
+            :items="[{color: '#000000',}]"
           ></component>
         </v-dialog>
       </v-row>
@@ -124,7 +127,8 @@ export default {
   components: {
     avartar: () => import("./Avartar"),
     datepicker: () => import("./DatePicker"),
-    Timeline: () => import("./Timeline"),
+    Timeline: () => import("./content/Timeline"),
+    Word: () => import("./content/Word"),
   },
   data() {
     return {

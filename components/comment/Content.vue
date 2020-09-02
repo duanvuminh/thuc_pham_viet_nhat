@@ -18,7 +18,7 @@
                   v-bind:is="content.cus_component"
                   :items="content.data"
                   :id="content.id"
-                  :index="$vnode.key"
+                  :index="index"
                   :creator="content.creator"
                 ></component>
                 <Tooltip
@@ -67,7 +67,8 @@ export default {
     avartar,
     HtmlParser,
     Tooltip,
-    Timeline: () => import("./TimelineInner"),
+    Timeline: () => import("./content/TimelineInner"),
+    Word: () => import("./content/WordInner"),
   },
   computed: {
     checkLength() {
@@ -180,7 +181,7 @@ export default {
       this.$emit("edit", this.commentText);
     },
   },
-  props: ["content"],
+  props: ["content","index"],
   watch: {
     dialog(val) {
       this.commentText = this.content.content;

@@ -25,7 +25,7 @@
 <script>
 export default {
   components: {
-    TimelineItem: () => import("@/components/comment/TimelineItem"),
+    TimelineItem: () => import("@/components/comment/content/TimelineItem"),
   },
   data: () => ({
     itemLocals: null
@@ -36,7 +36,7 @@ export default {
   methods: {
     add(index) {
       this.itemLocals.splice(index, 0, {
-        color: "#FF00FF",
+        color: "#000000",
         icon: "mdi-plus",
       });
     },

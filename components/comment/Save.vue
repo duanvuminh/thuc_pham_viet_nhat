@@ -8,6 +8,7 @@
           :content="item"
           @deleteArticle="deleteArticle(index,...arguments)"
           @edit="edit(index,...arguments)"
+          :index="index"
         ></oContent>
       </v-col>
     </v-row>
