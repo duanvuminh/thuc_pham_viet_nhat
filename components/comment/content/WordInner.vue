@@ -1,10 +1,16 @@
 <template>
   <v-container>
     <div class="d-flex">
-      <v-btn v-if="show1All" text @click="show1All=false" small>hide all word</v-btn>
-      <v-btn v-else text @click="show1All=true" small>show all word</v-btn>
-      <v-btn v-if="show2All" text @click="show2All=false" small>hide all mean</v-btn>
-      <v-btn v-else text @click="show2All=true" small>show all mean</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="show1All=!show1All">
+        <v-icon small v-if="show1All">mdi-eye-check-outline</v-icon>
+        <v-icon small v-else>mdi-eye-off-outline</v-icon>
+      </v-btn>
+      <v-btn icon @click="show2All=!show2All">
+        <v-icon small v-if="show2All">mdi-eye-check-outline</v-icon>
+        <v-icon small v-else>mdi-eye-off-outline</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
     </div>
     <template>
       <WordItem
@@ -74,8 +80,8 @@ export default {
         { merge: true }
       );
     },
-    key(i){
-      return `${i}${this.state}`
+    key(i) {
+      return `${i}${this.state}`;
     },
     edit(index, data) {
       this.$store.commit("editData", {

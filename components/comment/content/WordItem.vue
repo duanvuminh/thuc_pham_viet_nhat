@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <div class="d-flex">
       <v-card-text class="pa-1">
         <template v-if="!editMode">
@@ -31,7 +31,7 @@
         <v-menu bottom left v-if="show&&controller">
           <template v-slot:activator="{ on, attrs }">
             <v-btn dark icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
+              <v-icon small>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
           <v-list>
