@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" class="mb-2 pb-0 pt-0">
       <v-card class="mx-auto">
-        <v-card-text>
+        <v-card-text class="pb-0">
           <div class="d-flex justify-start">
             <template>
               <avartar :size="size" :email="content.creator"></avartar>
@@ -12,26 +12,29 @@
                     <b>{{content.userName}}</b>
                     <small>{{timeText}}</small>
                   </header>
-                  <HtmlParser :content="$md.render(content.content?content.content:'')"></HtmlParser>
+                  <HtmlParser :content="$md.render(content1)"></HtmlParser>
                 </article>
-                <component
-                  v-bind:is="content.cus_component"
-                  :items="content.data"
-                  :id="content.id"
-                  :index="index"
-                  :creator="content.creator"
-                ></component>
-                <Tooltip
-                  :show="show"
-                  :id="content.id"
-                  @open-dialog="dialog=true"
-                  @delete-article="deleteArticle"
-                  ref="tooltip"
-                  :editable="show"
-                ></Tooltip>
               </div>
             </template>
           </div>
+        </v-card-text>
+        <v-card-text class="pt-0">
+          <HtmlParser :content="$md.render(content2)"></HtmlParser>
+          <component
+            v-bind:is="content.cus_component"
+            :items="content.data"
+            :id="content.id"
+            :index="index"
+            :creator="content.creator"
+          ></component>
+          <Tooltip
+            :show="show"
+            :id="content.id"
+            @open-dialog="dialog=true"
+            @delete-article="deleteArticle"
+            ref="tooltip"
+            :editable="show"
+          ></Tooltip>
         </v-card-text>
       </v-card>
     </v-col>
@@ -76,6 +79,19 @@ export default {
         return true;
       } else {
         return !(this.commentText.length > 10);
+      }
+    },
+    content1() {
+      let ks = this.content.content.split(/\r?\n/);
+      return ks[0] ? ks[0] : "";
+    },
+    content2() {
+      let ks = this.content.content.split(/\r?\n/);
+      let ct1 = ks[0] ? ks[0] : "";
+      if (ct1) {
+        return this.content.content.substr(ct1.length + 1);
+      } else {
+        return "";
       }
     },
     timeText() {
@@ -133,13 +149,11 @@ export default {
       this.now = Date.now();
     }, 30000);
   },
-  async mounted() {
-    let { name, email, photoURL } = await this.$axios
-      .get(`/api/user?id=${this.content.creator}`)
-      .then((r) => {
-        return r.data;
-      });
-    this.content.userName = name;
+  mounted() {
+    this.$axios.get(`/api/user?id=${this.content.creator}`).then((r) => {
+      let { name, email, photoURL } = r.data;
+      this.content.userName = name;
+    });
   },
   methods: {
     formatDate(date) {
@@ -181,7 +195,7 @@ export default {
       this.$emit("edit", this.commentText);
     },
   },
-  props: ["content","index"],
+  props: ["content", "index"],
   watch: {
     dialog(val) {
       this.commentText = this.content.content;

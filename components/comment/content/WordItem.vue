@@ -13,7 +13,7 @@
               <v-icon small>mdi-repeat-once</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <HtmlParser v-if="show2">{{item.content}}</HtmlParser>
+            <HtmlParser v-if="show2" :content="item.content"></HtmlParser>
             <v-btn icon @click="show2=!show2" small>
               <v-icon small>mdi-repeat-once</v-icon>
             </v-btn>

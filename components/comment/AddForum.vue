@@ -99,7 +99,7 @@
           </template>
         </v-col>
         <v-col class="pa-0 ma-0">
-          <datepicker @datechange="datechange"></datepicker>
+          <!-- <datepicker @datechange="datechange"></datepicker> -->
         </v-col>
         <v-dialog v-model="dialog" fullscreen>
           <component
@@ -126,7 +126,7 @@ import { mapState } from "vuex";
 export default {
   components: {
     avartar: () => import("./Avartar"),
-    datepicker: () => import("./DatePicker"),
+    // datepicker: () => import("./DatePicker"),
     Timeline: () => import("./content/Timeline"),
     Word: () => import("./content/Word"),
   },

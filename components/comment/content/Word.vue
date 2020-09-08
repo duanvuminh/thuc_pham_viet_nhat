@@ -42,7 +42,7 @@ export default {
       this.itemLocals.splice(index, 1);
     },
     edit(index) {
-      console.log(this.items);
+      //console.log(this.items);
     },
   },
   props: ["items"],

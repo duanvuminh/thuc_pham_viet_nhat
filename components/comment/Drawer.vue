@@ -158,6 +158,11 @@ export default {
     },
   },
   mounted() {
+    if (this.$route.name == "articles-id") {
+      this.$nextTick(() => {
+        this.drawer = false;
+      });
+    }
     firebase
       .firestore()
       .collection("topic")
@@ -214,6 +219,18 @@ export default {
               }
             });
           });
+      }
+    },
+    $route(to, from) {
+      if (to.name == "articles-id") {
+        this.drawer = false;
+      } else {
+        if (
+          this.$vuetify.breakpoint.name != "xs" &&
+          this.$vuetify.breakpoint.name != "sm"
+        ) {
+          this.drawer = true;
+        }
       }
     },
   },

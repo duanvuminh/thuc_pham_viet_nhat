@@ -29,6 +29,7 @@ export default {
     let comments = [];
     let lastID = "";
     let item = [];
+    //changeDrawner
     try {
       await firebase
         .firestore()
@@ -75,7 +76,9 @@ export default {
     Comments,
     oContent,
   },
-  created() {},
+  created() {
+console.log(this.$router)
+  },
   computed: {
     ...mapState(["contents"]),
   },

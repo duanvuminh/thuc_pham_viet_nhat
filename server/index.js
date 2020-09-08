@@ -51,7 +51,7 @@ app.get("/api/user", async (req, res) => {
       : user.providerData[0].photoURL;
     res.json({ name, email, photoURL });
   } catch (ex) {
-    console.log(ex)
+    //console.log(ex)
     res.json({ name: "", email: "", photoURL: "" })
   }
 });
