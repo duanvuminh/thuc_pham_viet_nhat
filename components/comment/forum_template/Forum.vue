@@ -2,9 +2,10 @@
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
     <v-row class="mb-5 pb-5">
       <v-col cols="12">
+        <h4 v-if="topic=='mypage'" class="mb-3 text-center">Put your stuff here to note</h4>
         <oContent
           v-for="(item,index) in contents"
-          :key="index.id"
+          :key="item.id"
           :content="item"
           @deleteArticle="deleteArticle(index,...arguments)"
           @edit="edit(index,...arguments)"
@@ -19,14 +20,17 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
 //const oContent = () => import("./Content");
-import oContent from "./Content";
+import oContent from "../Content";
 
 export default {
   components: {
     oContent,
   },
   computed: {
-    ...mapState(["topic", "contents"]),
+    ...mapState(["topic", "contents", "date"]),
+    key() {
+      return [this.topic, this.date].join();
+    },
   },
   created() {},
   data() {
@@ -36,14 +40,23 @@ export default {
       limit: 10,
       lastID: null,
       now: 1,
-      saveList: [],
     };
   },
   methods: {
+    add(message) {
+      firebase
+        .firestore()
+        .collection("forum")
+        .add(message)
+        .then((docRef) => {
+          message.id = docRef.id;
+          this.$store.commit("unshiftContent", message);
+        });
+    },
     deleteArticle(index, id) {
       this.$store.commit("spliceContent", index);
     },
-    edit(index, newVal, id) {
+    edit(index, newVal) {
       // this.contents[index].content = newVal;
       this.$store.commit("editContent", { index, val: newVal });
     },
@@ -59,11 +72,13 @@ export default {
           return firebase
             .firestore()
             .collection(this.collectionUrl)
+            .where("type", "==", this.topic)
             .where(
-              firebase.firestore.FieldPath.documentId(),
-              "in",
-              this.saveList
+              "date",
+              this.date ? "==" : "<",
+              this.date ? this.date : "99999999"
             )
+            .orderBy(this.date ? "time" : "date", "desc")
             .startAfter(last)
             .limit(this.limit)
             .get()
@@ -87,23 +102,60 @@ export default {
     },
   },
   mounted() {
-    this.saveList = [];
-    firebase
-      .firestore()
-      .collection(`users/${this.$store.state.user.email}/save`)
-      .where("is_saved", "==", true)
-      .get()
-      .then((documentSnapshots) => {
-        documentSnapshots.forEach((doc) => {
-          this.saveList.push(doc.data().id);
+    try {
+      if (this.contents.length > 0) {
+        this.lastID = this.contents[this.contents.length - 1].id;
+        return;
+      }
+      firebase
+        .firestore()
+        .collection(this.collectionUrl)
+        .where("type", "==", this.topic)
+        .where(
+          "date",
+          this.date ? "==" : "<",
+          this.date ? this.date : "99999999"
+        )
+        .orderBy(this.date ? "time" : "date", "desc")
+        .limit(10)
+        .get()
+        .then((documentSnapshots) => {
+          // Get the last visible document
+          // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+          // Construct a new query starting at this document,
+          // get the next 25 cities.
+          documentSnapshots.forEach((doc) => {
+            this.lastID = doc.id;
+            this.$store.commit("pushContent", {
+              id: doc.id,
+              creator: doc.data().creator,
+              content: doc.data().content,
+              type: doc.data().type,
+              time: new Date(doc.data().time.seconds * 1e3),
+              data: doc.data().data,
+              cus_component: doc.data().cus_component,
+            });
+          });
         });
-        if (this.contents.length > 0) {
-          return;
-        }
+    } catch (err) {
+      // console.log(err);
+    }
+  },
+  watch: {
+    key() {
+      try {
+        this.$store.commit("setContent", []);
+        this.lastID = null;
         firebase
           .firestore()
           .collection(this.collectionUrl)
-          .where(firebase.firestore.FieldPath.documentId(), "in", this.saveList)
+          .where("type", "==", this.topic)
+          .where(
+            "date",
+            this.date ? "==" : "<",
+            this.date ? this.date : "99999999"
+          )
+          .orderBy(this.date ? "time" : "date", "desc")
           .limit(10)
           .get()
           .then((documentSnapshots) => {
@@ -124,9 +176,11 @@ export default {
               });
             });
           });
-      });
+      } catch (err) {
+        // console.log(err);
+      }
+    },
   },
-  watch: {},
   props: ["collectionUrl"],
 };
 </script>

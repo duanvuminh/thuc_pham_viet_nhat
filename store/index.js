@@ -13,7 +13,9 @@ export const state = () => ({
   topic: '8ZeUI85LG6OtNTeDDIqT',
   // const variable
   mypage: "4PisKFBkxDzV7voklXYA",
-  defaultTopic: "8ZeUI85LG6OtNTeDDIqT"
+  defaultTopic: "8ZeUI85LG6OtNTeDDIqT",
+  // drawer
+  tags:[]
 })
 
 export const mutations = {
@@ -66,6 +68,10 @@ export const mutations = {
   // end data
   setDate(state, val) {
     state.date = val;
+  },
+  //drawe
+  setTag(state,val){
+    state.tags = val;
   }
 }
 

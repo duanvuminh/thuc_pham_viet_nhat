@@ -74,6 +74,12 @@
                         </v-list-item-avatar>
                         <v-list-item-title>Tạo flash card</v-list-item-title>
                       </v-list-item>
+                      <v-list-item @click="dialog=true;cus_component='Sumary'">
+                        <v-list-item-avatar>
+                          S
+                        </v-list-item-avatar>
+                        <v-list-item-title>Tổng hợp bài</v-list-item-title>
+                      </v-list-item>
                     </v-list>
                   </div>
                 </v-menu>

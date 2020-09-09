@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <div>
+  <div class="mrk">
     <slot />
     <div v-html="content"></div>
   </div>
@@ -77,3 +77,14 @@ export default {
   }
 };
 </script>
+<style>
+.mrk td,.mrk th {
+  border: 1px solid;
+}
+.mrk blockquote {
+    background: rgb(145, 145, 145);
+    border-left: 5px solid;
+    padding: 1em 10px .1em 10px;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+</style>

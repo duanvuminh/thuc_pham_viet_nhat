@@ -36,5 +36,5 @@ export default ({ store }) => {
       store.commit("setUser", {});
       store.commit("setLoginState", false);
     }
-  })
+  });
 }

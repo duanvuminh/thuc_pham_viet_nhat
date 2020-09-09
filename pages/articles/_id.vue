@@ -1,6 +1,6 @@
 <template>
   <div class="mt-1">
-    <v-app-bar app elevation="0" color="transparent" dense>
+    <v-app-bar elevation="0" color="transparent" dense fixed>
       <v-spacer></v-spacer>
       <v-btn fab small @click="$router.go(-1)">
         <v-icon>mdi-close</v-icon>
@@ -77,7 +77,6 @@ export default {
     oContent,
   },
   created() {
-console.log(this.$router)
   },
   computed: {
     ...mapState(["contents"]),

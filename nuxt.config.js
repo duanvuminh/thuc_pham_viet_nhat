@@ -1,4 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
 require('dotenv').config();
 import getAppRoutes from './server/modules/getRoutes';
 import axios from 'axios';
@@ -82,9 +81,9 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/amp',
     'nuxt-compress',
-    ['@nuxtjs/google-adsense', {
-      id: 'ca-pub-9016732088039840'
-    }]
+    // ['@nuxtjs/google-adsense', {
+    //   id: 'ca-pub-9016732088039840'
+    // }]
   ],
   markdownit: {
     injected: true,
@@ -221,7 +220,7 @@ export default {
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    treeShake: false,
+    // treeShake: false,
     theme: {
       // disable: true,
       // this.$vuetify.theme.dark = true;

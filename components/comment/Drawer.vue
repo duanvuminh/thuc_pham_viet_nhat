@@ -6,11 +6,18 @@
           <v-list-item-group v-model="item" color="white" active-class="duan">
             <Topic v-for="item in tags" :key="item.id" :item="item" @set-level1="setLevel1"></Topic>
           </v-list-item-group>
+          <v-list-item class="px-2">
+            <v-list-item-avatar>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-avatar>
+          </v-list-item>
+          <v-list-item class="px-2" to="/">
+            <v-list-item-avatar>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-avatar>
+          </v-list-item>
         </v-navigation-drawer>
         <v-list class="grow">
-          <nuxt-link to="/" class="nuxt-link-logo">
-            <v-img :src="require('@/assets/logo2.png')" contain position="left" width="100"></v-img>
-          </nuxt-link>
           <v-list-item-group v-model="item1" color="white">
             <v-subheader class="d-none d-md-flex">
               Thêm Channels
@@ -70,9 +77,9 @@ import Topic from "./Topic";
 import Topic1 from "./Topic1";
 
 export default {
-  async mounted() {},
+  mounted() {},
   computed: {
-    ...mapState(["mypage"]),
+    ...mapState(["mypage", "tags"]),
     mypave_save() {
       return this.level1 == this.mypage ? true : false;
     },
@@ -81,18 +88,35 @@ export default {
     Topic,
     Topic1,
   },
+  created() {
+    firebase
+      .firestore()
+      .collection("topic")
+      .orderBy("order")
+      .get()
+      .then((documentSnapshots) => {
+        let tags = [];
+        documentSnapshots.forEach((doc) => {
+          if (doc.data().isShow) {
+            let tag = { id: doc.id, ...doc.data() };
+            tags.push(tag);
+          }
+        });
+        this.$store.commit("setTag", tags);
+      });
+  },
   data() {
     return {
+      description: null,
       dialog: false,
       //form
       full_name: "",
       valid: false,
       //end form
-      tags: [],
       topic1: [],
       drawer: true,
       level1: null,
-      item: 0,
+      item: null,
       item1: null,
     };
   },
@@ -108,7 +132,8 @@ export default {
       this.$router.push("/forum");
     },
     setLevel1(val) {
-      this.level1 = val;
+      this.level1 = val.level1;
+      this.description = val.description;
     },
     validate() {
       this.$refs.form.validate();
@@ -163,24 +188,6 @@ export default {
         this.drawer = false;
       });
     }
-    firebase
-      .firestore()
-      .collection("topic")
-      .orderBy("order")
-      .get()
-      .then((documentSnapshots) => {
-        // Get the last visible document
-        // last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        // Construct a new query starting at this document,
-        // get the next 25 cities.
-        documentSnapshots.forEach((doc) => {
-          if (doc.data().isShow) {
-            let tag = { id: doc.id, ...doc.data() };
-            this.tags.push(tag);
-          }
-        });
-        this.level1 = this.tags[0].id;
-      });
   },
   props: [],
   watch: {
