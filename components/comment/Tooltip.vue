@@ -39,7 +39,7 @@ export default {
       return `forum/${this.id}`;
     },
     showMessage() {
-      return this.$route.params.id ? false : true;
+      return this.$route.params.aid ? false : true;
     },
   },
   data() {

@@ -2,20 +2,15 @@
   <div>
     <v-navigation-drawer v-model="drawer" app width="310">
       <v-row class="fill-height" no-gutters>
-        <v-navigation-drawer dark mini-variant mini-variant-width="50" v-model="drawer">
-          <v-list-item-group v-model="item" color="white" active-class="duan">
-            <Topic v-for="item in tags" :key="item.id" :item="item" @set-level1="setLevel1"></Topic>
+        <v-navigation-drawer dark mini-variant mini-variant-width="30" v-model="drawer">
+          <v-list-item-group v-model="item" color="transparent">
+            <v-list-item class="px-2" to="/forum">
+              <v-icon to>mdi-chevron-left</v-icon>
+            </v-list-item>
+            <v-list-item class="px-2" :to="`/forum/${$route.params.tag}`">
+              <v-icon to>mdi-information-variant</v-icon>
+            </v-list-item>
           </v-list-item-group>
-          <v-list-item class="px-2">
-            <v-list-item-avatar>
-              <v-icon>mdi-plus</v-icon>
-            </v-list-item-avatar>
-          </v-list-item>
-          <v-list-item class="px-2" to="/">
-            <v-list-item-avatar>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-avatar>
-          </v-list-item>
         </v-navigation-drawer>
         <v-list class="grow">
           <v-list-item-group v-model="item1" color="white">
@@ -31,7 +26,13 @@
                 <v-list-item-title>💾 Đã lưu</v-list-item-title>
               </v-list-item>
             </template>
-            <Topic1 v-for="item in topic1" :key="item.id" :item="item" :level1="level1"></Topic1>
+            <Topic1
+              v-for="item in topic1"
+              :key="item.id"
+              :item="item"
+              :level1="level1"
+              :url="`/forum/${$route.params.tag}`"
+            ></Topic1>
           </v-list-item-group>
         </v-list>
       </v-row>
@@ -49,6 +50,10 @@
                       v-model="full_name"
                       label="Tên chủ đề"
                       :rules="[v => !!v || 'Tên không được trống']"
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="order"
+                      label="Thứ tự"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -73,7 +78,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
-import Topic from "./Topic";
 import Topic1 from "./Topic1";
 
 export default {
@@ -85,25 +89,43 @@ export default {
     },
   },
   components: {
-    Topic,
     Topic1,
   },
   created() {
-    firebase
-      .firestore()
-      .collection("topic")
-      .orderBy("order")
-      .get()
-      .then((documentSnapshots) => {
-        let tags = [];
-        documentSnapshots.forEach((doc) => {
-          if (doc.data().isShow) {
-            let tag = { id: doc.id, ...doc.data() };
-            tags.push(tag);
-          }
+    this.level1 = this.$route.params.tag;
+    if (this.level1 == this.mypage) {
+      firebase
+        .firestore()
+        .collection("topic")
+        .doc(this.level1)
+        .collection("users")
+        .doc(this.$store.state.user.email)
+        .collection("subtopic")
+        .get()
+        .then((documentSnapshots) => {
+          documentSnapshots.forEach((doc) => {
+            if (doc.data().isShow) {
+              let topic = { id: doc.id, ...doc.data() };
+              this.topic1.push(topic);
+            }
+          });
         });
-        this.$store.commit("setTag", tags);
-      });
+    } else {
+      firebase
+        .firestore()
+        .collection("topic")
+        .doc(this.level1)
+        .collection("subtopic")
+        .get()
+        .then((documentSnapshots) => {
+          documentSnapshots.forEach((doc) => {
+            if (doc.data().isShow) {
+              let topic = { id: doc.id, ...doc.data() };
+              this.topic1.push(topic);
+            }
+          });
+        });
+    }
   },
   data() {
     return {
@@ -111,10 +133,11 @@ export default {
       dialog: false,
       //form
       full_name: "",
+      order:null,
       valid: false,
       //end form
       topic1: [],
-      drawer: true,
+      drawer: null,
       level1: null,
       item: null,
       item1: null,
@@ -124,12 +147,8 @@ export default {
     addChanel() {
       this.dialog = true;
     },
-    openTopic(item) {
-      if (item == this.topic) return;
-      this.$store.commit("setTopic", item);
-      this.$store.commit("setContent", []);
-      this.$store.commit("setDate", null);
-      this.$router.push("/forum");
+    openTopic() {
+      this.$router.push(`/forum/${this.mypage}/save`);
     },
     setLevel1(val) {
       this.level1 = val.level1;
@@ -149,12 +168,14 @@ export default {
             .add({
               isShow: true,
               full_name: this.full_name,
+              order: this.order
             })
             .then((doc) => {
               let topic = {
                 id: doc.id,
                 full_name: this.full_name,
                 isShow: true,
+                order: this.order
               };
               this.topic1.unshift(topic);
               this.dialog = false;
@@ -168,11 +189,13 @@ export default {
             .add({
               isShow: true,
               full_name: this.full_name,
+              order: this.order
             })
             .then((doc) => {
               let topic = {
                 id: doc.id,
                 full_name: this.full_name,
+                order: this.order,
                 isShow: true,
               };
               this.topic1.unshift(topic);
@@ -182,63 +205,11 @@ export default {
       }
     },
   },
-  mounted() {
-    if (this.$route.name == "articles-id") {
-      this.$nextTick(() => {
-        this.drawer = false;
-      });
-    }
-  },
+  mounted() {},
   props: [],
   watch: {
-    level1(val) {
-      this.topic1 = [];
-      this.item1 = null;
-      if (this.level1 == this.mypage) {
-        firebase
-          .firestore()
-          .collection("topic")
-          .doc(val)
-          .collection("users")
-          .doc(this.$store.state.user.email)
-          .collection("subtopic")
-          .get()
-          .then((documentSnapshots) => {
-            documentSnapshots.forEach((doc) => {
-              if (doc.data().isShow) {
-                let topic = { id: doc.id, ...doc.data() };
-                this.topic1.push(topic);
-              }
-            });
-          });
-      } else {
-        firebase
-          .firestore()
-          .collection("topic")
-          .doc(val)
-          .collection("subtopic")
-          .get()
-          .then((documentSnapshots) => {
-            documentSnapshots.forEach((doc) => {
-              if (doc.data().isShow) {
-                let topic = { id: doc.id, ...doc.data() };
-                this.topic1.push(topic);
-              }
-            });
-          });
-      }
-    },
     $route(to, from) {
-      if (to.name == "articles-id") {
-        this.drawer = false;
-      } else {
-        if (
-          this.$vuetify.breakpoint.name != "xs" &&
-          this.$vuetify.breakpoint.name != "sm"
-        ) {
-          this.drawer = true;
-        }
-      }
+      this.$store.commit("setContent", []);
     },
   },
 };

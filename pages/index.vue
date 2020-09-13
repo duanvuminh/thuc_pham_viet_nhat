@@ -19,7 +19,6 @@
   </v-col>
 </template>
 <script>
-import HtmlParser from "@/components/HtmlParser";
 import Logo from "@/components/Logo";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import Search from "@/components/nihongo/Search";
@@ -27,7 +26,6 @@ import Search from "@/components/nihongo/Search";
 export default {
   components: {
     Search,
-    HtmlParser,
     Logo
   },
   data() {

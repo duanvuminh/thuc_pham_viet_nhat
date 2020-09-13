@@ -1,12 +1,12 @@
 <template>
   <div class="d-none d-md-block">
     <ActionPure
-    :_add="_add"
-    :_edit="_edit"
-    :_delete="_delete"
-    @add="dialog=true"
-    @edit="dialog1=true"
-    @delete="deleteMenu"
+      :_add="_add"
+      :_edit="_edit"
+      :_delete="_delete"
+      @add="dialog=true"
+      @edit="dialog1=true"
+      @delete="deleteMenu"
     ></ActionPure>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-form ref="form" v-model="valid" lazy-validation onsubmit="return false;">
@@ -23,6 +23,7 @@
                     label="Tên chủ đề"
                     :rules="[v => !!v || 'Tên không được trống']"
                   ></v-text-field>
+                  <v-text-field v-model="order" label="Thứ tự"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -51,6 +52,7 @@
                     label="Tên chủ đề"
                     :rules="[v => !!v || 'Tên không được trống']"
                   ></v-text-field>
+                  <v-text-field v-model="order1" label="Thứ tự"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -68,15 +70,15 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 const ActionPure = () => import("./ActionPure");
 
 export default {
   components: {
-    ActionPure
+    ActionPure,
   },
   computed: {
-    ...mapState(["mypage"])
+    ...mapState(["mypage"]),
   },
   data() {
     return {
@@ -84,10 +86,12 @@ export default {
       dialog1: false,
       //form 1
       full_name: null,
+      order: null,
       valid: true,
       //end form
       //form 2
-      full_name1: this.value,
+      full_name1: this.value.full_name,
+      order1: this.value.order,
       valid1: true,
       //end form
     };
@@ -108,11 +112,13 @@ export default {
             .collection("sutopic1")
             .add({
               isShow: true,
+              order: this.order,
               full_name: this.full_name,
             })
             .then((doc) => {
               let topic = {
                 id: doc.id,
+                order: this.order,
                 full_name: this.full_name,
                 isShow: true,
               };
@@ -129,11 +135,13 @@ export default {
             .collection("sutopic1")
             .add({
               isShow: true,
+              order: this.order,
               full_name: this.full_name,
             })
             .then((doc) => {
               let topic = {
                 id: doc.id,
+                order: this.order,
                 full_name: this.full_name,
                 isShow: true,
               };
@@ -162,11 +170,15 @@ export default {
                 {
                   isShow: true,
                   full_name: this.full_name1,
+                  order: this.order1,
                 },
                 { merge: true }
               )
               .then((doc) => {
-                this.$emit("editMenu", this.full_name1);
+                this.$emit("editMenu", {
+                  full_name: this.full_name1,
+                  order: this.order1,
+                });
                 this.dialog1 = false;
               });
           } else {
@@ -181,12 +193,17 @@ export default {
               .set(
                 {
                   isShow: true,
+                  order: this.order1,
                   full_name: this.full_name1,
+                  order: this.order,
                 },
                 { merge: true }
               )
               .then((doc) => {
-                this.$emit("editMenu", this.full_name1);
+                this.$emit("editMenu", {
+                  full_name: this.full_name1,
+                  order: this.order1,
+                });
                 this.dialog1 = false;
               });
           }
@@ -203,12 +220,16 @@ export default {
               .set(
                 {
                   isShow: true,
+                  order: this.order1,
                   full_name: this.full_name1,
                 },
                 { merge: true }
               )
               .then((doc) => {
-                this.$emit("editMenu", this.full_name1);
+                this.$emit("editMenu", {
+                  full_name: this.full_name1,
+                  order: this.order1,
+                });
                 this.dialog1 = false;
               });
           } else {
@@ -221,12 +242,16 @@ export default {
               .set(
                 {
                   isShow: true,
+                   order: this.order1,
                   full_name: this.full_name1,
                 },
                 { merge: true }
               )
               .then((doc) => {
-                this.$emit("editMenu", this.full_name1);
+                this.$emit("editMenu", {
+                  full_name: this.full_name1,
+                  order: this.order1,
+                });
                 this.dialog1 = false;
               });
           }
@@ -266,7 +291,7 @@ export default {
             .doc(this.type.topic)
             .set(
               {
-                isShow: false
+                isShow: false,
               },
               { merge: true }
             )
@@ -286,7 +311,7 @@ export default {
             .doc(this.id)
             .set(
               {
-                isShow: false
+                isShow: false,
               },
               { merge: true }
             )
@@ -302,7 +327,7 @@ export default {
             .doc(this.type.topic)
             .set(
               {
-                isShow: false
+                isShow: false,
               },
               { merge: true }
             )
@@ -315,7 +340,6 @@ export default {
   },
   mounted() {},
   // type: {level1,topic}
-  props: ["_add","_edit","_delete", "type", "id", "value"],
-  
+  props: ["_add", "_edit", "_delete", "type", "id", "value"],
 };
 </script>

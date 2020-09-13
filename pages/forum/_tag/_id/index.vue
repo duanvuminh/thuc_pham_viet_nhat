@@ -27,9 +27,8 @@ export default {
   },
   created() {},
   computed: {
-    ...mapState(["topic"]),
     cus_component(){
-      if(this.topic=='save'){
+      if(this.$route.params.id=='save'){
         return 'save'
       }else{
         return 'forum'

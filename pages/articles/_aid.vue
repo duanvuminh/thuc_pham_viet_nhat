@@ -1,7 +1,10 @@
 <template>
-  <div class="mt-1">
+  <div class="ma-3">
     <v-app-bar elevation="0" color="transparent" dense fixed>
       <v-spacer></v-spacer>
+      <v-btn fab small to="/forum">
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
       <v-btn fab small @click="$router.go(-1)">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -34,7 +37,7 @@ export default {
       await firebase
         .firestore()
         .collection("forum")
-        .doc(params.id)
+        .doc(params.aid)
         .get()
         .then((doc) => {
           item = doc.data();
@@ -44,7 +47,7 @@ export default {
       await firebase
         .firestore()
         .collection("forum")
-        .doc(params.id)
+        .doc(params.aid)
         .collection("comments")
         .orderBy("time")
         .limit(10)
@@ -84,7 +87,7 @@ export default {
   data() {
     return {
       collectionSubUrl: "commentSub",
-      collectionUrl: `forum/${this.$route.params.id}/comments`,
+      collectionUrl: `forum/${this.$route.params.aid}/comments`,
     };
   },
   head() {
@@ -100,7 +103,7 @@ export default {
       ],
     };
   },
-  layout: "simpleForum",
+  layout: "noheader",
   methods: {
     fbtime(timestamp) {
       // console.log(timestamp);

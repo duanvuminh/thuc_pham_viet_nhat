@@ -45,7 +45,7 @@
             </div>
             <template v-if="email" slot="append">
               <div>
-                <v-icon @click="openImage">mdi-paperclip</v-icon>
+                <!-- <v-icon @click="openImage">mdi-paperclip</v-icon>
                 <input
                   name="file"
                   @change="onFileChange"
@@ -53,7 +53,7 @@
                   type="file"
                   style="display: none"
                   accept="image/png, image/jpeg"
-                />
+                /> -->
                 <v-menu bottom left>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
@@ -74,7 +74,7 @@
                         </v-list-item-avatar>
                         <v-list-item-title>Tạo flash card</v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click="dialog=true;cus_component='Sumary'">
+                      <v-list-item @click="dialog=true;cus_component='Summary'">
                         <v-list-item-avatar>
                           S
                         </v-list-item-avatar>
@@ -135,6 +135,7 @@ export default {
     // datepicker: () => import("./DatePicker"),
     Timeline: () => import("./content/Timeline"),
     Word: () => import("./content/Word"),
+    Summary:()=> import("./content/Summary"),
   },
   data() {
     return {
@@ -226,7 +227,7 @@ export default {
   },
   props: ["size", "rows"],
   computed: {
-    ...mapState(["topic", "contents", "date"]),
+    ...mapState(["contents", "date"]),
     outlinedCheck() {
       if (this.showAction) {
         if (this.email) {
@@ -247,7 +248,7 @@ ${comment}
         time: new Date(),
         content: comment,
         date: this.cus_component?'99999990':this.formatDate(new Date()),
-        type: this.topic,
+        type: this.$route.params.id,
         data: this.data,
         cus_component: this.cus_component,
       };

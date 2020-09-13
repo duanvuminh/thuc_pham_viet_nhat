@@ -1,7 +1,7 @@
 {
   "name": "oboe",
   "version": "1.0.0",
-  "description": "Remember kanji",
+  "description": "Ngoại ngữ, tiếng nhật",
   "author": "duanvuminh",
   "private": true,
   "scripts": {
@@ -45,8 +45,7 @@
     "textarea-caret": "^3.1.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-instantsearch": "^2.7.1",
-    "vue-social-sharing": "^2.4.7",
-    "wanakana": "^4.0.2"
+    "vue-social-sharing": "^2.4.7"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

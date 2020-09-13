@@ -72,6 +72,7 @@ export default {
     Tooltip,
     Timeline: () => import("./content/TimelineInner"),
     Word: () => import("./content/WordInner"),
+    Summary: () => import("./content/SummaryInner"),
   },
   computed: {
     checkLength() {

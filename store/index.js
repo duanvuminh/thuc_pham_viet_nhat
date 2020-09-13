@@ -10,7 +10,6 @@ export const state = () => ({
   loggedIn: false,
   visionurl: "",
   user: {},
-  topic: '8ZeUI85LG6OtNTeDDIqT',
   // const variable
   mypage: "4PisKFBkxDzV7voklXYA",
   defaultTopic: "8ZeUI85LG6OtNTeDDIqT",
@@ -33,9 +32,6 @@ export const mutations = {
   },
   setConnectedFirebase(state, value) {
     state.connectedFirebase = value;
-  },
-  setTopic(state, value) {
-    state.topic = value;
   },
   setContent(state, value) {
     state.contents = value;
@@ -64,6 +60,9 @@ export const mutations = {
   },
   editData(state, {index,index1, val}) {
     state.contents[index].data[index1] = val;
+  },
+  editData1(state, {index,index1, val}) {
+    state.contents[index].data = val;
   },
   // end data
   setDate(state, val) {

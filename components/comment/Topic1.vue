@@ -12,14 +12,14 @@
             :type="type"
             @addMenu="addMenu"
             @deleteMenu="val=>{item.isShow=false}"
-            @editMenu="val=>{item.full_name=val}"
-            :value="item.full_name"
+            @editMenu="val=>{item.full_name=val.full_name;item.order = val.order}"
+            :value="item"
           ></Action>
         </v-list-item-action>
       </v-subheader>
     </template>
     <template v-else>
-      <v-list-item @click="openTopic(item)" dense>
+      <v-list-item dense :to="`${url}/${item.id}`">
         <v-list-item-title>{{item.full_name}}</v-list-item-title>
         <v-list-item-action>
           <Action
@@ -29,15 +29,15 @@
             :type="type"
             @addMenu="addMenu"
             @deleteMenu="val=>{item.isShow=false}"
-            @editMenu="val=>{item.full_name=val}"
-            :value="item.full_name"
+            @editMenu="val=>{item.full_name=val.full_name;item.order = val.order}"
+            :value="item"
           ></Action>
         </v-list-item-action>
       </v-list-item>
     </template>
     <template v-if="topics.length>0">
       <template v-for="item1 in topics">
-        <v-list-item dense :key="item1.id" @click="openTopic(item1)" v-show="item1.isShow">
+        <v-list-item dense :key="item1.id" :to="`${url}/${item1.id}`" v-show="item1.isShow">
           <v-list-item-title>{{item1.full_name}}</v-list-item-title>
           <v-list-item-action>
             <Action
@@ -47,9 +47,9 @@
               :type="type"
               @addMenu="addMenu"
               :id="item1.id"
-              @editMenu="val=>{item1.full_name=val}"
+              @editMenu="val=>{item1.full_name=val.full_name;item1.order = val.order}"
               @deleteMenu="val=>{item1.isShow=false}"
-              :value="item1.full_name"
+              :value="item1"
             ></Action>
           </v-list-item-action>
         </v-list-item>
@@ -76,17 +76,11 @@ export default {
   methods: {
     addMenu(topic) {
       this.topics.unshift(topic);
-    },
-    openTopic(item) {
-      if (item.id == this.topic) return;
-      this.$store.commit("setTopic", item.id);
-      this.$store.commit("setContent", []);
-      this.$store.commit("setDate", null);
-      this.$router.push("/forum");
-    },
+    }
   },
   mounted() {
-    // console.log(this.item)
+    // console.log(this.$route);
+    // console.log(this.$router);
     if (!this.level1) {
       return;
     }
@@ -111,7 +105,7 @@ export default {
       });
   },
   // topic
-  props: ["item", "level1"],
+  props: ["item", "level1","url"],
   computed: {
     show() {
       return this.topics.length > 0;
