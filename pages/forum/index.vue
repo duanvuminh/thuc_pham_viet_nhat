@@ -4,20 +4,31 @@
       <v-col cols="auto" v-for="(item, i) in tags" :key="i">
         <v-card :color="item.color" dark>
           <div class="d-flex flex-no-wrap justify-space-between">
-            <v-card :color="item.color" dark :to="`/forum/${item.id}`" elevation="0" class="d-flex flex-no-wrap justify-space-between">
-              <div>
-                <v-card-title class="headline" v-text="item.full_name"></v-card-title>
-
-                <v-card-subtitle v-text="item.description"></v-card-subtitle>
+            <v-card
+              :color="item.color"
+              dark
+              :to="`/forum/${item.id}`"
+              elevation="0"
+              class="d-flex flex-no-wrap justify-space-between"
+            >
+              <div class="d-flex flex-no-wrap justify-space-between">
+                <v-card class="mx-auto" width="200" :color="item.color" elevation="0">
+                  <v-list-item three-line selectable>
+                    <v-list-item-content class="align-start" @v-on:click.prevent>
+                      <v-list-item-title v-text="item.full_name" class="headline"></v-list-item-title>
+                      <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
+                <template v-if="item.name=='mypage'">
+                  <avartar size="50" :email="$store.state.user.email" class="ma-3 mr-0"></avartar>
+                </template>
+                <template v-else>
+                  <v-avatar v-if="item.src" class="ma-3 mr-0" size="125" tile>
+                    <v-img :src="item.src" contain></v-img>
+                  </v-avatar>
+                </template>
               </div>
-              <template v-if="item.name=='mypage'">
-                <avartar size="50" :email="$store.state.user.email" class="ma-3"></avartar>
-              </template>
-              <template v-else>
-                <v-avatar v-if="item.src" class="ma-3" size="125" tile>
-                  <v-img :src="item.src" contain></v-img>
-                </v-avatar>
-              </template>
             </v-card>
             <v-spacer></v-spacer>
             <ActionPure
@@ -46,7 +57,6 @@
             <v-btn text @click="dialog = false">Close</v-btn>
             <v-btn color="primary" text @click="save">Thêm</v-btn>
           </v-card-actions>
-          <code>Vui lòng upload ảnh lên https://imgur.com</code>
         </v-container>
       </v-card>
     </v-dialog>
@@ -141,7 +151,7 @@ export default {
           { merge: true }
         );
       this.dialog = false;
-    }
+    },
   },
 };
 </script>

@@ -1,18 +1,18 @@
 <template>
   <v-container>
-    <v-row justify="space-around" class="pb-2">
-      <v-icon @click="model--">mdi-minus</v-icon>
+    <v-row justify="space-around">
       <v-spacer></v-spacer>
-      {{model}}
-      <v-spacer></v-spacer>
-      <v-icon @click="model++">mdi-plus</v-icon>
       <v-icon @click="dialog=true">mdi-pencil-circle-outline</v-icon>
     </v-row>
-    <v-carousel v-model="model">
-      <v-carousel-item v-for="(item,i) in itemsImg" :key="i">
-        <v-img height="100%" :src="item" contain></v-img>
-      </v-carousel-item>
-    </v-carousel>
+    <v-tabs dark background-color="teal darken-3" show-arrows v-model="tab">
+      <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+      <v-tab v-for="(item,i) in itemsImg" :key="i" :href="'#tab-' + i">page {{ i }}</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab">
+      <v-tab-item v-for="(item,i) in itemsImg" :key="i" :value="'tab-' + i">
+        <v-img width="100%" :src="item" contain></v-img>
+      </v-tab-item>
+    </v-tabs-items>
     <v-dialog v-model="dialog" fullscreen>
       <v-card>
         <v-container>
@@ -43,6 +43,7 @@ export default {
     model: 0,
     dialog: false,
     itemLocals: null,
+    tab: null,
   }),
   mounted() {
     this.itemLocals = this.items;

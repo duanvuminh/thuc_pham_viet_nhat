@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto my-5" max-width="500">
+  <v-card class="mx-auto my-5" width="500">
     <v-img v-if="document.src" height="250" :src="document.src" contain></v-img>
 
     <v-card-title>{{document.full_name}}</v-card-title>
@@ -10,7 +10,7 @@
 
         <div class="grey--text ml-4">4.5 (413)</div>
       </v-row>
-      <div>{{document.description}}</div>
+      <HtmlParser :content="$md.render(document.description)"></HtmlParser>
     </v-card-text>
   </v-card>
 </template>
@@ -19,6 +19,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { mapState } from "vuex";
+import HtmlParser from "@/components/HtmlParser";
 
 export default {
   async asyncData({ params, store, $axios }) {
@@ -34,7 +35,9 @@ export default {
     return { document };
   },
   beforeCreate() {},
-  components: {},
+  components: {
+    HtmlParser
+  },
   created() {},
   computed: {},
   data() {

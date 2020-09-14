@@ -89,7 +89,7 @@ import "firebase/auth";
 import Cookie from "js-cookie";
 
 export default {
-  layout: "oboe",
+  layout: "simple",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     // firebase.auth().onAuthStateChanged(user => {

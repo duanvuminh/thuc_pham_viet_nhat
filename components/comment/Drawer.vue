@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" app width="310">
+    <v-navigation-drawer v-model="drawer" app :width="width">
       <v-row class="fill-height" no-gutters>
         <v-navigation-drawer dark mini-variant mini-variant-width="30" v-model="drawer">
           <v-list-item-group v-model="item" color="transparent">
@@ -13,6 +13,11 @@
           </v-list-item-group>
         </v-navigation-drawer>
         <v-list class="grow">
+          <v-list-item>
+            <v-card class="mx-auto ma-1" elevation="0" max-width="200">
+              <v-img :src="logo" contain></v-img>
+            </v-card>
+          </v-list-item>
           <v-list-item-group v-model="item1" color="white">
             <v-subheader class="d-none d-md-flex">
               Thêm Channels
@@ -51,10 +56,7 @@
                       label="Tên chủ đề"
                       :rules="[v => !!v || 'Tên không được trống']"
                     ></v-text-field>
-                    <v-text-field
-                      v-model="order"
-                      label="Thứ tự"
-                    ></v-text-field>
+                    <v-text-field v-model="order" label="Thứ tự"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -87,12 +89,27 @@ export default {
     mypave_save() {
       return this.level1 == this.mypage ? true : false;
     },
+    width() {
+      if (this.$vuetify.breakpoint.name == "xs") {
+        return "90%";
+      } else {
+        return 310;
+      }
+    },
   },
   components: {
     Topic1,
   },
   created() {
     this.level1 = this.$route.params.tag;
+    firebase
+      .firestore()
+      .collection("topic")
+      .doc(this.level1)
+      .get()
+      .then((doc) => {
+        this.logo = doc.data().src;
+      });
     if (this.level1 == this.mypage) {
       firebase
         .firestore()
@@ -133,14 +150,16 @@ export default {
       dialog: false,
       //form
       full_name: "",
-      order:null,
+      order: null,
       valid: false,
       //end form
       topic1: [],
-      drawer: null,
+      drawer: true,
       level1: null,
       item: null,
       item1: null,
+      //logo
+      logo: null,
     };
   },
   methods: {
@@ -168,14 +187,14 @@ export default {
             .add({
               isShow: true,
               full_name: this.full_name,
-              order: this.order
+              order: this.order,
             })
             .then((doc) => {
               let topic = {
                 id: doc.id,
                 full_name: this.full_name,
                 isShow: true,
-                order: this.order
+                order: this.order,
               };
               this.topic1.unshift(topic);
               this.dialog = false;
@@ -189,7 +208,7 @@ export default {
             .add({
               isShow: true,
               full_name: this.full_name,
-              order: this.order
+              order: this.order,
             })
             .then((doc) => {
               let topic = {
