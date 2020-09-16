@@ -6,6 +6,7 @@
         <v-spacer></v-spacer>
         <v-list-item-action>
           <Action
+            v-if="showAction"
             :_add="true"
             :_edit="true"
             :_delete="true"
@@ -23,6 +24,7 @@
         <v-list-item-title>{{item.full_name}}</v-list-item-title>
         <v-list-item-action>
           <Action
+            v-if="showAction"
             :_add="true"
             :_edit="true"
             :_delete="true"
@@ -41,6 +43,7 @@
           <v-list-item-title>{{item1.full_name}}</v-list-item-title>
           <v-list-item-action>
             <Action
+              v-if="showAction"
               :_add="false"
               :_edit="true"
               :_delete="true"
@@ -76,7 +79,7 @@ export default {
   methods: {
     addMenu(topic) {
       this.topics.unshift(topic);
-    }
+    },
   },
   mounted() {
     // console.log(this.$route);
@@ -105,7 +108,7 @@ export default {
       });
   },
   // topic
-  props: ["item", "level1","url"],
+  props: ["item", "level1", "url","showAction"],
   computed: {
     show() {
       return this.topics.length > 0;

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-btn text icon :color="is_liked==1?'blue':null" @click="upvote">
-      <v-icon small>{{icon}}</v-icon>
+    <v-btn text icon :color="is_liked==1?'blue':null" @click="upvote" small>
+      <v-icon x-small>{{icon}}</v-icon>
     </v-btn>
     <span v-if="liked">{{liked}}</span>
   </div>

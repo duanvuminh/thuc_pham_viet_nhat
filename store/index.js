@@ -14,10 +14,15 @@ export const state = () => ({
   mypage: "4PisKFBkxDzV7voklXYA",
   defaultTopic: "8ZeUI85LG6OtNTeDDIqT",
   // drawer
-  tags:[]
+  tags: [],
+  //map
+  selectedLocation: null
 })
 
 export const mutations = {
+  setSelectedLocation(state, val) {
+    state.selectedLocation = val;
+  },
   setLoginState(state, islogin) {
     state.loggedIn = islogin;
   },
@@ -45,23 +50,23 @@ export const mutations = {
   spliceContent(state, index) {
     state.contents.splice(index, 1);
   },
-  editContent(state, {index, val}) {
+  editContent(state, { index, val }) {
     state.contents[index].content = val;
   },
   // data
-  pushData(state, {index,index1,val}) {
-    state.contents[index].data.splice(index1+1,0,val);
+  pushData(state, { index, index1, val }) {
+    state.contents[index].data.splice(index1 + 1, 0, val);
   },
   unshiftData(state, value) {
     state.contents.data.unshift(value);
   },
-  spliceData(state, {index,index1}) {
+  spliceData(state, { index, index1 }) {
     state.contents[index].data.splice(index1, 1);
   },
-  editData(state, {index,index1, val}) {
+  editData(state, { index, index1, val }) {
     state.contents[index].data[index1] = val;
   },
-  editData1(state, {index,index1, val}) {
+  editData1(state, { index, index1, val }) {
     state.contents[index].data = val;
   },
   // end data
@@ -69,7 +74,7 @@ export const mutations = {
     state.date = val;
   },
   //drawe
-  setTag(state,val){
+  setTag(state, val) {
     state.tags = val;
   }
 }

@@ -73,6 +73,7 @@ export default {
     Timeline: () => import("./content/TimelineInner"),
     Word: () => import("./content/WordInner"),
     Summary: () => import("./content/SummaryInner"),
+    Asobi: () => import("./content/AsobiInner"),
   },
   computed: {
     checkLength() {

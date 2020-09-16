@@ -19,8 +19,8 @@
 
             <div class="d-flex justify-start align-center">
               <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
-              <v-btn text @click="showAdd=!showAdd" small fab>
-                <v-icon dark small>mdi-message-reply-text</v-icon>
+              <v-btn text @click="showAdd=!showAdd" x-small fab>
+                <v-icon dark x-small>mdi-message-reply-text</v-icon>
               </v-btn>
               <v-btn
                 text
@@ -34,6 +34,7 @@
               </v-btn>
               <v-spacer></v-spacer>
               <ActionPure
+                v-if="showAction"
                 :_add="false"
                 :_edit="true"
                 :_delete="true"
@@ -45,7 +46,7 @@
               :size="30"
               :rows="1"
               v-if="showAdd"
-              @setShowAdd="setShowAdd"
+              @set-show-add="setShowAdd"
               @add="add"
               :isRoot="isRoot"
               :from="replyFrom"
@@ -145,6 +146,7 @@ export default {
       value: true,
       from: "",
       show: true,
+      showAction: false,
     };
   },
   created() {
@@ -153,6 +155,9 @@ export default {
     }, 30000);
   },
   async mounted() {
+    if (this.comment.userEmail == this.$store.state.user.email) {
+      this.showAction = true;
+    }
     if (this.comment.for) {
       let { name, email, photoURL } = await this.$axios
         .get(`/api/user?id=${this.comment.for}`)

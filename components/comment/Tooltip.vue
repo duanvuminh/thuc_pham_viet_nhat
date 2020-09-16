@@ -2,15 +2,15 @@
   <div class="d-flex">
     <template v-if="showMessage">
       <div>
-        <v-btn text :to="`/articles/${this.id}`" small fab>
-          <v-icon dark small>mdi-message-reply-text</v-icon>
+        <v-btn text :to="`/articles/${this.id}`" x-small fab>
+          <v-icon dark x-small>mdi-message-reply-text</v-icon>
         </v-btn>
         {{messageCount>0?messageCount:""}}
       </div>
     </template>
     <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
-    <v-btn text small fab @click="save" :color="is_saved==1?'blue':null">
-      <v-icon dark small>mdi-bookmark-multiple</v-icon>
+    <v-btn text x-small fab @click="save" :color="is_saved==1?'blue':null">
+      <v-icon dark x-small>mdi-bookmark-multiple</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
     <ActionPure

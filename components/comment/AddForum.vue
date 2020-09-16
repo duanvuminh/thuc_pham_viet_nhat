@@ -80,6 +80,12 @@
                         </v-list-item-avatar>
                         <v-list-item-title>Tổng hợp bài</v-list-item-title>
                       </v-list-item>
+                      <v-list-item @click="dialog=true;cus_component='Asobi'">
+                        <v-list-item-avatar>
+                          ✈️
+                        </v-list-item-avatar>
+                        <v-list-item-title>Du lịch</v-list-item-title>
+                      </v-list-item>
                     </v-list>
                   </div>
                 </v-menu>
@@ -136,6 +142,7 @@ export default {
     Timeline: () => import("./content/Timeline"),
     Word: () => import("./content/Word"),
     Summary:()=> import("./content/Summary"),
+    Asobi:()=> import("./content/Asobi"),
   },
   data() {
     return {
@@ -249,7 +256,7 @@ ${comment}
         content: comment,
         date: this.cus_component?'99999990':this.formatDate(new Date()),
         type: this.$route.params.id,
-        data: this.data,
+        data: this.data?this.data:null,
         cus_component: this.cus_component,
       };
     },

@@ -78,8 +78,12 @@ export default {
 };
 </script>
 <style>
+.mrk p{
+  margin-bottom: 0;
+}
 .mrk td,.mrk th {
   border: 1px solid;
+  padding: 8px;
 }
 .mrk blockquote {
     background: rgb(145, 145, 145);

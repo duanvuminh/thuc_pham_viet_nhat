@@ -13,13 +13,13 @@
           </v-list-item-group>
         </v-navigation-drawer>
         <v-list class="grow">
-          <v-list-item>
+          <v-list-item v-if="logo">
             <v-card class="mx-auto ma-1" elevation="0" max-width="200">
               <v-img :src="logo" contain></v-img>
             </v-card>
           </v-list-item>
           <v-list-item-group v-model="item1" color="white">
-            <v-subheader class="d-none d-md-flex">
+            <v-subheader v-show="show">
               Thêm Channels
               <v-spacer></v-spacer>
               <v-btn icon @click="addChanel">
@@ -33,10 +33,11 @@
             </template>
             <Topic1
               v-for="item in topic1"
-              :key="item.id"
+              :key="show?item.id:-item.id"
               :item="item"
               :level1="level1"
               :url="`/forum/${$route.params.tag}`"
+              :showAction="show"
             ></Topic1>
           </v-list-item-group>
         </v-list>
@@ -108,6 +109,9 @@ export default {
       .doc(this.level1)
       .get()
       .then((doc) => {
+        if (doc.data().creator == this.$store.state.user.email) {
+          this.show = true;
+        }
         this.logo = doc.data().src;
       });
     if (this.level1 == this.mypage) {
@@ -118,6 +122,7 @@ export default {
         .collection("users")
         .doc(this.$store.state.user.email)
         .collection("subtopic")
+        .orderBy("order")
         .get()
         .then((documentSnapshots) => {
           documentSnapshots.forEach((doc) => {
@@ -160,6 +165,7 @@ export default {
       item1: null,
       //logo
       logo: null,
+      show: false,
     };
   },
   methods: {

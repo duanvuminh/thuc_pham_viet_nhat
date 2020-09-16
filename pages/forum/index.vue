@@ -11,24 +11,20 @@
               elevation="0"
               class="d-flex flex-no-wrap justify-space-between"
             >
-              <div class="d-flex flex-no-wrap justify-space-between">
-                <v-card class="mx-auto" width="200" :color="item.color" elevation="0">
-                  <v-list-item three-line selectable>
+                  <v-list-item three-line selectable style="width:160px">
                     <v-list-item-content class="align-start" @v-on:click.prevent>
                       <v-list-item-title v-text="item.full_name" class="headline"></v-list-item-title>
                       <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                </v-card>
                 <template v-if="item.name=='mypage'">
-                  <avartar size="50" :email="$store.state.user.email" class="ma-3 mr-0"></avartar>
+                  <avartar size="50" :email="$store.state.user.email" class="ma-3 mr-1"></avartar>
                 </template>
                 <template v-else>
-                  <v-avatar v-if="item.src" class="ma-3 mr-0" size="125" tile>
+                  <v-avatar v-if="item.src" class="ma-3 mr-1" size="100" tile>
                     <v-img :src="item.src" contain></v-img>
                   </v-avatar>
                 </template>
-              </div>
             </v-card>
             <v-spacer></v-spacer>
             <ActionPure
