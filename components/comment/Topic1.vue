@@ -40,7 +40,7 @@
     <template v-if="topics.length>0">
       <template v-for="item1 in topics">
         <v-list-item dense :key="item1.id" :to="`${url}/${item1.id}`" v-show="item1.isShow">
-          <v-list-item-title>{{item1.full_name}}</v-list-item-title>
+          <v-list-item-title>{{`　　${item1.full_name}`}}</v-list-item-title>
           <v-list-item-action>
             <Action
               v-if="showAction"

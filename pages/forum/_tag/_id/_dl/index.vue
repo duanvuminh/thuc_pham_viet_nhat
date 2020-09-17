@@ -13,7 +13,7 @@
       <v-card-title>{{place.areaName}}</v-card-title>
       <v-card-text class="d-flex flex-wrap justify-center">
         <template v-for="(item, index) in resultArr">
-          <v-card max-width="340" class="ma-3" :key="index">
+          <v-card max-width="310" class="ma-3" :key="index">
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title class="headline">{{item.name}}</v-list-item-title>

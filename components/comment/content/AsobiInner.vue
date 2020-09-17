@@ -8,11 +8,20 @@
         label="Search"
         single-line
         hide-details
+        dense
       ></v-text-field>
-      <v-data-table :items="areaArrTsble" :search="selectedLocationLocal" :headers="headers"></v-data-table>
+      <v-data-table
+        :items="areaArrTsble"
+        :search="selectedLocationLocal"
+        :headers="headers"
+        hide-default-header
+        :items-per-page="3"
+        :footer-props="{
+        'items-per-page-options':[3,6,9,-1]}"
+      ></v-data-table>
       <v-row id="ken">
         <v-col v-for="(n,index) in imgArr" :key="index" class="d-flex child-flex" cols="4" sm="2">
-          <v-card flat tile>
+          <v-card flat tile :to="`${$route.path}/${n.areaName}`">
             <v-card-text>
               <v-img
                 :src="`https://ctplanner.jp/ctp5/${n.areaName}/${n.picfile}`"
@@ -28,7 +37,7 @@
               </v-img>
             </v-card-text>
             <v-card-actions>
-              <v-btn small text :to="`${$route.path}/${n.areaName}`">{{n.name}}</v-btn>
+              <v-btn small text>{{n.name}}</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -49,11 +58,14 @@ export default {
   },
   computed: {
     ...mapState(["selectedLocation"]),
-    areaArrTsble(){
-      return this.areaArr.map(x=>{
-        return {...x,full:`Vùng: ${x.region},Tỉnh/thành phố: ${x.relatedSec},Địa điểm: ${x.areaName}`}
-      })
-    }
+    areaArrTsble() {
+      return this.areaArr.map((x) => {
+        return {
+          ...x,
+          full: `Vùng: ${x.region},Tỉnh/thành phố: ${x.relatedSec},Địa điểm: ${x.areaName}`,
+        };
+      });
+    },
   },
   data() {
     return {
@@ -156,9 +168,7 @@ export default {
         { areaName: "tanegashima", relatedSec: "kagoshima", region: "kyusyu" },
         { areaName: "naha", relatedSec: "okinawa", region: "kyusyu" },
       ],
-       headers: [
-          { text: 'Địa điểm', value: 'full' },
-        ],
+      headers: [{ text: "Địa điểm", value: "full" }],
       imgArr: null,
       resultArr: null,
       selectedLocationLocal: this.selectedLocation,
@@ -180,15 +190,17 @@ export default {
             },
           })
           .then((response) => {
-            this.imgArr.push({
-              ...response.data.profile[0],
-              areaName: filter[i].areaName,
-            });
+            if (response.data.profile) {
+              this.imgArr.push({
+                ...response.data.profile[0],
+                areaName: filter[i].areaName,
+              });
+              this.$nextTick(() => {
+                this.$vuetify.goTo("#ken");
+              });
+            }
           });
       }
-      this.$nextTick(() => {
-        this.$vuetify.goTo("#ken");
-      });
     },
   },
 };
@@ -199,7 +211,7 @@ export default {
 
 <style>
 .svg-map__location[aria-checked="true"] {
-    fill: #f4bc44!important;
+  fill: #f4bc44 !important;
 }
 
 path#hokkaido {
@@ -207,124 +219,122 @@ path#hokkaido {
 }
 
 path#aomori {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 path#akita {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 path#iwate {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 path#yamagata {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 path#miyagi {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 path#fukushima {
-  fill:rgb(0, 158, 197);
+  fill: rgb(0, 158, 197);
 }
 
 path#tokyo {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#gunma {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#tochigi {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#ibaraki {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#saitama {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#chiba {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 path#kanagawa {
-  fill:rgb(255, 0, 212);
+  fill: rgb(255, 0, 212);
 }
 
 path#kyoto {
-  fill:red;
+  fill: red;
 }
 path#nara {
-  fill:red;
+  fill: red;
 }
 path#mie {
-  fill:red;
+  fill: red;
 }
 path#shiga {
-  fill:red;
+  fill: red;
 }
 path#wakayama {
-  fill:red;
+  fill: red;
 }
 path#osaka {
-  fill:red;
+  fill: red;
 }
 path#hyogo {
-  fill:red;
+  fill: red;
 }
-
 
 path#tottori {
-  fill:pink;
+  fill: pink;
 }
 path#shimane {
-  fill:pink;
+  fill: pink;
 }
 path#yamaguchi {
-  fill:pink;
+  fill: pink;
 }
 path#okayama {
-  fill:pink;
+  fill: pink;
 }
 path#hiroshima {
-  fill:pink;
+  fill: pink;
 }
 
 path#kagawa {
-  fill:blue;
+  fill: blue;
 }
 path#kagawa {
-  fill:blue;
+  fill: blue;
 }
 path#ehime {
-  fill:blue;
+  fill: blue;
 }
 path#tokushima {
-  fill:blue;
+  fill: blue;
 }
 path#kochi {
-  fill:blue;
+  fill: blue;
 }
 
 path#oita {
-  fill:orange;
+  fill: orange;
 }
 path#fukuoka {
-  fill:orange;
+  fill: orange;
 }
 path#saga {
-  fill:orange;
+  fill: orange;
 }
 path#nagasaki {
-  fill:orange;
+  fill: orange;
 }
 path#kumamoto {
-  fill:orange;
+  fill: orange;
 }
 path#miyazaki {
-  fill:orange;
+  fill: orange;
 }
 path#kagoshima {
-  fill:orange;
+  fill: orange;
 }
 path#okinawa {
-  fill:orange;
+  fill: orange;
 }
-
 </style>
