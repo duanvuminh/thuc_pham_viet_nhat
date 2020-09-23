@@ -47,7 +47,8 @@
     "vue-infinite-scroll": "^2.0.2",
     "vue-instantsearch": "^2.7.1",
     "vue-social-sharing": "^2.4.7",
-    "vue-svg-map": "^1.2.0"
+    "vue-svg-map": "^1.2.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

@@ -247,7 +247,7 @@ export default {
     */
     extend(config, ctx) {
     },
-    transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+    transpile: ['vue-instantsearch', 'instantsearch.js/es',/^vue2-google-maps($|\/)/],
     extractCSS: true,
   },
   /*

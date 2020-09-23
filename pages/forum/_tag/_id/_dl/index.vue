@@ -9,8 +9,34 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-app-bar>
+    <client-only>
+      <GmapMap :center="center" :zoom="17" map-type-id="terrain" style="width: 100%; height: 70vh">
+        <gmap-info-window
+          v-if="position"
+          :options="infoOptions"
+          :position="position"
+          :opened="infoWinOpen"
+          @closeclick="closeClick"
+        ></gmap-info-window>
+        <GmapMarker
+          :key="index"
+          v-for="(m, index) in resultArr"
+          :position="{lat:m.lat,lng:m.lng}"
+          :clickable="true"
+          :draggable="false"
+          @click="showinfo(m,index)"
+        />
+      </GmapMap>
+    </client-only>
     <v-card>
       <v-card-title>{{place.areaName}}</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-checkbox v-model="kan" label="館" dense></v-checkbox>
+          <v-checkbox v-model="jinja" label="神" dense></v-checkbox>
+          <v-checkbox v-model="koen" label="公園" dense></v-checkbox>
+        </v-row>
+      </v-card-text>
       <v-card-text class="d-flex flex-wrap justify-center">
         <template v-for="(item, index) in resultArr">
           <v-card max-width="310" class="ma-3" :key="index">
@@ -25,7 +51,14 @@
 
             <v-card-text>{{item.description}}</v-card-text>
             <v-row align="center" class="mx-0">
-              <v-rating :value="item.score/5" color="amber" dense half-increments readonly size="14"></v-rating>
+              <v-rating
+                :value="item.score/5"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="14"
+              ></v-rating>
             </v-row>
           </v-card>
         </template>
@@ -39,6 +72,7 @@
 export default {
   async asyncData({ params, store, $axios }) {
     let resultArr = [];
+    let center = null;
     await $axios
       .get("/api/9gag", {
         params: {
@@ -51,7 +85,9 @@ export default {
         });
         resultArr = resultArr.filter((x) => x.score > 0);
       });
-    return { resultArr };
+    center = { lat: resultArr[0].lat, lng: resultArr[0].lng };
+
+    return { origin: resultArr, center };
   },
   beforeCreate() {},
   components: {},
@@ -59,6 +95,19 @@ export default {
   computed: {
     place() {
       return this.areaArr.filter((x) => x.areaName == this.$route.params.dl)[0];
+    },
+    resultArr() {
+      let myplace = this.origin;
+      if (!this.kan) {
+        myplace = myplace.filter((x) => !x.name.includes("館"));
+      }
+      if (!this.koen) {
+        myplace = myplace.filter((x) => !x.name.includes("公園"));
+      }
+      if (!this.jinja) {
+        myplace = myplace.filter((x) => !x.name.includes("神"));
+      }
+      return myplace;
     },
   },
   data() {
@@ -161,6 +210,20 @@ export default {
         { areaName: "tanegashima", relatedSec: "kagoshima", region: "kyusyu" },
         { areaName: "naha", relatedSec: "okinawa", region: "kyusyu" },
       ],
+      currentMidx: null,
+      infoWinOpen: false,
+      infoOptions: {
+        content: "",
+        //optional: offset infowindow so it visually sits nicely on top of our marker
+        pixelOffset: {
+          width: 0,
+          height: -35,
+        },
+      },
+      jinja:false,
+      kan: false,
+      koen: false,
+      position: null,
     };
   },
   head() {
@@ -184,7 +247,36 @@ export default {
       the_arr.pop();
       this.$router.push(the_arr.join("/"));
     },
+    showinfo(m, index) {
+      this.position = { lat: m.lat, lng: m.lng };
+      this.infoOptions.content = `<div class="g-map">
+<h3>${m.name}</h3>
+<h4>${m.officialURL}</h4>
+<img
+    height="120"
+    src="https://ctplanner.jp/ctp5/${m.photoURL}"
+  >
+<p>${m.description}</p>
+</div>`;
+      if (this.currentMidx == index) {
+        this.infoWinOpen = !this.infoWinOpen;
+        this.currentMidx = null;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = index;
+      }
+    },
+    closeClick() {
+      this.infoWinOpen = false;
+    },
   },
   mounted() {},
 };
 </script>
+<style>
+.g-map {
+  color: black;
+}
+</style>

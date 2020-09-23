@@ -7,14 +7,14 @@
             <v-list-item class="px-2" to="/forum">
               <v-icon to>mdi-chevron-left</v-icon>
             </v-list-item>
-            <v-list-item class="px-2" :to="`/forum/${$route.params.tag}`">
-              <v-icon to>mdi-information-variant</v-icon>
+            <v-list-item class="px-2" to="/">
+              <v-icon to>mdi-home</v-icon>
             </v-list-item>
           </v-list-item-group>
         </v-navigation-drawer>
         <v-list class="grow">
           <v-list-item v-if="logo">
-            <v-card class="mx-auto ma-1" elevation="0" max-width="200">
+            <v-card class="mx-auto ma-1" elevation="0" max-width="200" :to="`/forum/${$route.params.tag}`">
               <v-img :src="logo" contain></v-img>
             </v-card>
           </v-list-item>

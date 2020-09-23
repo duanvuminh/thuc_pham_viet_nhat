@@ -11,6 +11,7 @@
         dense
       ></v-text-field>
       <v-data-table
+        @click:row="handleClick"
         :items="areaArrTsble"
         :search="selectedLocationLocal"
         :headers="headers"
@@ -173,6 +174,11 @@ export default {
       resultArr: null,
       selectedLocationLocal: this.selectedLocation,
     };
+  },
+  methods: {
+    handleClick(val) {
+      this.$router.push(`${this.$route.path}/${val.areaName}`)
+    },
   },
   mounted() {
     this.selectedLocationLocal = this.selectedLocation;

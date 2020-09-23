@@ -17,11 +17,9 @@
           :quote="$md.render(item.vi).replace(/<[^>]*>?/gm, '')"
           inline-template
         >
-          <div>
+          <div class="ma-2">
             <network network="facebook">
-              <v-btn text icon>
-                <v-icon small>mdi-share</v-icon>
-              </v-btn>
+              ♻︎
             </network>
           </div>
         </social-sharing>
