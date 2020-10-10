@@ -2,10 +2,10 @@
   <v-container>
     <div class="d-flex">
       <v-spacer></v-spacer>
-      <v-btn icon @click="show1All=!show1All">
+      <!-- <v-btn icon @click="show1All=!show1All">
         <v-icon small v-if="show1All">mdi-eye-check-outline</v-icon>
         <v-icon small v-else>mdi-eye-off-outline</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-btn icon @click="show2All=!show2All">
         <v-icon small v-if="show2All">mdi-eye-check-outline</v-icon>
         <v-icon small v-else>mdi-eye-off-outline</v-icon>

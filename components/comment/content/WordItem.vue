@@ -4,14 +4,24 @@
       <v-card-text class="pa-1">
         <template v-if="!editMode">
           <div class="d-flex align-center">
-            <span v-if="show1">{{item.word}}</span>
-            <v-text-field v-else v-model="word" label="Từ" dense :hint="hint?item.hint:null"></v-text-field>
-            <v-btn v-if="!show1" icon small :color="word==item.word?'green':'grey'" @click="hint=!hint">
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <span v-if="show1" class="text-h5" v-bind="attrs" v-on="on">{{item.word}}</span>
+              </template>
+              <span>{{item.hint?item.hint:"blank"}}</span>
+            </v-tooltip>
+            <!-- <v-btn
+              v-if="!show1"
+              icon
+              small
+              :color="word==item.word?'green':'grey'"
+              @click="hint=!hint"
+            >
               <v-icon small>mdi-check</v-icon>
             </v-btn>
             <v-btn icon @click="show1=!show1" small>
               <v-icon small>mdi-repeat-once</v-icon>
-            </v-btn>
+            </v-btn> -->
             <v-spacer></v-spacer>
             <HtmlParser v-if="show2" :content="item.content"></HtmlParser>
             <v-btn icon @click="show2=!show2" small>
@@ -74,7 +84,7 @@ export default {
   },
   data: () => ({
     editMode: false,
-    hint:false,
+    hint: false,
     show1: true,
     show2: true,
     word: null,

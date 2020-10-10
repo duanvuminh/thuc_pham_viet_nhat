@@ -1,13 +1,13 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="11" sm="8" md="6">
-      <v-card class="elevation-12">
-        <v-toolbar color="primary" dark flat>
+      <v-card class="elevation-0" color="transparent">
+        <!-- <v-toolbar color="primary" dark flat>
           <v-toolbar-title>{{isLoggingIn ?"Đăng nhập":"Đăng kí"}}</v-toolbar-title>
-        </v-toolbar>
+        </v-toolbar> -->
         <v-card-text>
           <v-form v-model="valid" ref="form">
-            <v-text-field
+            <!-- <v-text-field
               label="Email đăng nhập"
               name="login"
               prepend-icon="person"
@@ -37,7 +37,7 @@
               v-model="user.confirmPassword"
               :rules="confirmPasswordRules"
               :disabled="processing"
-            />
+            /> -->
             <v-btn @click="googleSignIn" dark color="red darken-1" small text>
               <v-icon>mdi-google</v-icon>+Login
             </v-btn>
@@ -46,7 +46,7 @@
             </v-btn>
           </v-form>
         </v-card-text>
-        <v-card-actions>
+        <!-- <v-card-actions>
           <v-spacer />
           <v-btn
             :disabled="processing"
@@ -59,7 +59,7 @@
             text
             @click="toggleForm"
           >{{isLoggingIn ? 'Chưa có tài khoản? Click vào đây ' : 'Quay lại màn hình đăng nhập'}}</v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-col>
     <v-dialog v-model="dialog" max-width="90%">

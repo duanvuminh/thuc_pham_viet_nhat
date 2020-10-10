@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-autocomplete
+    <v-text-field
       solo
       label="Search"
       prepend-inner-icon="mdi-magnify"
@@ -13,31 +13,37 @@
       hide-no-data
       item-text="name"
       item-value="key"
-      @change="search"
       @keydown="search1"
     >
       <template slot="append">
         <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->
-        <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet=!sheet">
+        <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet = !sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
         <v-btn class="mt-2 mb-2" color="cyan" icon @click="openImage">
           <v-icon dark>mdi-camera</v-icon>
-          <input @change="onFileChange" ref="file" type="file" style="display: none" />
+          <input
+            @change="onFileChange"
+            ref="file"
+            type="file"
+            style="display: none"
+          />
         </v-btn>
       </template>
-      <template v-slot:item="data">
+      <!-- <template v-slot:item="data">
         <v-list-item @click="search3(data.item)">
         <v-list-item-content>
           <v-list-item-title v-text="data.item.name"></v-list-item-title>
           <v-list-item-subtitle v-text="data.item.label"></v-list-item-subtitle>
         </v-list-item-content>
         </v-list-item>
-      </template>
-    </v-autocomplete>
+      </template> -->
+    </v-text-field>
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title
+          >Privacy Policy</v-card-title
+        >
 
         <v-card-text>Hãy đăng nhập để dùng chức năng này</v-card-text>
 
@@ -118,21 +124,10 @@ export default {
         this.$router.push("/auth/vision");
       });
     },
-    search(e) {
-      if (!this.search2) return;
-      if (this.search2) {
-        this.text == 1
-          ? this.$router.push(`/show/${this.search2.toLowerCase()}`)
-          : this.$router.push(`/mean/${this.search2.toLowerCase()}`);
-      }
-    },
     search1(e) {
-      if (!this.search2) return;
-      if (e.key == "Enter" && this.search2) {
-        
-        this.text == 2
-          ? this.$router.push(`/mean/${this.search2.toLowerCase()}`)
-          : this.$router.push(`/show/${this.search2[0].toLowerCase()}`);
+      if (e.key == "Enter") {
+              this.$router.push(`/show/${this.text.trim()[0]}`);
+
       }
     },
     search3(item) {
@@ -143,24 +138,24 @@ export default {
   },
   mounted() {
     let id = this.$route.params.id;
-    this.search2 = id;
-    let path = this.$route.path;
-    if (id) {
-      if (id.trim().length == 1) {
-        this.items = [
-          { name: this.search2, key: 1, label: "Cách nhớ" },
-          { name: this.search2, key: 2, label: "Tra từ" }
-        ];
-        if (path.includes("mean")) {
-          this.text = 2;
-        } else {
-          this.text = 1;
-        }
-      } else if (id.trim().length > 1) {
-        this.items = [{ name: this.search2, key: 2, label: "Tra từ" }];
-        this.text = 2;
-      }
-    }
+    this.text = id;
+    // let path = this.$route.path;
+    // if (id) {
+    //   if (id.trim().length == 1) {
+    //     this.items = [
+    //       { name: this.search2, key: 1, label: "Cách nhớ" },
+    //       { name: this.search2, key: 2, label: "Tra từ" }
+    //     ];
+    //     if (path.includes("mean")) {
+    //       this.text = 2;
+    //     } else {
+    //       this.text = 1;
+    //     }
+    //   } else if (id.trim().length > 1) {
+    //     this.items = [{ name: this.search2, key: 2, label: "Tra từ" }];
+    //     this.text = 2;
+    //   }
+    // }
   },
   props: ["active"],
   watch: {

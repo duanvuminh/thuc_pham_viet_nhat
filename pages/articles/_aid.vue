@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-3">
+  <div class="ma-3" style="max-width:750px;width:100%">
     <v-app-bar elevation="0" color="transparent" dense fixed>
       <v-spacer></v-spacer>
       <v-btn fab small to="/forum">
