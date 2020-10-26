@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app elevation="0" dense>
+    <v-app-bar app elevation="0" color="transparent" dense>
       <v-spacer></v-spacer>
       <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
       <v-menu bottom left>
