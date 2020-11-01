@@ -33,7 +33,7 @@
             </template>
             <Topic1
               v-for="item in topic1"
-              :key="show?item.id:-item.id"
+              :key="item.id"
               :item="item"
               :level1="level1"
               :url="`/forum/${$route.params.tag}`"

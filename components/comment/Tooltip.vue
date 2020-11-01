@@ -5,11 +5,17 @@
         <v-btn text :to="`/articles/${this.id}`" x-small fab>
           <v-icon dark x-small>mdi-message-reply-text</v-icon>
         </v-btn>
-        {{messageCount>0?messageCount:""}}
+        {{ messageCount > 0 ? messageCount : "" }}
       </div>
     </template>
     <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
-    <v-btn text x-small fab @click="save" :color="is_saved==1?'blue':null">
+    <v-btn
+      text
+      x-small
+      fab
+      @click="save"
+      :color="is_saved == 1 ? 'blue' : null"
+    >
       <v-icon dark x-small>mdi-bookmark-multiple</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
@@ -65,15 +71,17 @@ export default {
     },
   },
   mounted() {
-    firebase
-      .firestore()
-      .doc(`users/${this.$store.state.user.email}/save/${this.id}`)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          this.is_saved = doc.data().is_saved;
-        }
-      });
+    if (this.$store && this.$store.state.user.email != null) {
+      firebase
+        .firestore()
+        .doc(`users/${this.$store.state.user.email}/save/${this.id}`)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.is_saved = doc.data().is_saved;
+          }
+        });
+    }
     firebase
       .firestore()
       .doc(`forum/${this.id}`)

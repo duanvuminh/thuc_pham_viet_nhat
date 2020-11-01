@@ -14,6 +14,7 @@
       item-text="name"
       item-value="key"
       @keydown="search1"
+      placeholder="Nhập kanji"
     >
       <template slot="append">
         <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->

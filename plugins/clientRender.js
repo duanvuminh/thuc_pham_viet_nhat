@@ -9,8 +9,8 @@ if (!firebase.apps.length) {
         .enablePersistence({ synchronizeTabs: true })
 }
 
-var SocialSharing = require('vue-social-sharing');
-Vue.use(SocialSharing);
+// var SocialSharing = require('vue-social-sharing');
+// Vue.use(SocialSharing);
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
 Vue.use(VueGoogleMaps, {

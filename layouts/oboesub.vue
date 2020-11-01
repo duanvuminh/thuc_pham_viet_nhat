@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app elevation="0">
+    <v-app-bar app elevation="0" color="transparent">
       <!-- <img src="~/assets/logo.png" height="100%"/> -->
       <nuxt-link to="/" class="nuxt-link-logo">
         <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>

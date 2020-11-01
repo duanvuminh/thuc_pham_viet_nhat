@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row flex-wrap" style="overflow-x:auto">
+  <div class="d-flex flex-row flex-wrap">
     <div class="d-flex">
       <div v-for="(item,index) in url" :key="index" :ref="`object${item}`" class="stroke"></div>
     </div>
