@@ -3,7 +3,6 @@
     <v-text-field
       solo
       label="Search"
-      prepend-inner-icon="mdi-magnify"
       clearable
       v-model="text"
       :disabled="disabled"
@@ -18,10 +17,13 @@
     >
       <template slot="append">
         <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->
-        <v-btn class="mt-2 mb-2" color="cyan" icon @click="sheet = !sheet">
+        <v-btn class="mt-2 mb-2" icon @click="search">
+          <v-icon dark>mdi-magnify</v-icon>
+        </v-btn>
+        <v-btn class="mt-2 mb-2" icon @click="sheet = !sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn class="mt-2 mb-2" color="cyan" icon @click="openImage">
+        <v-btn class="mt-2 mb-2" icon @click="openImage">
           <v-icon dark>mdi-camera</v-icon>
           <input
             @change="onFileChange"
@@ -72,12 +74,12 @@ import Handwriting from "@/components/Handwriting";
 //const Handwriting = () => import("@/components/Handwriting");
 export default {
   components: {
-    Handwriting
+    Handwriting,
   },
   computed: {
     disabled() {
       return this.sheet;
-    }
+    },
   },
   data() {
     return {
@@ -86,7 +88,7 @@ export default {
       sheet: false,
       text: "",
       items: [],
-      search2: null
+      search2: null,
     };
   },
   methods: {
@@ -97,7 +99,7 @@ export default {
       this.search2 = this.search2 ? this.search2 : "";
       this.search2 += value;
       this.sheet = false;
-       this.text=2;
+      this.text = value;
     },
     openImage() {
       if (!this.$store.state.loggedIn) {
@@ -111,31 +113,33 @@ export default {
       if (!files.length) return;
       Promise.all(
         // Array of "Promises"
-        [files[0]].map(item => {
+        [files[0]].map((item) => {
           var ref = firebase
             .storage()
             .ref("vision/" + this.$store.state.user.email + "/visionimg");
-          return ref.put(item).then(r => {
+          return ref.put(item).then((r) => {
             return ref.getDownloadURL();
           });
         })
-      ).then(url => {
+      ).then((url) => {
         //console.log(encodeURI(url[0]))
         this.$store.commit("setVision", url[0]);
         this.$router.push("/auth/vision");
       });
     },
+    search(e) {
+      this.$router.push(`/show/${this.text.trim()[0]}`);
+    },
     search1(e) {
       if (e.key == "Enter") {
-              this.$router.push(`/show/${this.text.trim()[0]}`);
-
+        this.$router.push(`/show/${this.text.trim()[0]}`);
       }
     },
     search3(item) {
-        item.key == 2
-          ? this.$router.push(`/mean/${item.name}`)
-          : this.$router.push(`/show/${item.name}`);
-    }
+      item.key == 2
+        ? this.$router.push(`/mean/${item.name}`)
+        : this.$router.push(`/show/${item.name}`);
+    },
   },
   mounted() {
     let id = this.$route.params.id;
@@ -165,13 +169,13 @@ export default {
         if (val.trim().length == 1) {
           this.items = [
             { name: val, key: 1, label: "Cách nhớ" },
-            { name: val, key: 2, label: "Tra từ" }
+            { name: val, key: 2, label: "Tra từ" },
           ];
         } else if (val.trim().length > 1) {
           this.items = [{ name: val, key: 2, label: "Tra từ" }];
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

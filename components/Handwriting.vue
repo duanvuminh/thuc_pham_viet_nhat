@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       canvas: {},
-      width: 400,
+      width: window.innerWidth > 0 ? window.innerWidth : screen.width,
       height: 250,
       data: []
     };

@@ -1,14 +1,16 @@
 <template>
   <v-row justify="center" style="width: 100%; max-width: 600px">
     <v-card>
-      <v-img
+      <v-card-text>
+        <v-img
         v-if="url"
         class="orange--text align-end"
         :src="url"
         contain
       ></v-img>
+        <div v-html="text"></div>
+      </v-card-text>
     </v-card>
-    <div v-html="text"></div>
   </v-row>
 </template>
 <script>

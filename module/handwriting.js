@@ -18,6 +18,7 @@ handwriting.Canvas = function (cvs, lineWidth) {
     this.text = ""
     this.canvas = cvs;
     this.cxt = cvs.getContext("2d");
+    this.cxt.strokeStyle="white";
     this.cxt.lineCap = "round";
     this.cxt.lineJoin = "round";
     this.lineWidth = lineWidth || 3;
