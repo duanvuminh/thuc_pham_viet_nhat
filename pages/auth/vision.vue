@@ -1,6 +1,13 @@
 <template>
-  <v-row justify="center" style="width:100%;max-width:600px">
-    <v-img v-if="url" class="orange--text align-end" :src="url" contain></v-img>
+  <v-row justify="center" style="width: 100%; max-width: 600px">
+    <v-card>
+      <v-img
+        v-if="url"
+        class="orange--text align-end"
+        :src="url"
+        contain
+      ></v-img>
+    </v-card>
     <div v-html="text"></div>
   </v-row>
 </template>
@@ -15,25 +22,24 @@ export default {
     let api = await $axios
       .$get("/api/handwriting", {
         params: {
-          id: store.state.visionurl
-        }
+          id: store.state.visionurl,
+        },
       })
       .then();
     return {
       url: store.state.visionurl,
-      text:api.result
+      text: api.result,
     };
   },
   components: {
     Search,
-    HtmlParser
+    HtmlParser,
   },
   data() {
     return {};
   },
   layout: "oboe",
   methods: {},
-  mounted() {
-  }
+  mounted() {},
 };
 </script>
