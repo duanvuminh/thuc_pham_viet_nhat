@@ -71,7 +71,7 @@ export default {
     HtmlParser,
     Tooltip,
     Timeline: () => import("./content/TimelineInner"),
-    Word: () => import("./content/WordInner"),
+    Word: () => import("./content/WordInner"),
     Summary: () => import("./content/SummaryInner"),
     Asobi: () => import("./content/AsobiInner"),
   },

@@ -23,7 +23,7 @@
         <v-btn class="mt-2 mb-2" icon @click="sheet = !sheet">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn class="mt-2 mb-2" icon @click="openImage">
+        <!-- <v-btn class="mt-2 mb-2" icon @click="openImage">
           <v-icon dark>mdi-camera</v-icon>
           <input
             @change="onFileChange"
@@ -31,7 +31,7 @@
             type="file"
             style="display: none"
           />
-        </v-btn>
+        </v-btn> -->
       </template>
       <!-- <template v-slot:item="data">
         <v-list-item @click="search3(data.item)">

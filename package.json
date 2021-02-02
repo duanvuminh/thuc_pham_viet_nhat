@@ -5,7 +5,7 @@
   "author": "duanvuminh",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt --port 8000",
     "build": "nuxt build -a",
     "start": "nuxt start",
     "generate": "nuxt generate",

@@ -5,18 +5,42 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12">
-        <v-row>
-          <v-col cols="12" v-for="(oboe,i) in items" :key="i">
-            <Ocard v-if="i==0" :item="oboe" :searchkey="searchkey" :email="email">
+        <v-row v-if="items.length > 0">
+          <v-col cols="12" v-for="(oboe, i) in items" :key="i">
+            <Ocard
+              v-if="i == 0"
+              :item="oboe"
+              :searchkey="searchkey"
+              :email="email"
+            >
               <Strockes :kanji="$route.params.id[0]" />
             </Ocard>
-            <Ocard v-else :item="oboe" :searchkey="searchkey" :email="email"></Ocard>
+            <Ocard
+              v-else
+              :item="oboe"
+              :searchkey="searchkey"
+              :email="email"
+            ></Ocard>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12">
+            <v-card class="mx-auto" elevation="1">
+              <div class="d-flex">
+                <Strockes :kanji="$route.params.id[0]" />
+                <v-card-text class="pb-0">
+                  Chưa có bài viết
+                </v-card-text>
+              </div>
+            </v-card>
           </v-col>
         </v-row>
         <v-dialog v-model="dialog" fullscreen>
           <v-card>
             <v-card-title>
-              <span class="title font-weight-light">Cảm ơn bạn đã đóng góp ý kiến</span>
+              <span class="title font-weight-light"
+                >Cảm ơn bạn đã đóng góp ý kiến</span
+              >
             </v-card-title>
             <v-card-text>
               <v-textarea
@@ -33,12 +57,16 @@
               />
               <v-row>
                 <v-spacer />
-                <v-btn class="ma-2" color="success" @click="save" small text>Lưu</v-btn>
-                <v-btn class="ma-2" text @click="showEdit=false" small>Huỷ</v-btn>
+                <v-btn class="ma-2" color="success" @click="save" small text
+                  >Lưu</v-btn
+                >
+                <v-btn class="ma-2" text @click="showEdit = false" small
+                  >Huỷ</v-btn
+                >
               </v-row>
               <HtmlParser
                 class="elevation-1 pa-2 mb-3 deep-purple accent-1"
-                v-if="commentvi!=''"
+                v-if="commentvi != ''"
                 :content="$md.render(commentvi)"
               >
                 <h3>Preview</h3>
@@ -56,7 +84,7 @@
       bottom
       right
       fab
-      @click="showEdit=!showEdit"
+      @click="showEdit = !showEdit"
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
