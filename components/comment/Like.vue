@@ -52,7 +52,7 @@ export default {
       .doc(this.path)
       .get()
       .then(doc => {
-        this.liked = doc.data().total_likeds;
+        this.liked = doc.data().total_likeds?doc.data().total_likeds:0;
         if (!this.liked) {
           this.liked = 0;
         }

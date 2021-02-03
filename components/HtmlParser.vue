@@ -81,6 +81,9 @@ export default {
 .mrk p{
   margin-bottom: 0;
 }
+.mrk strong{
+  color: red;
+}
 .mrk td,.mrk th {
   border: 1px solid;
   padding: 8px;

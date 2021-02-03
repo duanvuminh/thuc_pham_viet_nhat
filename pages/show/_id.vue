@@ -6,7 +6,7 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-row v-if="items.length > 0">
-          <v-col cols="12" v-for="(oboe, i) in items" :key="i">
+          <v-col cols="12" v-for="(oboe, i) in items" :key="oboe.id">
             <Ocard
               v-if="i == 0"
               :item="oboe"
@@ -39,7 +39,7 @@
           <v-card>
             <v-card-title>
               <span class="title font-weight-light"
-                >Cảm ơn bạn đã đóng góp ý kiến</span
+                >{{searchkey[0]}}の覚え方</span
               >
             </v-card-title>
             <v-card-text>
@@ -93,6 +93,8 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
+import Cookie from "js-cookie";
 import HtmlParser from "@/components/HtmlParser";
 import Logo from "@/components/Logo";
 //const HtmlParser = () => import("@/components/HtmlParser");
@@ -182,6 +184,12 @@ export default {
     },
     async save() {
       this.loading = true;
+      await firebase
+            .auth()
+            .currentUser.getIdToken()
+            .then(idToken => {
+              Cookie.set("access_token", idToken);
+            });
       await this.$axios
         .$post("/api/post", null, {
           params: {
@@ -190,18 +198,18 @@ export default {
           },
         })
         .then((x) => {
-          if (this.items.lenght > 0) {
+          console.log(this.items.length)
+          if (this.items.length > 0) {
             for (let i = 0; i < this.items.length; i++) {
               if (this.items[i].id == this.email) {
                 this.items[i].vi = this.commentvi;
-                break;
+                return;
               }
             }
-          } else {
-            this.items[0] = {
+            this.items.unshift({
               id: this.email,
               vi: this.commentvi,
-            };
+            });
           }
         });
       this.loading = false;
@@ -220,7 +228,7 @@ export default {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.commentvi = doc.data().vi;
+          this.commentvi = doc.data().vi?doc.data().vi:'';
         }
       });
     // init tab

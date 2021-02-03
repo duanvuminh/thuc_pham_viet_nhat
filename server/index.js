@@ -233,7 +233,7 @@ app.post("/api/post", async (req, res) => {
   const parsed = cookieparser.parse(req.headers.cookie);
   const accessTokenCookie = parsed.access_token;
   let params = req.query
-  console.log(util.inspect(accessTokenCookie, { showHidden: false, depth: 1 }))
+  // console.log(util.inspect(accessTokenCookie, { showHidden: false, depth: 1 }))
   let db = admin.firestore();
   await admin.auth().verifyIdToken(accessTokenCookie)
     .then(function (decodedToken) {
