@@ -203,6 +203,10 @@ export default {
                 return;
               }
             }
+            this.items.unshift({
+              id: this.email,
+              vi: this.commentvi,
+            });
           } else {
             this.items.unshift({
               id: this.email,
