@@ -28,9 +28,7 @@
             <v-card class="mx-auto" elevation="1">
               <div class="d-flex">
                 <Strockes :kanji="$route.params.id[0]" />
-                <v-card-text class="pb-0">
-                  Chưa có bài viết
-                </v-card-text>
+                <v-card-text class="pb-0"> Chưa có bài viết </v-card-text>
               </div>
             </v-card>
           </v-col>
@@ -39,7 +37,7 @@
           <v-card>
             <v-card-title>
               <span class="title font-weight-light"
-                >{{searchkey[0]}}の覚え方</span
+                >{{ searchkey[0] }}の覚え方</span
               >
             </v-card-title>
             <v-card-text>
@@ -185,11 +183,11 @@ export default {
     async save() {
       this.loading = true;
       await firebase
-            .auth()
-            .currentUser.getIdToken()
-            .then(idToken => {
-              Cookie.set("access_token", idToken);
-            });
+        .auth()
+        .currentUser.getIdToken()
+        .then((idToken) => {
+          Cookie.set("access_token", idToken);
+        });
       await this.$axios
         .$post("/api/post", null, {
           params: {
@@ -198,7 +196,6 @@ export default {
           },
         })
         .then((x) => {
-          console.log(this.items.length)
           if (this.items.length > 0) {
             for (let i = 0; i < this.items.length; i++) {
               if (this.items[i].id == this.email) {
@@ -206,6 +203,7 @@ export default {
                 return;
               }
             }
+          } else {
             this.items.unshift({
               id: this.email,
               vi: this.commentvi,
@@ -228,7 +226,7 @@ export default {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.commentvi = doc.data().vi?doc.data().vi:'';
+          this.commentvi = doc.data().vi ? doc.data().vi : "";
         }
       });
     // init tab
