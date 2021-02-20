@@ -66,7 +66,7 @@ export default {
   */
   buildModules: [
     '@nuxtjs/dotenv',
-    '@nuxtjs/vuetify',
+    ['@nuxtjs/vuetify', { defaultAssets: false, }],
     'nuxt-material-design-icons',
     // 'nuxt-purgecss'
   ],
@@ -124,6 +124,7 @@ export default {
     },
     manifest: {
       name: 'Oboe',
+      start_url: "/",
       background_color: "#ffffff",
       lang: 'en',
       description: "cách nhớ kanji",
