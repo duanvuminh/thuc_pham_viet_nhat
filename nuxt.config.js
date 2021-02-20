@@ -2,9 +2,6 @@ require('dotenv').config();
 import getAppRoutes from './server/modules/getRoutes';
 import axios from 'axios';
 import { cacheAdapterEnhancer } from 'axios-extensions';
-import PurgecssPlugin from 'purgecss-webpack-plugin'
-import glob from 'glob-all'
-import path from 'path'
 
 const modifyHtml = (html) => {
   // Add amp-custom tag to added CSS
@@ -70,8 +67,15 @@ export default {
   buildModules: [
     '@nuxtjs/dotenv',
     '@nuxtjs/vuetify',
-    'nuxt-material-design-icons'
+    'nuxt-material-design-icons',
+    // 'nuxt-purgecss'
   ],
+  // purgeCSS: {
+  //   // your settings here
+  //   whitelist: ['v-application', 'v-application--wrap'],
+  //   whitelistPatterns: [/^v-((?!application).)*$/, /^theme--*/, /.*-transition/],
+  //   whitelistPatternsChildren: [/^v-((?!application).)*$/, /^theme--*/],
+  //  },
   /*
   ** Nuxt.js modules
   */
@@ -195,7 +199,7 @@ export default {
   */
   axios: {
     baseURL: 'https://oboemasu.com/',
-    // baseURL: 'http://localhost:8000/',
+    //baseURL: 'http://localhost:8000/',
     // proxy: true,
     // proxyHeaders: false,
     // credentials: false
@@ -248,22 +252,10 @@ export default {
     /*
     ** You can extend webpack config here
     */
+    extend(config, ctx) {
+    },
     transpile: ['vue-instantsearch', 'instantsearch.js/es',/^vue2-google-maps($|\/)/],
     extractCSS: true,
-    extend(config, { isDev, isClient }) {
-      if (!isDev && isClient) {
-        config.plugins.push(
-          new PurgecssPlugin({
-            paths: glob.sync([
-              path.join(__dirname, './pages/**/*.vue'),
-              path.join(__dirname, './layouts/**/*.vue'),
-              path.join(__dirname, './components/**/*.vue')
-            ]),
-            whitelist: ['html', 'body']
-          })
-        )
-      }
-  }
   },
   /*
   ** render
