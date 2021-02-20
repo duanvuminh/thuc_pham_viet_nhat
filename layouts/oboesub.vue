@@ -6,7 +6,7 @@
         <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
       <v-spacer></v-spacer>
-      <nuxt-link to="/forum" class="nuxt-link">Forum</nuxt-link>
+      <nuxt-link to="/forum" class="nuxt-link" :prefetch="false">Forum</nuxt-link>
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">

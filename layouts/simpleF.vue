@@ -1,7 +1,7 @@
 <template>
   <v-app light ontouchstart>
     <v-app-bar app elevation="0">
-      <nuxt-link to="/forum" class="nuxt-link-logo">
+      <nuxt-link to="/forum" class="nuxt-link-logo" :prefetch="false">
         <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
       </nuxt-link>
     </v-app-bar>

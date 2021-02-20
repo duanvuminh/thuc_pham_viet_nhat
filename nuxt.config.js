@@ -2,6 +2,9 @@ require('dotenv').config();
 import getAppRoutes from './server/modules/getRoutes';
 import axios from 'axios';
 import { cacheAdapterEnhancer } from 'axios-extensions';
+import PurgecssPlugin from 'purgecss-webpack-plugin'
+import glob from 'glob-all'
+import path from 'path'
 
 const modifyHtml = (html) => {
   // Add amp-custom tag to added CSS
@@ -245,17 +248,29 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
-    },
     transpile: ['vue-instantsearch', 'instantsearch.js/es',/^vue2-google-maps($|\/)/],
     extractCSS: true,
+    extend(config, { isDev, isClient }) {
+      if (!isDev && isClient) {
+        config.plugins.push(
+          new PurgecssPlugin({
+            paths: glob.sync([
+              path.join(__dirname, './pages/**/*.vue'),
+              path.join(__dirname, './layouts/**/*.vue'),
+              path.join(__dirname, './components/**/*.vue')
+            ]),
+            whitelist: ['html', 'body']
+          })
+        )
+      }
+  }
   },
   /*
   ** render
   */
   render: {
     bundleRenderer: {
-      shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
+      // shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
       // resourceHints:false
     },
   },

@@ -17,10 +17,10 @@
     >
       <template slot="append">
         <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->
-        <v-btn class="mt-2 mb-2" icon @click="search">
+        <v-btn class="mt-2 mb-2" icon @click="search" name="search">
           <v-icon dark>mdi-magnify</v-icon>
         </v-btn>
-        <v-btn class="mt-2 mb-2" icon @click="sheet = !sheet">
+        <v-btn class="mt-2 mb-2" icon @click="sheet = !sheet" name="write kanji">
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
         <!-- <v-btn class="mt-2 mb-2" icon @click="openImage">

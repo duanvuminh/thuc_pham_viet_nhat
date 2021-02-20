@@ -61,7 +61,6 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { mapState } from "vuex";
 import ActionPure from "@/components/comment/ActionPure";
 import avartar from "@/components/comment/Avartar";
 const isImageUrl = require("is-image-url");
