@@ -3,17 +3,17 @@ import getAppRoutes from './server/modules/getRoutes';
 import axios from 'axios';
 import { cacheAdapterEnhancer } from 'axios-extensions';
 
-const modifyHtml = (html) => {
-  // Add amp-custom tag to added CSS
-  html = html.replace(/<style data-vue-ssr/g, '<style amp-custom data-vue-ssr')
-  // Remove every script tag from generated HTML
-  html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-  // Add AMP script before </head>
-  const ampScript = '<script async src="https://cdn.ampproject.org/v0.js"></script>'
-  const ampSocial = '<script async custom-element="amp-social-share" src="https://cdn.ampproject.org/v0/amp-social-share-0.1.js"></script>'
-  html = html.replace('</head>', ampScript + ampSocial + '</head>')
-  return html
-}
+// const modifyHtml = (html) => {
+//   // Add amp-custom tag to added CSS
+//   html = html.replace(/<style data-vue-ssr/g, '<style amp-custom data-vue-ssr')
+//   // Remove every script tag from generated HTML
+//   html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+//   // Add AMP script before </head>
+//   const ampScript = '<script async src="https://cdn.ampproject.org/v0.js"></script>'
+//   const ampSocial = '<script async custom-element="amp-social-share" src="https://cdn.ampproject.org/v0/amp-social-share-0.1.js"></script>'
+//   html = html.replace('</head>', ampScript + ampSocial + '</head>')
+//   return html
+// }
 
 export default {
   mode: 'universal',
@@ -29,15 +29,8 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'apple-touch-icon', href: 'logo.png' },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
-      { rel: "apple-touch-startup-image", href: "/logo.png", media: "(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" },
+      { rel: 'icon', type: 'image/png', size: "128x128", href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', href: 'logo.png' }
     ]
   },
   // hooks: {
@@ -86,7 +79,7 @@ export default {
     '@nuxtjs/markdownit',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
-    '@nuxtjs/amp',
+    // '@nuxtjs/amp',
     'nuxt-compress',
     // ['@nuxtjs/google-adsense', {
     //   id: 'ca-pub-9016732088039840'
@@ -120,9 +113,12 @@ export default {
   ],
   pwa: {
     meta: {
-      mobileAppIOS:true
+      mobileAppIOS: true
     },
     manifest: {
+      short_name: "Oboe",
+      scope: ".",
+      theme_color: "#ffffff",
       name: 'Oboe',
       start_url: "/",
       background_color: "#ffffff",
@@ -255,8 +251,11 @@ export default {
     */
     extend(config, ctx) {
     },
-    transpile: ['vue-instantsearch', 'instantsearch.js/es',/^vue2-google-maps($|\/)/],
+    transpile: ['vue-instantsearch', 'instantsearch.js/es', /^vue2-google-maps($|\/)/],
     extractCSS: true,
+    splitChunks: {
+      layouts: true
+    }
   },
   /*
   ** render

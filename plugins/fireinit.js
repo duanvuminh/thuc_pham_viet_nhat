@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-import 'firebase/firestore';
 import 'firebase/auth';
 import Cookie from "js-cookie";
 var config = {

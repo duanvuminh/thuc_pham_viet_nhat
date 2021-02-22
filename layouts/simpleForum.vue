@@ -21,7 +21,7 @@
 import { mapState } from "vuex";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
-import Drawer from "@/components/comment/Drawer";
+const Drawer = ()=>import("@/components/comment/Drawer");
 
 export default {
   components: {
