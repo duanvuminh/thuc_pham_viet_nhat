@@ -15,8 +15,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 //const oContent = () => import("./Content");
 import oContent from "../Content";
@@ -50,17 +48,17 @@ export default {
     loadMore() {
       if (!this.lastID) return;
       this.busy = true;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(this.collectionUrl)
         .doc(this.lastID)
         .get()
         .then((last) => {
-          return firebase
-            .firestore()
+          return this.$fire
+            .firestore
             .collection(this.collectionUrl)
             .where(
-              firebase.firestore.FieldPath.documentId(),
+              this.$fire.firestore.FieldPath.documentId(),
               "in",
               this.saveList
             )
@@ -88,8 +86,8 @@ export default {
   },
   mounted() {
     this.saveList = [];
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection(`users/${this.$store.state.user.email}/save`)
       .where("is_saved", "==", true)
       .get()
@@ -100,10 +98,10 @@ export default {
         if (this.contents.length > 0) {
           return;
         }
-        firebase
-          .firestore()
+        this.$fire
+          .firestore
           .collection(this.collectionUrl)
-          .where(firebase.firestore.FieldPath.documentId(), "in", this.saveList)
+          .where(this.$fire.firestore.FieldPath.documentId(), "in", this.saveList)
           .limit(10)
           .get()
           .then((documentSnapshots) => {

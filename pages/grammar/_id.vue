@@ -11,9 +11,6 @@
 <script>
 // import HtmlParser from "@/components/HtmlParser";
 const HtmlParser = () => import("@/components/HtmlParser");
-
-import firebase from "firebase/app";
-import "firebase/firestore";
 export default {
   async asyncData({ params, store, $axios }) {
     return {id:params.id}
@@ -43,8 +40,8 @@ export default {
   methods: {
   },
   mounted() {
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("grammar")
       .doc(this.id)
       .get()

@@ -127,8 +127,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 //const avartar = () => import("./Avartar");
 //const tags = () => import("./TagsForum");
@@ -172,27 +170,27 @@ export default {
     openImage() {
       this.$refs.file.click();
     },
-    onFileChange(e) {
-      this.loading = true;
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      let d = new Date().toString();
-      Promise.all(
-        // Array of "Promises"
-        [files[0]].map((item) => {
-          var ref = firebase
-            .storage()
-            .ref(`forum/${this.$store.state.user.email}/${d}`);
-          return ref.put(item).then((r) => {
-            return ref.getDownloadURL();
-          });
-        })
-      ).then((url) => {
-        this.commentText = `${this.commentText ? this.commentText : ""}
-![ảnh bài viết](${url[0]})
-`;
-        this.loading = false;
-      });
+   onFileChange(e) {
+//       this.loading = true;
+//       var files = e.target.files || e.dataTransfer.files;
+//       if (!files.length) return;
+//       let d = new Date().toString();
+//       Promise.all(
+//         // Array of "Promises"
+//         [files[0]].map((item) => {
+//           var ref = this.$fire
+//             .storage()
+//             .ref(`forum/${this.$store.state.user.email}/${d}`);
+//           return ref.put(item).then((r) => {
+//             return ref.getDownloadURL();
+//           });
+//         })
+//       ).then((url) => {
+//         this.commentText = `${this.commentText ? this.commentText : ""}
+// ![ảnh bài viết](${url[0]})
+// `;
+//         this.loading = false;
+//       });
     },
     reset() {
       this.commentText = "";

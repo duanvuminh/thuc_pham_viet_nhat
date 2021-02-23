@@ -33,8 +33,6 @@
 //const HtmlParser = ()=>import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
 import Like from "@/components/comment/Like";
-import firebase from "firebase/app";
-import "firebase/firestore";
 
 export default {
   props: ["item", "searchkey", "email"],

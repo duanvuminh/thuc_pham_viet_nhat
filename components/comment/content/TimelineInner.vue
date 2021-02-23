@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 export default {
   components: {
     TimelineItem: () => import("@/components/comment/content/TimelineItem"),
@@ -37,7 +35,7 @@ export default {
         },
       });
       let data = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set({
+      this.$fire.firestore.collection("forum").doc(this.id).set({
         data: data,
       },{merge: true});
     },
@@ -47,7 +45,7 @@ export default {
         index1: index,
       });
       let data = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set({
+      this.$fire.firestore.collection("forum").doc(this.id).set({
         data: data,
       },{merge: true});
     },
@@ -58,7 +56,7 @@ export default {
         val:data
       });
       let data1 = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set({
+      this.$fire.firestore.collection("forum").doc(this.id).set({
         data: data1,
       },{merge: true});
       // has parent?

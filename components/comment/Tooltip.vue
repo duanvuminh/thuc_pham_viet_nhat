@@ -30,8 +30,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import Like from "./Like";
 import ActionPure from "./ActionPure";
 
@@ -61,8 +59,8 @@ export default {
         return;
       }
       this.is_saved = !this.is_saved;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .doc(`users/${this.$store.state.user.email}/save/${this.id}`)
         .set(
           { id: this.id, path: this.path, is_saved: this.is_saved },
@@ -72,8 +70,8 @@ export default {
   },
   mounted() {
     if (this.$store && this.$store.state.user.email != null) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .doc(`users/${this.$store.state.user.email}/save/${this.id}`)
         .get()
         .then((doc) => {
@@ -82,8 +80,8 @@ export default {
           }
         });
     }
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .doc(`forum/${this.id}`)
       .collection("comments")
       .get()

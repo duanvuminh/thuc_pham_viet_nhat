@@ -22,14 +22,12 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 import Cookie from "js-cookie";
 export default {
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
-    firebase
-      .auth()
+    this.$fire
+      .auth
       .signOut()
       .then(() => {
         Cookie.remove("access_token");

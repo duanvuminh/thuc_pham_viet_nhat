@@ -15,8 +15,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 //const oContent = () => import("./Content");
 import oContent from "../Content";
@@ -44,8 +42,8 @@ export default {
   },
   methods: {
     add(message) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("forum")
         .add(message)
         .then((docRef) => {
@@ -63,14 +61,14 @@ export default {
     loadMore() {
       if (!this.lastID) return;
       this.busy = true;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(this.collectionUrl)
         .doc(this.lastID)
         .get()
         .then((last) => {
-          return firebase
-            .firestore()
+          return this.$fire
+            .firestore
             .collection(this.collectionUrl)
             .where("type", "==", this.topic)
             .where(
@@ -108,8 +106,8 @@ export default {
         this.lastID = this.contents[this.contents.length - 1].id;
         return;
       }
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(this.collectionUrl)
         .where("type", "==", this.topic)
         .where(
@@ -148,7 +146,7 @@ export default {
     //     this.$store.commit("setContent", []);
     //     this.lastID = null;
     //     firebase
-    //       .firestore()
+    //       .firestore
     //       .collection(this.collectionUrl)
     //       .where("type", "==", this.topic)
     //       .where(

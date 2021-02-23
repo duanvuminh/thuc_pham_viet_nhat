@@ -72,8 +72,6 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 //const avartar = () => import("./Avartar");
 import avartar from "./Avartar";
 //const add = () => import("./Add");
@@ -184,8 +182,8 @@ export default {
       this.showComment = true;
     },
     deleteComment() {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .doc(this.path)
         .delete()
         .then((result) => {
@@ -214,7 +212,7 @@ export default {
       );
     },
     save() {
-      firebase.firestore().doc(this.path).update({
+      this.$fire.firestore.doc(this.path).update({
         comment: this.commentText,
       });
       this.comment.comment = this.commentText;

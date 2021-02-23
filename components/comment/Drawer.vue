@@ -78,8 +78,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 import Topic1 from "./Topic1";
 
@@ -103,8 +101,8 @@ export default {
   },
   created() {
     this.level1 = this.$route.params.tag;
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("topic")
       .doc(this.level1)
       .get()
@@ -115,8 +113,8 @@ export default {
         this.logo = doc.data().src;
       });
     if (this.level1 == this.mypage) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("topic")
         .doc(this.level1)
         .collection("users")
@@ -133,8 +131,8 @@ export default {
           });
         });
     } else {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("topic")
         .doc(this.level1)
         .collection("subtopic")
@@ -183,8 +181,8 @@ export default {
       this.$refs.form.validate();
       if (this.valid) {
         if (this.level1 == this.mypage) {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.level1)
             .collection("users")
@@ -206,8 +204,8 @@ export default {
               this.dialog = false;
             });
         } else {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.level1)
             .collection("subtopic")

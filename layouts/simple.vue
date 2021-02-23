@@ -127,4 +127,8 @@ export default {
 
 img
   max-width: 100%
+
+.nuxt-link-logo
+  height: 100%
+
 </style>

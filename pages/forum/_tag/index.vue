@@ -16,16 +16,14 @@
 </template>
 <script>
 // import HtmlParser from "@/components/HtmlParser";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 import HtmlParser from "@/components/HtmlParser";
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
     let document = {};
-    await firebase
-      .firestore()
+    await $fire
+      .firestore
       .collection("topic")
       .doc(params.tag)
       .get()

@@ -84,15 +84,13 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 import Cookie from "js-cookie";
 
 export default {
   layout: "simple",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
-    // firebase.auth().onAuthStateChanged(user => {
+    // firebase.auth.onAuthStateChanged(user => {
     //   if (user) {
     //     this.$store.commit("setLoginState", true);
     //     this.$router.push("/");
@@ -151,11 +149,11 @@ export default {
       }
     },
     facebookSignIn() {
-      let provider = new firebase.auth.FacebookAuthProvider();
+      let provider = new this.$fire.auth.FacebookAuthProvider();
       provider.addScope("email");
       provider.pe;
-      firebase
-        .auth()
+      this.$fire
+        .auth
         .signInWithPopup(provider)
         .then(result => {
           // store the user ore wathever
@@ -169,8 +167,8 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          firebase
-            .auth()
+          this.$fire
+            .auth
             .currentUser.getIdToken()
             .then(idToken => {
               Cookie.set("access_token", idToken);
@@ -190,9 +188,9 @@ export default {
         });
     },
     googleSignIn() {
-      let provider = new firebase.auth.GoogleAuthProvider();
-      firebase
-        .auth()
+      let provider = new this.$fire.auth.GoogleAuthProvider();
+      this.$fire
+        .auth
         .signInWithPopup(provider)
         .then(result => {
           // store the user ore wathever
@@ -206,8 +204,8 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          firebase
-            .auth()
+          this.$fire
+            .auth
             .currentUser.getIdToken()
             .then(idToken => {
               Cookie.set("access_token", idToken);
@@ -226,17 +224,17 @@ export default {
         });
     },
     login() {
-      firebase
-        .auth()
+      this.$fire
+        .auth
         .signInWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
           // console.log(data)
-          firebase
-            .auth()
+          this.$fire
+            .auth
             .currentUser.getIdToken()
             .then(idToken => {
               const token = idToken;
-              const { email, uid } = firebase.auth().currentUser;
+              const { email, uid } = this.$fire.auth.currentUser;
               this.$store.commit("setUser", { email, uid });
               this.$store.commit("setLoginState", true);
               // Set JWT to the cookie
@@ -256,8 +254,8 @@ export default {
         });
     },
     register() {
-      firebase
-        .auth()
+      this.$fire
+        .auth
         .createUserWithEmailAndPassword(this.user.email, this.user.password)
         .then(data => {
           //console.log(data)
@@ -267,8 +265,8 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          firebase
-            .auth()
+          this.$fire
+            .auth
             .currentUser.getIdToken()
             .then(idToken => {
               Cookie.set("access_token", idToken);

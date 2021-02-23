@@ -40,8 +40,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 //const comment = () => import("./Comment");
 import comment from './Comment';
 //const add = () => import("./Add");
@@ -72,8 +70,8 @@ export default {
           }
         }
       });
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(
           `${this.collectionUrl}/${comment.rootId}/${this.collectionSubUrl}`
         )
@@ -90,8 +88,8 @@ export default {
     addRoot(comment) {
       comment.commentSub = [];
       comment.for = null;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(`${this.collectionUrl}`)
         .add(comment)
         .then(docRef => {
@@ -106,8 +104,8 @@ export default {
           // Get the last visible document
           documentSnapshots.forEach(async doc => {
             let commentSub = [];
-            await firebase
-              .firestore()
+            await this.$fire
+              .firestore
               .collection(
                 `${this.collectionUrl}/${doc.id}/${this.collectionSubUrl}`
               )
@@ -144,8 +142,8 @@ export default {
           if (!this.last) return;
           // Construct a new query starting at this document,
           // get the next 25 cities.
-          this.next = firebase
-            .firestore()
+          this.next = this.$fire
+            .firestore
             .collection(this.collectionUrl)
             .orderBy("time")
             .startAfter(this.last)
@@ -157,15 +155,15 @@ export default {
   mounted() {
     // console.log(this.lastID);
     if (this.lastID) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(this.collectionUrl)
         .doc(this.lastID)
         .get()
         .then(doc => {
           this.last = doc;
-          this.next = firebase
-            .firestore()
+          this.next = this.$fire
+            .firestore
             .collection(this.collectionUrl)
             .orderBy("time")
             .startAfter(this.last)
@@ -173,8 +171,8 @@ export default {
         });
     }
     this.comments.forEach(item => {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection(`${this.collectionUrl}/${item.id}/${this.collectionSubUrl}`)
         .orderBy("time")
         .get()

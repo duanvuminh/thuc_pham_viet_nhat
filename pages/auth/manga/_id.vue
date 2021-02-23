@@ -58,9 +58,6 @@
 <script>
 import HtmlParser from "@/components/HtmlParser";
 //const HtmlParser=()=>import("@/components/HtmlParser")
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
 export default {
   components: {
     HtmlParser,
@@ -87,38 +84,38 @@ export default {
         return;
       } else {
         if (this.files.length > 0) {
-          this.loading = true;
-          Promise.all(
-            // Array of "Promises"
-            this.files.map((item) => {
-              var ref = firebase
-                .storage()
-                .ref(
-                  "manga/" + this.$store.state.user.email + "/" + this.basename
-                );
-              return ref.put(item).then((r) => {
-                return ref.getDownloadURL();
-              });
-            })
-          ).then((url) => {
-            firebase
-              .firestore()
-              .collection("manga")
-              .doc(this.basename)
-              .set(
-                {
-                  edited: new Date(),
-                  content: this.basecomment,
-                  url: url[0],
-                },
-                { merge: true }
-              )
-              .then((r) => (this.loading = false));
-          });
+          // this.loading = true;
+          // Promise.all(
+          //   // Array of "Promises"
+          //   this.files.map((item) => {
+          //     var ref = firebase
+          //       .storage()
+          //       .ref(
+          //         "manga/" + this.$store.state.user.email + "/" + this.basename
+          //       );
+          //     return ref.put(item).then((r) => {
+          //       return ref.getDownloadURL();
+          //     });
+          //   })
+          // ).then((url) => {
+          //   firebase
+          //     .firestore
+          //     .collection("manga")
+          //     .doc(this.basename)
+          //     .set(
+          //       {
+          //         edited: new Date(),
+          //         content: this.basecomment,
+          //         url: url[0],
+          //       },
+          //       { merge: true }
+          //     )
+          //     .then((r) => (this.loading = false));
+          // });
         } else {
           this.loading = true;
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("manga")
             .doc(this.basename)
             .set(
@@ -139,9 +136,8 @@ export default {
   watch: {
     basename() {
       if (this.basename) {
-        firebase
-          .app()
-          .firestore()
+        this.$fire
+          .firestore
           .collection("manga")
           .doc(this.basename)
           .get()

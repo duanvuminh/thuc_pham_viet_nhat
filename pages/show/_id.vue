@@ -89,9 +89,6 @@
   </v-col>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
 import Cookie from "js-cookie";
 import HtmlParser from "@/components/HtmlParser";
 import Logo from "@/components/Logo";
@@ -182,8 +179,8 @@ export default {
     },
     async save() {
       this.loading = true;
-      await firebase
-        .auth()
+      await this.$fire
+        .auth
         .currentUser.getIdToken()
         .then((idToken) => {
           Cookie.set("access_token", idToken);
@@ -221,8 +218,8 @@ export default {
   mounted() {
     // console.log(this.webo);
     // console.log("im here");
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("kanji")
       .doc(this.searchkey[0])
       .collection("oboe")

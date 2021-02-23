@@ -20,22 +20,20 @@
 </template>
 <script>
 // import HtmlParser from "@/components/HtmlParser";
-import firebase from "firebase/app";
 import { mapState } from "vuex";
-import "firebase/firestore";
 
 const Comments = () => import("@/components/comment/Comments");
 const oContent = () => import("@/components/comment/Content");
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
     let comments = [];
     let lastID = "";
     let item = [];
     //changeDrawner
     try {
-      await firebase
-        .firestore()
+      await $fire
+        .firestore
         .collection("forum")
         .doc(params.aid)
         .get()
@@ -44,8 +42,8 @@ export default {
           item.id = doc.id;
           item.time = new Date(item.time.seconds * 1e3);
         });
-      await firebase
-        .firestore()
+      await $fire
+        .firestore
         .collection("forum")
         .doc(params.aid)
         .collection("comments")

@@ -59,17 +59,15 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import ActionPure from "@/components/comment/ActionPure";
 import avartar from "@/components/comment/Avartar";
 const isImageUrl = require("is-image-url");
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
     let tags = [];
-    await firebase
-      .firestore()
+    await $fire
+      .firestore
       .collection("topic")
       .orderBy("order")
       .get()
@@ -131,8 +129,8 @@ export default {
     },
     save() {
       this.tags[this.item.index] = this.item;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("topic")
         .doc(this.item.id)
         .set(

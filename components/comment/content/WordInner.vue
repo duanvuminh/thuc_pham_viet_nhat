@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 export default {
   components: {
     WordItem: () => import("@/components/comment/content/WordItem"),
@@ -60,7 +58,7 @@ export default {
         },
       });
       let data = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set(
+      this.$fire.firestore.collection("forum").doc(this.id).set(
         {
           data: data,
         },
@@ -73,7 +71,7 @@ export default {
         index1: index,
       });
       let data = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set(
+      this.$fire.firestore.collection("forum").doc(this.id).set(
         {
           data: data,
         },
@@ -90,7 +88,7 @@ export default {
         val: data,
       });
       let data1 = this.$store.state.contents[this.index].data;
-      firebase.firestore().collection("forum").doc(this.id).set(
+      this.$fire.firestore.collection("forum").doc(this.id).set(
         {
           data: data1,
         },

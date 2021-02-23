@@ -68,8 +68,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 const ActionPure = () => import("./ActionPure");
 
@@ -101,8 +99,8 @@ export default {
       this.$refs.form.validate();
       if (this.valid) {
         if (this.type.level1 == this.mypage) {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("users")
@@ -126,8 +124,8 @@ export default {
               this.dialog = false;
             });
         } else {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("subtopic")
@@ -156,8 +154,8 @@ export default {
       if (this.valid) {
         if (this.type.level1 == this.mypage) {
           if (this.id) {
-            firebase
-              .firestore()
+            this.$fire
+              .firestore
               .collection("topic")
               .doc(this.type.level1)
               .collection("users")
@@ -182,8 +180,8 @@ export default {
                 this.dialog1 = false;
               });
           } else {
-            firebase
-              .firestore()
+            this.$fire
+              .firestore
               .collection("topic")
               .doc(this.type.level1)
               .collection("users")
@@ -209,8 +207,8 @@ export default {
           }
         } else {
           if (this.id) {
-            firebase
-              .firestore()
+            this.$fire
+              .firestore
               .collection("topic")
               .doc(this.type.level1)
               .collection("subtopic")
@@ -233,8 +231,8 @@ export default {
                 this.dialog1 = false;
               });
           } else {
-            firebase
-              .firestore()
+            this.$fire
+              .firestore
               .collection("topic")
               .doc(this.type.level1)
               .collection("subtopic")
@@ -261,8 +259,8 @@ export default {
     deleteMenu() {
       if (this.type.level1 == this.mypage) {
         if (this.id) {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("users")
@@ -281,8 +279,8 @@ export default {
               this.$emit("deleteMenu");
             });
         } else {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("users")
@@ -301,8 +299,8 @@ export default {
         }
       } else {
         if (this.id) {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("subtopic")
@@ -319,8 +317,8 @@ export default {
               this.$emit("deleteMenu");
             });
         } else {
-          firebase
-            .firestore()
+          this.$fire
+            .firestore
             .collection("topic")
             .doc(this.type.level1)
             .collection("subtopic")

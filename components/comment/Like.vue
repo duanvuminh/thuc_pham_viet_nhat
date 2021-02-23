@@ -7,8 +7,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 export default {
   components: {},
   data() {
@@ -25,17 +23,17 @@ export default {
       }
       this.is_liked = -1 * this.is_liked;
       this.liked += this.is_liked;
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .doc(this.path)
         .set(
           {
-            total_likeds: firebase.firestore.FieldValue.increment(this.is_liked)
+            total_likeds: this.$fire.firestore.FieldValue.increment(this.is_liked)
           },
           { merge: true }
         );
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .doc(`${this.path}/${this.name}/${this.$store.state.user.email}`)
         .set(
           {
@@ -47,8 +45,8 @@ export default {
     }
   },
   mounted() {
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .doc(this.path)
       .get()
       .then(doc => {
@@ -57,8 +55,8 @@ export default {
           this.liked = 0;
         }
       });
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .doc(`${this.path}/${this.name}/${this.$store.state.user.email}`)
       .get()
       .then(doc => {

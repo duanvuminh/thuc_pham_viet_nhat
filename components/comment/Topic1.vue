@@ -61,8 +61,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 const Action = () => import("./Action");
 
@@ -87,8 +85,8 @@ export default {
     if (!this.level1) {
       return;
     }
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("topic")
       .doc(this.level1)
       .collection("subtopic")

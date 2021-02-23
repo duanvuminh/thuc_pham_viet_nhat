@@ -66,10 +66,6 @@
   </div>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
-
 import Handwriting from "@/components/Handwriting";
 //const Handwriting = () => import("@/components/Handwriting");
 export default {
@@ -109,23 +105,23 @@ export default {
       }
     },
     onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      Promise.all(
-        // Array of "Promises"
-        [files[0]].map((item) => {
-          var ref = firebase
-            .storage()
-            .ref("vision/" + this.$store.state.user.email + "/visionimg");
-          return ref.put(item).then((r) => {
-            return ref.getDownloadURL();
-          });
-        })
-      ).then((url) => {
-        //console.log(encodeURI(url[0]))
-        this.$store.commit("setVision", url[0]);
-        this.$router.push("/auth/vision");
-      });
+      // var files = e.target.files || e.dataTransfer.files;
+      // if (!files.length) return;
+      // Promise.all(
+      //   // Array of "Promises"
+      //   [files[0]].map((item) => {
+      //     var ref = firebase
+      //       .storage()
+      //       .ref("vision/" + this.$store.state.user.email + "/visionimg");
+      //     return ref.put(item).then((r) => {
+      //       return ref.getDownloadURL();
+      //     });
+      //   })
+      // ).then((url) => {
+      //   //console.log(encodeURI(url[0]))
+      //   this.$store.commit("setVision", url[0]);
+      //   this.$router.push("/auth/vision");
+      // });
     },
     search(e) {
       this.$router.push(`/show/${this.text.trim()[0]}`);

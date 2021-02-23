@@ -51,10 +51,6 @@
 </template>
 <script>
 import HtmlParser from "@/components/HtmlParser";
-//const HtmlParser = () => import("@/components/HtmlParser");
-
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 import ActionPure from "@/components/comment/ActionPure";
 export default {
@@ -63,8 +59,8 @@ export default {
     let lastId = "";
     let limit = 5;
     try {
-      await firebase
-        .firestore()
+      await this.$fire
+        .firestore
         .collection("manga")
         .orderBy("edited", "desc")
         .limit(5)
@@ -95,23 +91,23 @@ export default {
   },
   created() {
     if (this.lastId) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("manga")
         .doc(this.lastId)
         .get()
         .then((doc) => {
           this.last = doc;
-          this.next = firebase
-            .firestore()
+          this.next = this.$fire
+            .firestore
             .collection("manga")
             .orderBy("edited", "desc")
             .startAfter(this.last)
             .limit(this.limit);
         });
     } else {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("manga")
         .orderBy("edited", "desc")
         .limit(5)
@@ -130,8 +126,8 @@ export default {
             this.lastId = doc.id;
             this.last = doc;
           });
-          this.next = firebase
-            .firestore()
+          this.next = this.$fire
+            .firestore
             .collection("manga")
             .orderBy("edited", "desc")
             .startAfter(this.last)
@@ -159,8 +155,8 @@ export default {
   layout: "simple",
   methods: {
     deleteArticle(index, id) {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("manga")
         .doc(id)
         .delete()
@@ -194,8 +190,8 @@ export default {
         if (!this.last) return;
         // Construct a new query starting at this document,
         // get the next 25 cities.
-        this.next = firebase
-          .firestore()
+        this.next = this.$fire
+          .firestore
           .collection("manga")
           .orderBy("edited", "desc")
           .startAfter(this.last)

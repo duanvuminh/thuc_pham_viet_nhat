@@ -6,8 +6,6 @@
 </template>
 <script>
 // import HtmlParser from "@/components/HtmlParser";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { mapState } from "vuex";
 // const forum = () => import("@/components/comment/Forum");
 import forum from "@/components/comment/forum_template/Forum";

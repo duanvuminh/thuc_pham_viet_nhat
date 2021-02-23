@@ -11,8 +11,6 @@
 </template>
 <script>
 // import HtmlParser from "@/components/HtmlParser";
-import firebase from "firebase/app";
-import "firebase/firestore";
 //const Comments = () => import("@/components/comment/Comments");
 import Comments from '@/components/comment/Comments';
 //const oContent = () => import("@/components/comment/Content");
@@ -54,7 +52,7 @@ export default {
       return new Date(timestamp.seconds * 1e3);
     },
     edit(content, id) {
-      firebase.firestore().collection("forum").doc(id).update({
+      this.$fire.firestore.collection("forum").doc(id).update({
         content: content,
       });
       this.item.content = content;
@@ -67,8 +65,8 @@ export default {
     if (!this.id) {
       return;
     }
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("forum")
       .doc(this.id)
       .get()
@@ -82,8 +80,8 @@ export default {
         };
         this.item.time = new Date(doc.data().time.seconds * 1e3);
       });
-    firebase
-      .firestore()
+    this.$fire
+      .firestore
       .collection("forum")
       .doc(this.id)
       .collection("comments")

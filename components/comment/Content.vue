@@ -56,8 +56,6 @@
   </v-row>
 </template>
 <script>
-import firebase from "firebase/app";
-import "firebase/auth";
 //const avartar = () => import("./Avartar");
 import avartar from "./Avartar";
 //const Tooltip = () => import("./Tooltip");
@@ -178,8 +176,8 @@ export default {
       );
     },
     deleteArticle() {
-      firebase
-        .firestore()
+      this.$fire
+        .firestore
         .collection("forum")
         .doc(this.content.id)
         .delete()
@@ -189,7 +187,7 @@ export default {
         });
     },
     save() {
-      firebase.firestore().collection("forum").doc(this.content.id).update({
+      this.$fire.firestore.collection("forum").doc(this.content.id).update({
         content: this.commentText,
       });
       this.dialog = false;
