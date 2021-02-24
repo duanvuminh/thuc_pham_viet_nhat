@@ -1,18 +1,20 @@
 <template>
   <div>
     <v-btn text icon :color="is_liked==1?'blue':null" @click="upvote" small>
-      <v-icon x-small>{{icon}}</v-icon>
+      <v-icon x-small>{{mdiThumbUp}}</v-icon>
     </v-btn>
     <span v-if="liked">{{liked}}</span>
   </div>
 </template>
 <script>
+import {mdiThumbUp} from "@mdi/js"
 export default {
   components: {},
   data() {
     return {
       is_liked: -1,
-      liked: 0
+      liked: 0,
+      mdiThumbUp
     };
   },
   methods: {

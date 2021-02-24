@@ -20,7 +20,7 @@
             <div class="d-flex justify-start align-center">
               <Like icon="mdi-thumb-up" :path="path" name="liked"></Like>
               <v-btn text @click="showAdd=!showAdd" x-small fab>
-                <v-icon dark x-small>mdi-message-reply-text</v-icon>
+                <v-icon dark x-small>{{mdiMessageReplyText}}</v-icon>
               </v-btn>
               <v-btn
                 text
@@ -29,7 +29,7 @@
                 @click="showComment=!showComment"
                 color="primary"
               >
-                <v-icon dark>{{showComment?"mdi-menu-up":" mdi-menu-down"}}</v-icon>
+                <v-icon dark>{{showComment?mdiMenuUp:mdiMenuDown}}</v-icon>
                 <small>{{showComment?"Ẩn trả lời":"Hiện trả lời"}}</small>
               </v-btn>
               <v-spacer></v-spacer>
@@ -73,6 +73,7 @@
 </template>
 <script>
 //const avartar = () => import("./Avartar");
+import {mdiMessageReplyText,mdiMenuUp,mdiMenuDown} from "@mdi/js"
 import avartar from "./Avartar";
 //const add = () => import("./Add");
 import add from "./Add";
@@ -137,6 +138,9 @@ export default {
       commentText: null,
       dialog: false,
       email: this.$store.state.user.email,
+      mdiMessageReplyText,
+      mdiMenuUp,
+      mdiMenuDown,
       now: Date.now(),
       size: 30,
       showAdd: false,

@@ -4,7 +4,7 @@
       <radio-svg-map v-model="selectedLocationLocal" :map="Japan" />
       <v-text-field
         v-model="selectedLocationLocal"
-        append-icon="mdi-magnify"
+        :append-icon="mdiMagnify"
         label="Search"
         single-line
         hide-details
@@ -18,10 +18,17 @@
         hide-default-header
         :items-per-page="3"
         :footer-props="{
-        'items-per-page-options':[3,6,9,-1]}"
+          'items-per-page-options': [3, 6, 9, -1],
+        }"
       ></v-data-table>
       <v-row id="ken">
-        <v-col v-for="(n,index) in imgArr" :key="index" class="d-flex child-flex" cols="4" sm="2">
+        <v-col
+          v-for="(n, index) in imgArr"
+          :key="index"
+          class="d-flex child-flex"
+          cols="4"
+          sm="2"
+        >
           <v-card flat tile :to="`${$route.path}/${n.areaName}`">
             <v-card-text>
               <v-img
@@ -31,14 +38,21 @@
                 class="grey lighten-2"
               >
                 <template v-slot:placeholder>
-                  <v-row class="fill-height ma-0" align="center" justify="center">
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                    ></v-progress-circular>
                   </v-row>
                 </template>
               </v-img>
             </v-card-text>
             <v-card-actions>
-              <v-btn small text>{{n.name}}</v-btn>
+              <v-btn small text>{{ n.name }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -48,6 +62,7 @@
 </template>
 
 <script>
+import { mdiMagnify } from "@mdi/js";
 import { RadioSvgMap } from "vue-svg-map";
 import Japan from "@svg-maps/japan";
 import { mapState } from "vuex";
@@ -70,6 +85,7 @@ export default {
   },
   data() {
     return {
+      mdiMagnify,
       Japan,
       areaArr: [
         //hokkaido
@@ -177,7 +193,7 @@ export default {
   },
   methods: {
     handleClick(val) {
-      this.$router.push(`${this.$route.path}/${val.areaName}`)
+      this.$router.push(`${this.$route.path}/${val.areaName}`);
     },
   },
   mounted() {

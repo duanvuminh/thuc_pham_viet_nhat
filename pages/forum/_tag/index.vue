@@ -21,6 +21,7 @@ import HtmlParser from "@/components/HtmlParser";
 
 export default {
   async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
     let document = {};
     await $fire
       .firestore

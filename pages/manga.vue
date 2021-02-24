@@ -45,19 +45,21 @@
       v-if="user.email == 'duanvuminh@gmail.com'"
       to="/auth/manga"
     >
-      <v-icon>mdi-pencil</v-icon>
+      <v-icon>{{mdiPencil}}</v-icon>
     </v-btn>
   </div>
 </template>
 <script>
+import {mdiPencil} from "@mdi/js"
 import HtmlParser from "@/components/HtmlParser";
 import { mapState } from "vuex";
 import ActionPure from "@/components/comment/ActionPure";
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
     let posts = [];
     let lastId = "";
     let limit = 5;
+    await $fire.firestoreReady()
     try {
       await this.$fire
         .firestore
@@ -140,6 +142,7 @@ export default {
   },
   data() {
     return {
+      mdiPencil,
       posts: [],
       limit: 5,
       next: {},

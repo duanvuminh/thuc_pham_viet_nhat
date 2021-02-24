@@ -16,7 +16,9 @@ import add from "@/components/comment/AddForum";
 //import Article from "@/components/comment/Article";
 
 export default {
-  async asyncData({ params, store, $axios }) {},
+  async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
+  },
   beforeCreate() {},
   components: {
     forum,

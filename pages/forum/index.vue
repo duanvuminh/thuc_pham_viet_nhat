@@ -65,6 +65,7 @@ const isImageUrl = require("is-image-url");
 
 export default {
   async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
     let tags = [];
     await $fire
       .firestore

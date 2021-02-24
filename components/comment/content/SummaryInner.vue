@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="space-around">
       <v-spacer></v-spacer>
-      <v-icon @click="dialog=true">mdi-pencil-circle-outline</v-icon>
+      <v-icon @click="dialog=true">{{mdiPencilCircleOutline}}</v-icon>
     </v-row>
     <v-tabs dark background-color="teal darken-3" show-arrows v-model="tab">
       <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import {mdiPencilCircleOutline} from "@mdi/js"
 export default {
   components: {},
   computed: {
@@ -39,6 +40,7 @@ export default {
   },
   data: () => ({
     model: 0,
+    mdiPencilCircleOutline,
     dialog: false,
     itemLocals: null,
     tab: null,

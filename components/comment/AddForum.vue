@@ -1,10 +1,17 @@
 <template>
   <div>
-    <v-card v-if="email" :class="!outlinedCheck?'mx-auto elevation-0 mb-0 pa-3':'pa-1 mx-auto elevation-0'">
+    <v-card
+      v-if="email"
+      :class="
+        !outlinedCheck
+          ? 'mx-auto elevation-0 mb-0 pa-3'
+          : 'pa-1 mx-auto elevation-0'
+      "
+    >
       <v-row>
         <v-col cols="12" class="mb-0 py-0 pr-3">
           <v-text-field
-            v-if="showAction&&email"
+            v-if="showAction && email"
             class="text-h5"
             placeholder="Tiêu đề"
             :rows="1"
@@ -23,15 +30,16 @@
                 class="ma-2"
                 close
                 @click:close="resetTimeline"
-              >{{cus_component}}</v-chip>
+                >{{ cus_component }}</v-chip
+              >
             </div>
           </v-text-field>
           <v-textarea
-            :placeholder="`${email?'Bạn hãy viết gì đó':'Đăng nhập'}`"
+            :placeholder="`${email ? 'Bạn hãy viết gì đó' : 'Đăng nhập'}`"
             :rows="rows"
             auto-grow
             v-model="commentText"
-            @click="showAction=true;"
+            @click="showAction = true"
             persistent-hint
             :readonly="!email"
             dense
@@ -57,33 +65,51 @@
                 <v-menu bottom left>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
-                      <v-icon color="grey darken-1" small>mdi-dots-vertical</v-icon>
+                      <v-icon color="grey darken-1" small>{{
+                        mdiDotsVertical
+                      }}</v-icon>
                     </v-btn>
                   </template>
                   <div class="d-flex">
                     <v-list>
-                      <v-list-item @click="dialog=true;cus_component='Timeline'">
+                      <v-list-item
+                        @click="
+                          dialog = true;
+                          cus_component = 'Timeline';
+                        "
+                      >
                         <v-list-item-avatar>
-                          <v-icon color="grey darken-1" small>mdi-timeline</v-icon>
+                          <v-icon color="grey darken-1" small>{{
+                            mdiTimeline
+                          }}</v-icon>
                         </v-list-item-avatar>
                         <v-list-item-title>Tạo timeline</v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click="dialog=true;cus_component='Word'">
-                        <v-list-item-avatar>
-                          W
-                        </v-list-item-avatar>
+                      <v-list-item
+                        @click="
+                          dialog = true;
+                          cus_component = 'Word';
+                        "
+                      >
+                        <v-list-item-avatar> W </v-list-item-avatar>
                         <v-list-item-title>Tạo flash card</v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click="dialog=true;cus_component='Summary'">
-                        <v-list-item-avatar>
-                          S
-                        </v-list-item-avatar>
+                      <v-list-item
+                        @click="
+                          dialog = true;
+                          cus_component = 'Summary';
+                        "
+                      >
+                        <v-list-item-avatar> S </v-list-item-avatar>
                         <v-list-item-title>Tổng hợp bài</v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click="dialog=true;cus_component='Asobi'">
-                        <v-list-item-avatar>
-                          ✈️
-                        </v-list-item-avatar>
+                      <v-list-item
+                        @click="
+                          dialog = true;
+                          cus_component = 'Asobi';
+                        "
+                      >
+                        <v-list-item-avatar> ✈️ </v-list-item-avatar>
                         <v-list-item-title>Du lịch</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -105,9 +131,16 @@
             <v-btn
               color="primary"
               small
-              @click="$emit('add',messageAdd);commentText='';commentHeader='';showAction=false;cus_component=null"
+              @click="
+                $emit('add', messageAdd);
+                commentText = '';
+                commentHeader = '';
+                showAction = false;
+                cus_component = null;
+              "
               :disabled="checkLength"
-            >Thêm</v-btn>
+              >Thêm</v-btn
+            >
           </template>
         </v-col>
         <v-col class="pa-0 ma-0">
@@ -118,7 +151,7 @@
             v-bind:is="cus_component"
             @close-timeline="resetTimeline"
             @extension="extension"
-            :items="[{color: '#000000',}]"
+            :items="[{ color: '#000000' }]"
           ></component>
         </v-dialog>
       </v-row>
@@ -127,6 +160,7 @@
   </div>
 </template>
 <script>
+import { mdiDotsVertical, mdiTimeline } from "@mdi/js";
 import { mapState } from "vuex";
 //const avartar = () => import("./Avartar");
 //const tags = () => import("./TagsForum");
@@ -139,13 +173,15 @@ export default {
     // datepicker: () => import("./DatePicker"),
     Timeline: () => import("./content/Timeline"),
     Word: () => import("./content/Word"),
-    Summary:()=> import("./content/Summary"),
-    Asobi:()=> import("./content/Asobi"),
+    Summary: () => import("./content/Summary"),
+    Asobi: () => import("./content/Asobi"),
   },
   data() {
     return {
       dialog: false,
       dialogTag: false,
+      mdiDotsVertical,
+      mdiTimeline,
       show: true,
       email: this.$store.state.user.email,
       focusTab: "",
@@ -170,27 +206,27 @@ export default {
     openImage() {
       this.$refs.file.click();
     },
-   onFileChange(e) {
-//       this.loading = true;
-//       var files = e.target.files || e.dataTransfer.files;
-//       if (!files.length) return;
-//       let d = new Date().toString();
-//       Promise.all(
-//         // Array of "Promises"
-//         [files[0]].map((item) => {
-//           var ref = this.$fire
-//             .storage()
-//             .ref(`forum/${this.$store.state.user.email}/${d}`);
-//           return ref.put(item).then((r) => {
-//             return ref.getDownloadURL();
-//           });
-//         })
-//       ).then((url) => {
-//         this.commentText = `${this.commentText ? this.commentText : ""}
-// ![ảnh bài viết](${url[0]})
-// `;
-//         this.loading = false;
-//       });
+    onFileChange(e) {
+      //       this.loading = true;
+      //       var files = e.target.files || e.dataTransfer.files;
+      //       if (!files.length) return;
+      //       let d = new Date().toString();
+      //       Promise.all(
+      //         // Array of "Promises"
+      //         [files[0]].map((item) => {
+      //           var ref = this.$fire
+      //             .storage()
+      //             .ref(`forum/${this.$store.state.user.email}/${d}`);
+      //           return ref.put(item).then((r) => {
+      //             return ref.getDownloadURL();
+      //           });
+      //         })
+      //       ).then((url) => {
+      //         this.commentText = `${this.commentText ? this.commentText : ""}
+      // ![ảnh bài viết](${url[0]})
+      // `;
+      //         this.loading = false;
+      //       });
     },
     reset() {
       this.commentText = "";
@@ -252,9 +288,9 @@ ${comment}
         creator: this.email,
         time: new Date(),
         content: comment,
-        date: this.cus_component?'99999990':this.formatDate(new Date()),
+        date: this.cus_component ? "99999990" : this.formatDate(new Date()),
         type: this.$route.params.id,
-        data: this.data?this.data:null,
+        data: this.data ? this.data : null,
         cus_component: this.cus_component,
       };
     },

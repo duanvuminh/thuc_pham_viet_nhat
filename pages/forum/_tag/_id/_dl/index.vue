@@ -3,14 +3,19 @@
     <v-app-bar elevation="0" color="transparent" dense fixed>
       <v-spacer></v-spacer>
       <v-btn fab small to="/forum">
-        <v-icon>mdi-home</v-icon>
+        <v-icon>{{ mdiHome }}</v-icon>
       </v-btn>
       <v-btn fab small @click="closeDialog">
-        <v-icon>mdi-close</v-icon>
+        <v-icon>{{ mdiClose }}</v-icon>
       </v-btn>
     </v-app-bar>
     <client-only>
-      <GmapMap :center="center" :zoom="17" map-type-id="terrain" style="width: 100%; height: 70vh">
+      <GmapMap
+        :center="center"
+        :zoom="17"
+        map-type-id="terrain"
+        style="width: 100%; height: 70vh"
+      >
         <gmap-info-window
           v-if="position"
           :options="infoOptions"
@@ -21,15 +26,15 @@
         <GmapMarker
           :key="index"
           v-for="(m, index) in resultArr"
-          :position="{lat:m.lat,lng:m.lng}"
+          :position="{ lat: m.lat, lng: m.lng }"
           :clickable="true"
           :draggable="false"
-          @click="showinfo(m,index)"
+          @click="showinfo(m, index)"
         />
       </GmapMap>
     </client-only>
     <v-card>
-      <v-card-title>{{place.areaName}}</v-card-title>
+      <v-card-title>{{ place.areaName }}</v-card-title>
       <v-card-text>
         <v-row>
           <v-checkbox v-model="kan" label="館" dense></v-checkbox>
@@ -42,17 +47,23 @@
           <v-card max-width="310" class="ma-3" :key="index">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="headline">{{item.name}}</v-list-item-title>
-                <span style="max-width:100%">{{item.officialURL}}</span>
+                <v-list-item-title class="headline">{{
+                  item.name
+                }}</v-list-item-title>
+                <span style="max-width: 100%">{{ item.officialURL }}</span>
               </v-list-item-content>
             </v-list-item>
 
-            <v-img :src="`https://ctplanner.jp/ctp5/${item.photoURL}`" height="120" contain></v-img>
+            <v-img
+              :src="`https://ctplanner.jp/ctp5/${item.photoURL}`"
+              height="120"
+              contain
+            ></v-img>
 
-            <v-card-text>{{item.description}}</v-card-text>
+            <v-card-text>{{ item.description }}</v-card-text>
             <v-row align="center" class="mx-0">
               <v-rating
-                :value="item.score/5"
+                :value="item.score / 5"
                 color="amber"
                 dense
                 half-increments
@@ -67,37 +78,39 @@
   </div>
 </template>
 <script>
+import { mdiHome, mdiClose } from "@mdi/js";
 // import HtmlParser from "@/components/HtmlParser";
-import Vue from 'vue'
-import * as VueGoogleMaps from 'vue2-google-maps'
+import Vue from "vue";
+import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
-    load: {
-      key: 'AIzaSyCniellt7ZkxGUk6r3ISo476bkwc0ya3OA',
-      // libraries: 'drawing', // This is required if you use the Autocomplete plugin
-      // OR: libraries: 'places,drawing'
-      // OR: libraries: 'places,drawing,visualization'
-      // (as you require)
-  
-      //// If you want to set the version, you can do so:
-      // v: '3.26',
-    },
-  
-    //// If you intend to programmatically custom event listener code
-    //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
-    //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
-    //// you might need to turn this on.
-    // autobindAllEvents: false,
-  
-    //// If you want to manually install components, e.g.
-    //// import {GmapMarker} from 'vue2-google-maps/src/components/marker'
-    //// Vue.component('GmapMarker', GmapMarker)
-    //// then set installComponents to 'false'.
-    //// If you want to automatically install all the components this property must be set to 'true':
-    installComponents: true
-  })
+  load: {
+    key: "AIzaSyCniellt7ZkxGUk6r3ISo476bkwc0ya3OA",
+    // libraries: 'drawing', // This is required if you use the Autocomplete plugin
+    // OR: libraries: 'places,drawing'
+    // OR: libraries: 'places,drawing,visualization'
+    // (as you require)
+
+    //// If you want to set the version, you can do so:
+    // v: '3.26',
+  },
+
+  //// If you intend to programmatically custom event listener code
+  //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
+  //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
+  //// you might need to turn this on.
+  // autobindAllEvents: false,
+
+  //// If you want to manually install components, e.g.
+  //// import {GmapMarker} from 'vue2-google-maps/src/components/marker'
+  //// Vue.component('GmapMarker', GmapMarker)
+  //// then set installComponents to 'false'.
+  //// If you want to automatically install all the components this property must be set to 'true':
+  installComponents: true,
+});
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios, $fire }) {
+    await $fire.firestoreReady();
     let resultArr = [];
     let center = null;
     await $axios
@@ -247,9 +260,11 @@ export default {
           height: -35,
         },
       },
-      jinja:false,
+      jinja: false,
       kan: false,
       koen: false,
+      mdiHome,
+      mdiClose,
       position: null,
     };
   },

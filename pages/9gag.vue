@@ -21,7 +21,8 @@
 </template>
 <script>
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
     let posts = [];
     let next = "";
     let url = [

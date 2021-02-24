@@ -3,14 +3,21 @@
     <v-app-bar app elevation="0" color="transparent">
       <!-- <img src="~/assets/logo.png" height="100%"/> -->
       <nuxt-link to="/" class="nuxt-link-logo">
-        <v-img :src="require('@/assets/logo2.png')" height="100%" contain position="left"></v-img>
+        <v-img
+          :src="require('@/assets/logo2.png')"
+          height="100%"
+          contain
+          position="left"
+        ></v-img>
       </nuxt-link>
       <v-spacer></v-spacer>
-      <nuxt-link to="/forum" class="nuxt-link" :prefetch="false">Forum</nuxt-link>
+      <nuxt-link to="/forum" class="nuxt-link" :prefetch="false"
+        >Forum</nuxt-link
+      >
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-icon>{{ mdiDotsVertical }}</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -18,7 +25,11 @@
             <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
           <template v-if="loggedIn">
-            <v-list-item v-for="item in items" :key="item.title" :to="item.link">
+            <v-list-item
+              v-for="item in items"
+              :key="item.title"
+              :to="item.link"
+            >
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
             <v-list-item to="/logout">
@@ -38,7 +49,7 @@
     </v-main>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
-        <v-card-title class="headline">{{selectedTextShow}}</v-card-title>
+        <v-card-title class="headline">{{ selectedTextShow }}</v-card-title>
         <v-card-text>
           <HtmlParser :content="$md.render(selectedTextApi.vi)"></HtmlParser>
         </v-card-text>
@@ -48,22 +59,24 @@
 </template> 
 
 <script>
+import { mdiDotsVertical } from "@mdi/js";
 import { mapState } from "vuex";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
 
 export default {
   components: {
-    HtmlParser
+    HtmlParser,
   },
   data() {
     return {
+      mdiDotsVertical,
       selectedText: "",
       selectedTextShow: "",
       selectedTextApi: {
-        vi: ""
+        vi: "",
       },
-      dialog: false
+      dialog: false,
     };
   },
   mounted() {
@@ -79,7 +92,7 @@ export default {
         text = document.selection.createRange().text;
       }
       this.selectedText = text;
-    }
+    },
   },
   computed: {
     loggedIn() {
@@ -115,7 +128,7 @@ export default {
           //{ title: "About", icon: "question_answer" }
         ];
       }
-    }
+    },
   },
   scrollToTop: true,
   watch: {
@@ -129,10 +142,10 @@ export default {
         this.$axios
           .$get("/api/get_post_by_id", {
             params: {
-              id: value
-            }
+              id: value,
+            },
           })
-          .then(r => {
+          .then((r) => {
             if (r && r.length > 0) {
               this.selectedTextShow = this.selectedText;
               this.selectedTextApi = r[0];
@@ -140,8 +153,8 @@ export default {
             }
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

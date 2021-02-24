@@ -18,10 +18,15 @@
       <template slot="append">
         <!-- <v-btn class="mt-2 mb-2" :color="active?'cyan':'black'" icon @click="emitActive">あ</v-btn> -->
         <v-btn class="mt-2 mb-2" icon @click="search" name="search">
-          <v-icon dark>mdi-magnify</v-icon>
+          <v-icon dark>{{ mdiMagnify }}</v-icon>
         </v-btn>
-        <v-btn class="mt-2 mb-2" icon @click="sheet = !sheet" name="write kanji">
-          <v-icon dark>mdi-pencil</v-icon>
+        <v-btn
+          class="mt-2 mb-2"
+          icon
+          @click="sheet = !sheet"
+          name="write kanji"
+        >
+          <v-icon dark>{{ mdiPencil }}</v-icon>
         </v-btn>
         <!-- <v-btn class="mt-2 mb-2" icon @click="openImage">
           <v-icon dark>mdi-camera</v-icon>
@@ -66,6 +71,7 @@
   </div>
 </template>
 <script>
+import { mdiMagnify, mdiPencil } from "@mdi/js";
 import Handwriting from "@/components/Handwriting";
 //const Handwriting = () => import("@/components/Handwriting");
 export default {
@@ -80,6 +86,8 @@ export default {
   data() {
     return {
       dialog: false,
+      mdiMagnify,
+      mdiPencil,
       files: [],
       sheet: false,
       text: "",

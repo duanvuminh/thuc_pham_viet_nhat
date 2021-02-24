@@ -1,15 +1,19 @@
 <template>
-  <div class="ma-3" style="max-width:750px;width:100%">
+  <div class="ma-3" style="max-width: 750px; width: 100%">
     <v-app-bar elevation="0" color="transparent" dense fixed>
       <v-spacer></v-spacer>
       <v-btn fab small to="/forum">
-        <v-icon>mdi-home</v-icon>
+        <v-icon>{{ mdiHome }}</v-icon>
       </v-btn>
       <v-btn fab small @click="$router.go(-1)">
-        <v-icon>mdi-close</v-icon>
+        <v-icon>{{ mdiClose }}</v-icon>
       </v-btn>
     </v-app-bar>
-    <oContent :content="item" @edit="edit" @deleteArticle="deleteArticle"></oContent>
+    <oContent
+      :content="item"
+      @edit="edit"
+      @deleteArticle="deleteArticle"
+    ></oContent>
     <Comments
       :comments="comments"
       :collectionSubUrl="collectionSubUrl"
@@ -19,6 +23,7 @@
   </div>
 </template>
 <script>
+import { mdiHome, mdiClose } from "@mdi/js";
 // import HtmlParser from "@/components/HtmlParser";
 import { mapState } from "vuex";
 
@@ -26,14 +31,14 @@ const Comments = () => import("@/components/comment/Comments");
 const oContent = () => import("@/components/comment/Content");
 
 export default {
-  async asyncData({ params, store, $axios,$fire }) {
+  async asyncData({ params, store, $axios, $fire }) {
+    await $fire.firestoreReady();
     let comments = [];
     let lastID = "";
     let item = [];
     //changeDrawner
     try {
-      await $fire
-        .firestore
+      await $fire.firestore
         .collection("forum")
         .doc(params.aid)
         .get()
@@ -42,8 +47,7 @@ export default {
           item.id = doc.id;
           item.time = new Date(item.time.seconds * 1e3);
         });
-      await $fire
-        .firestore
+      await $fire.firestore
         .collection("forum")
         .doc(params.aid)
         .collection("comments")
@@ -77,8 +81,7 @@ export default {
     Comments,
     oContent,
   },
-  created() {
-  },
+  created() {},
   computed: {
     ...mapState(["contents"]),
   },
@@ -86,6 +89,8 @@ export default {
     return {
       collectionSubUrl: "commentSub",
       collectionUrl: `forum/${this.$route.params.aid}/comments`,
+      mdiHome,
+      mdiClose,
     };
   },
   head() {

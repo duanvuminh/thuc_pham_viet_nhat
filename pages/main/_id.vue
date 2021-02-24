@@ -52,7 +52,8 @@ import HtmlParser from "@/components/HtmlParser";
 //const HtmlParser = ()=>import("@/components/HtmlParser")
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
     let desserts = [];
     desserts = await $axios
       .$get("/api/get_all_primatives", {

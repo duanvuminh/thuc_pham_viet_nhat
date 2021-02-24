@@ -2,19 +2,29 @@
   <div>
     <v-navigation-drawer v-model="drawer" app :width="width">
       <v-row class="fill-height" no-gutters>
-        <v-navigation-drawer dark mini-variant mini-variant-width="30" v-model="drawer">
+        <v-navigation-drawer
+          dark
+          mini-variant
+          mini-variant-width="30"
+          v-model="drawer"
+        >
           <v-list-item-group v-model="item" color="transparent">
             <v-list-item class="px-2" to="/forum">
-              <v-icon to>mdi-chevron-left</v-icon>
+              <v-icon to>{{ mdiChevronLeft }}</v-icon>
             </v-list-item>
             <v-list-item class="px-2" to="/">
-              <v-icon to>mdi-home</v-icon>
+              <v-icon to>{{ mdiHome }}</v-icon>
             </v-list-item>
           </v-list-item-group>
         </v-navigation-drawer>
         <v-list class="grow">
           <v-list-item v-if="logo">
-            <v-card class="mx-auto ma-1" elevation="0" max-width="200" :to="`/forum/${$route.params.tag}`">
+            <v-card
+              class="mx-auto ma-1"
+              elevation="0"
+              max-width="200"
+              :to="`/forum/${$route.params.tag}`"
+            >
               <v-img :src="logo" contain></v-img>
             </v-card>
           </v-list-item>
@@ -23,7 +33,9 @@
               Thêm Channels
               <v-spacer></v-spacer>
               <v-btn icon @click="addChanel">
-                <v-icon color="grey darken-1" small>mdi-plus-circle-outline</v-icon>
+                <v-icon color="grey darken-1" small>{{
+                  mdiPlusCircleOutline
+                }}</v-icon>
               </v-btn>
             </v-subheader>
             <template v-if="mypave_save">
@@ -43,7 +55,12 @@
         </v-list>
       </v-row>
       <v-dialog v-model="dialog" persistent max-width="600px">
-        <v-form ref="form" v-model="valid" lazy-validation onsubmit="return false;">
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+          onsubmit="return false;"
+        >
           <v-card>
             <v-card-title>
               <span class="headline">Thêm chủ đề</span>
@@ -55,7 +72,7 @@
                     <v-text-field
                       v-model="full_name"
                       label="Tên chủ đề"
-                      :rules="[v => !!v || 'Tên không được trống']"
+                      :rules="[(v) => !!v || 'Tên không được trống']"
                     ></v-text-field>
                     <v-text-field v-model="order" label="Thứ tự"></v-text-field>
                   </v-col>
@@ -65,19 +82,36 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+              <v-btn color="blue darken-1" text @click="dialog = false"
+                >Close</v-btn
+              >
               <v-btn color="blue darken-1" text @click="validate">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
       </v-dialog>
     </v-navigation-drawer>
-    <v-btn v-if="!drawer" color="pink" dark fixed bottom left fab @click="drawer=true">
-      <v-icon>mdi-menu</v-icon>
+    <v-btn
+      v-if="!drawer"
+      color="pink"
+      dark
+      fixed
+      bottom
+      left
+      fab
+      @click="drawer = true"
+    >
+      <v-icon>{{ mdiMenu }}</v-icon>
     </v-btn>
   </div>
 </template>
 <script>
+import {
+  mdiMenu,
+  mdiPlusCircleOutline,
+  mdiChevronLeft,
+  mdiHome,
+} from "@mdi/js";
 import { mapState } from "vuex";
 import Topic1 from "./Topic1";
 
@@ -101,8 +135,7 @@ export default {
   },
   created() {
     this.level1 = this.$route.params.tag;
-    this.$fire
-      .firestore
+    this.$fire.firestore
       .collection("topic")
       .doc(this.level1)
       .get()
@@ -113,8 +146,7 @@ export default {
         this.logo = doc.data().src;
       });
     if (this.level1 == this.mypage) {
-      this.$fire
-        .firestore
+      this.$fire.firestore
         .collection("topic")
         .doc(this.level1)
         .collection("users")
@@ -131,8 +163,7 @@ export default {
           });
         });
     } else {
-      this.$fire
-        .firestore
+      this.$fire.firestore
         .collection("topic")
         .doc(this.level1)
         .collection("subtopic")
@@ -151,6 +182,10 @@ export default {
     return {
       description: null,
       dialog: false,
+      mdiMenu,
+      mdiPlusCircleOutline,
+      mdiChevronLeft,
+      mdiHome,
       //form
       full_name: "",
       order: null,
@@ -181,8 +216,7 @@ export default {
       this.$refs.form.validate();
       if (this.valid) {
         if (this.level1 == this.mypage) {
-          this.$fire
-            .firestore
+          this.$fire.firestore
             .collection("topic")
             .doc(this.level1)
             .collection("users")
@@ -204,8 +238,7 @@ export default {
               this.dialog = false;
             });
         } else {
-          this.$fire
-            .firestore
+          this.$fire.firestore
             .collection("topic")
             .doc(this.level1)
             .collection("subtopic")

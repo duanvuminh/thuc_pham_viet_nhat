@@ -39,10 +39,12 @@
               :disabled="processing"
             /> -->
             <v-btn @click="googleSignIn" dark color="red darken-1" small text>
-              <v-icon>mdi-google</v-icon>+Login
+              <v-icon>{{ mdiGoogle }}</v-icon
+              >+Login
             </v-btn>
             <v-btn @click="facebookSignIn" dark color="primary" small text>
-              <v-icon>mdi-facebook</v-icon>Login
+              <v-icon>{{ mdiFacebook }}</v-icon
+              >Login
             </v-btn>
           </v-form>
         </v-card-text>
@@ -67,26 +69,31 @@
         <v-card-title class="headline">Thông báo lỗi</v-card-title>
 
         <v-card-text>
-          {{message}}
+          {{ message }}
           <br />
-          <nuxt-link
-            to="/support"
-            v-if="isLoggingIn"
-          >Nếu vấn đề vẫn sảy ra hãy liên lạc với chúng tôi</nuxt-link>
+          <nuxt-link to="/support" v-if="isLoggingIn"
+            >Nếu vấn đề vẫn sảy ra hãy liên lạc với chúng tôi</nuxt-link
+          >
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">Đã hiểu</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false"
+            >Đã hiểu</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
+import { mdiGoogle, mdiFacebook } from "@mdi/js";
 import Cookie from "js-cookie";
 
 export default {
+  async asyncData({ $fire }) {
+    await $fire.firestoreReady();
+  },
   layout: "simple",
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
@@ -102,34 +109,36 @@ export default {
   data() {
     return {
       confirmPasswordRules: [
-        v => !!v || "Hãy nhập lại mật khẩu.",
-        v => v == this.user.password || "Xác nhận mật khẩu khônng đúng."
+        (v) => !!v || "Hãy nhập lại mật khẩu.",
+        (v) => v == this.user.password || "Xác nhận mật khẩu khônng đúng.",
       ],
       dialog: false,
       emailRules: [
-        v => !!v || "E-mail không được trống",
-        v => /.+@.+\..+/.test(v) || "E-mail không đúng."
+        (v) => !!v || "E-mail không được trống",
+        (v) => /.+@.+\..+/.test(v) || "E-mail không đúng.",
       ],
       isLoggingIn: true,
       message: "",
+      mdiGoogle,
+      mdiFacebook,
       passwordRules: [
-        v => /[a-z]+/.test(v) || "Ít nhất 1 chữ thường.",
-        v => /[A-Z]+/.test(v) || "Ít nhất 1 chữ hoa.",
-        v => /.{8,}/.test(v) || "Ít nhất 8 kí tự.",
-        v => /[0-9]+/.test(v) || "Ít nhất có 1 số."
+        (v) => /[a-z]+/.test(v) || "Ít nhất 1 chữ thường.",
+        (v) => /[A-Z]+/.test(v) || "Ít nhất 1 chữ hoa.",
+        (v) => /.{8,}/.test(v) || "Ít nhất 8 kí tự.",
+        (v) => /[0-9]+/.test(v) || "Ít nhất có 1 số.",
       ],
       processing: false,
       user: {
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       },
-      valid: true
+      valid: true,
     };
   },
   head() {
     return {
-      titleTemplate: `%s - login`
+      titleTemplate: `%s - login`,
     };
   },
   methods: {
@@ -149,13 +158,12 @@ export default {
       }
     },
     facebookSignIn() {
-      let provider = new this.$fire.auth.FacebookAuthProvider();
+      let provider = new this.$fireModule.auth.FacebookAuthProvider();
       provider.addScope("email");
       provider.pe;
-      this.$fire
-        .auth
+      this.$fire.auth
         .signInWithPopup(provider)
-        .then(result => {
+        .then((result) => {
           // store the user ore wathever
           // this.$router.push("/home");
           let token = result.credential.accessToken;
@@ -167,17 +175,13 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          this.$fire
-            .auth
-            .currentUser.getIdToken()
-            .then(idToken => {
-              Cookie.set("access_token", idToken);
-              this.$router.push("/");
-            });
+          this.$fire.auth.currentUser.getIdToken().then((idToken) => {
+            Cookie.set("access_token", idToken);
+            this.$router.push("/");
+          });
           this.processing = false;
-          
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
@@ -188,11 +192,10 @@ export default {
         });
     },
     googleSignIn() {
-      let provider = new this.$fire.auth.GoogleAuthProvider();
-      this.$fire
-        .auth
+      let provider = new this.$fireModule.auth.GoogleAuthProvider();
+      this.$fire.auth
         .signInWithPopup(provider)
-        .then(result => {
+        .then((result) => {
           // store the user ore wathever
           // this.$router.push("/home");
           let token = result.credential.accessToken;
@@ -204,16 +207,13 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          this.$fire
-            .auth
-            .currentUser.getIdToken()
-            .then(idToken => {
-              Cookie.set("access_token", idToken);
-              this.$router.push("/");
-            });
+          this.$fire.auth.currentUser.getIdToken().then((idToken) => {
+            Cookie.set("access_token", idToken);
+            this.$router.push("/");
+          });
           this.processing = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
@@ -224,27 +224,23 @@ export default {
         });
     },
     login() {
-      this.$fire
-        .auth
+      this.$fire.auth
         .signInWithEmailAndPassword(this.user.email, this.user.password)
-        .then(data => {
+        .then((data) => {
           // console.log(data)
-          this.$fire
-            .auth
-            .currentUser.getIdToken()
-            .then(idToken => {
-              const token = idToken;
-              const { email, uid } = this.$fire.auth.currentUser;
-              this.$store.commit("setUser", { email, uid });
-              this.$store.commit("setLoginState", true);
-              // Set JWT to the cookie
-              Cookie.set("email", email);
-              Cookie.set("access_token", token);
-              this.processing = false;
-              this.$router.push("/");
-            });
+          this.$fire.auth.currentUser.getIdToken().then((idToken) => {
+            const token = idToken;
+            const { email, uid } = this.$fire.auth.currentUser;
+            this.$store.commit("setUser", { email, uid });
+            this.$store.commit("setLoginState", true);
+            // Set JWT to the cookie
+            Cookie.set("email", email);
+            Cookie.set("access_token", token);
+            this.processing = false;
+            this.$router.push("/");
+          });
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
@@ -254,10 +250,9 @@ export default {
         });
     },
     register() {
-      this.$fire
-        .auth
+      this.$fire.auth
         .createUserWithEmailAndPassword(this.user.email, this.user.password)
-        .then(data => {
+        .then((data) => {
           //console.log(data)
           const token = data.user.refreshToken;
           const { email, uid } = data.user;
@@ -265,16 +260,13 @@ export default {
           this.$store.commit("setLoginState", true);
           // Set JWT to the cookie
           Cookie.set("email", email);
-          this.$fire
-            .auth
-            .currentUser.getIdToken()
-            .then(idToken => {
-              Cookie.set("access_token", idToken);
-            });
+          this.$fire.auth.currentUser.getIdToken().then((idToken) => {
+            Cookie.set("access_token", idToken);
+          });
           this.processing = false;
           this.$router.push("/");
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
@@ -283,8 +275,8 @@ export default {
           this.processing = false;
           // ...
         });
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>

@@ -16,7 +16,7 @@
       @click="save"
       :color="is_saved == 1 ? 'blue' : null"
     >
-      <v-icon dark x-small>mdi-bookmark-multiple</v-icon>
+      <v-icon dark x-small>{{mdiBookmarkMultiple}}</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
     <ActionPure
@@ -32,6 +32,7 @@
 <script>
 import Like from "./Like";
 import ActionPure from "./ActionPure";
+import {mdiBookmarkMultiple} from "@mdi/js"
 
 export default {
   components: {
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       messageCount: 0,
+      mdiBookmarkMultiple,
       is_saved: false,
     };
   },

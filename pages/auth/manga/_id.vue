@@ -13,7 +13,7 @@
                 placeholder="Upload ảnh bài viết"
                 label="Ảnh bài viết"
                 multiple
-                prepend-icon="mdi-paperclip"
+                :prepend-icon="mdiPaperclip"
                 accept="image/png, image/jpeg, image/bmp"
               >
                 <template v-slot:selection="{ text }">
@@ -56,9 +56,13 @@
   </v-form>
 </template>
 <script>
+import {mdiPaperclip} from "@mdi/js"
 import HtmlParser from "@/components/HtmlParser";
 //const HtmlParser=()=>import("@/components/HtmlParser")
 export default {
+  async asyncData({$fire}){
+    await $fire.firestoreReady()
+  },
   components: {
     HtmlParser,
   },
@@ -73,6 +77,7 @@ export default {
       files: [],
       //   show: false,
       //   searchkey: "",
+      mdiPaperclip,
       valid: true,
       loading: false,
     };

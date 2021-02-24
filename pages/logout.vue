@@ -6,15 +6,19 @@
         <v-card-title class="headline">Thông báo lỗi</v-card-title>
 
         <v-card-text>
-          {{message}}
+          {{ message }}
           <br />
-          <nuxt-link to="/support" v-if="isLogout">Nếu vấn đề vẫn sảy ra hãy liên lạc với chúng tôi</nuxt-link>
+          <nuxt-link to="/support" v-if="isLogout"
+            >Nếu vấn đề vẫn sảy ra hãy liên lạc với chúng tôi</nuxt-link
+          >
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <nuxt-link to="/">
-            <v-btn color="green darken-1" text @click="dialog = false">Đã hiểu</v-btn>
+            <v-btn color="green darken-1" text @click="dialog = false"
+              >Đã hiểu</v-btn
+            >
           </nuxt-link>
         </v-card-actions>
       </v-card>
@@ -24,6 +28,10 @@
 <script>
 import Cookie from "js-cookie";
 export default {
+  async asyncData({$fire}){
+    await $fire.firestoreReady()
+
+  },
   beforeCreate() {
     // ここでローディングのインジケータアニメーションを表示すると良い
     this.$fire

@@ -6,21 +6,21 @@
         <v-icon small v-if="show1All">mdi-eye-check-outline</v-icon>
         <v-icon small v-else>mdi-eye-off-outline</v-icon>
       </v-btn> -->
-      <v-btn icon @click="show2All=!show2All">
-        <v-icon small v-if="show2All">mdi-eye-check-outline</v-icon>
-        <v-icon small v-else>mdi-eye-off-outline</v-icon>
+      <v-btn icon @click="show2All = !show2All">
+        <v-icon small v-if="show2All">{{ mdiEyeCheckOutline }}</v-icon>
+        <v-icon small v-else>{{ mdiEyeOffOutline }}</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
     </div>
     <template>
       <WordItem
-        :controller="index>=0"
+        :controller="index >= 0"
         v-for="(item, i) in itemLocals"
         :key="key(i)"
         :item="item"
         :creator="creator"
         @add="add(i)"
-        @edit="edit(i,...arguments)"
+        @edit="edit(i, ...arguments)"
         @xoa="xoa(i)"
         :show1All="show1All"
         :show2All="show2All"
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mdiEyeCheckOutline, mdiEyeOffOutline } from "@mdi/js";
 export default {
   components: {
     WordItem: () => import("@/components/comment/content/WordItem"),
@@ -40,6 +41,8 @@ export default {
     },
   },
   data: () => ({
+    mdiEyeCheckOutline,
+    mdiEyeOffOutline,
     itemLocals: null,
     show1All: true,
     show2All: true,

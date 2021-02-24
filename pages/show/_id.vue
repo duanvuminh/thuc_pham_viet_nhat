@@ -84,11 +84,12 @@
       fab
       @click="showEdit = !showEdit"
     >
-      <v-icon>mdi-pencil</v-icon>
+      <v-icon>{{mdiPencil}}</v-icon>
     </v-btn>
   </v-col>
 </template>
 <script>
+import {mdiPencil} from "@mdi/js"
 import Cookie from "js-cookie";
 import HtmlParser from "@/components/HtmlParser";
 import Logo from "@/components/Logo";
@@ -101,7 +102,8 @@ import Search from "@/components/nihongo/Search";
 // const Search = () => import("@/components/nihongo/Search");
 
 export default {
-  async asyncData({ params, store, $axios }) {
+  async asyncData({ params, store, $axios, $fire }) {
+    await $fire.firestoreReady()
     let email = store.state.user.email ? store.state.user.email : "undefined";
     let items = await $axios
       .$get("/api/get_post_by_id", {
@@ -155,6 +157,7 @@ export default {
       items: [],
       loading: false,
       loading1: false,
+      mdiPencil,
       show: false,
       showEdit: false,
       searchkey: "",

@@ -1,22 +1,36 @@
 <template>
   <div>
-    <canvas id="can" :width="width" :height="height" style="cursor: crosshair"></canvas>
+    <canvas
+      id="can"
+      :width="width"
+      :height="height"
+      style="cursor: crosshair"
+    ></canvas>
     <v-card class="d-flex flex-row mb-6" color="grey lighten-2" flat tile>
       <v-card outlined tile>
         <v-card-actions>
           <v-btn icon color="green" @click="undo">
-            <v-icon>mdi-undo</v-icon>
+            <v-icon>{{ mdiUndo }}</v-icon>
           </v-btn>
           <v-btn icon color="green" @click="reset">
-            <v-icon>mdi-autorenew</v-icon>
+            <v-icon>{{ mdiAutorenew }}</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-card v-for="(kanji,i) in data" :key="i" class="pa-3" outlined tile @click="select(kanji)">{{kanji}}</v-card>
+      <v-card
+        v-for="(kanji, i) in data"
+        :key="i"
+        class="pa-3"
+        outlined
+        tile
+        @click="select(kanji)"
+        >{{ kanji }}</v-card
+      >
     </v-card>
   </div>
 </template>
 <script>
+import { mdiUndo, mdiAutorenew } from "@mdi/js";
 import handwriting from "@/module/handwriting";
 export default {
   data() {
@@ -24,13 +38,15 @@ export default {
       canvas: {},
       width: window.innerWidth > 0 ? window.innerWidth : screen.width,
       height: 250,
-      data: []
+      data: [],
+      mdiAutorenew: mdiAutorenew,
+      mdiUndo: mdiUndo,
     };
   },
   computed: {
-    text(){
-      return this.canvas.text
-    }
+    text() {
+      return this.canvas.text;
+    },
   },
   methods: {
     undo() {
@@ -40,9 +56,9 @@ export default {
       //Clear canvas, captured trace, and stored steps
       this.canvas.erase();
     },
-    select(kanji){
-      this.$emit('handwriting', kanji)
-    }
+    select(kanji) {
+      this.$emit("handwriting", kanji);
+    },
   },
   mounted() {
     this.width = window.innerWidth > 0 ? window.innerWidth : screen.width;
@@ -55,10 +71,10 @@ export default {
     //Set options
     this.canvas.setOptions({
       language: "ja",
-      numOfReturn: 10
+      numOfReturn: 10,
     });
     //only turn on undo functionality
     this.canvas.set_Undo_Redo(true, false);
-  }
+  },
 };
 </script>

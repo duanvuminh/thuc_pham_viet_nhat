@@ -6,9 +6,11 @@
           <div class="d-flex align-center">
             <v-tooltip right>
               <template v-slot:activator="{ on, attrs }">
-                <span v-if="show1" class="text-h5" v-bind="attrs" v-on="on">{{item.word}}</span>
+                <span v-if="show1" class="text-h5" v-bind="attrs" v-on="on">{{
+                  item.word
+                }}</span>
               </template>
-              <span>{{item.hint?item.hint:"blank"}}</span>
+              <span>{{ item.hint ? item.hint : "blank" }}</span>
             </v-tooltip>
             <!-- <v-btn
               v-if="!show1"
@@ -24,43 +26,57 @@
             </v-btn> -->
             <v-spacer></v-spacer>
             <HtmlParser v-if="show2" :content="item.content"></HtmlParser>
-            <v-btn icon @click="show2=!show2" small>
-              <v-icon small>mdi-repeat-once</v-icon>
+            <v-btn icon @click="show2 = !show2" small>
+              <v-icon small>{{ mdiRepeatOnce }}</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
           </div>
         </template>
         <template v-else>
           <v-text-field v-model="item.word" outlined label="Từ"></v-text-field>
-          <v-text-field v-model="item.hint" outlined label="Hint"></v-text-field>
-          <v-textarea v-model="item.content" outlined label="Nội dung"></v-textarea>
+          <v-text-field
+            v-model="item.hint"
+            outlined
+            label="Hint"
+          ></v-text-field>
+          <v-textarea
+            v-model="item.content"
+            outlined
+            label="Nội dung"
+          ></v-textarea>
         </template>
       </v-card-text>
       <v-spacer></v-spacer>
       <div>
-        <v-menu bottom left v-if="show&&controller">
+        <v-menu bottom left v-if="show && controller">
           <template v-slot:activator="{ on, attrs }">
             <v-btn dark icon v-bind="attrs" v-on="on">
-              <v-icon small>mdi-dots-vertical</v-icon>
+              <v-icon small>{{ mdiDotsVertical }}</v-icon>
             </v-btn>
           </template>
           <v-list>
             <v-list-item dense>
               <v-btn icon @click="$emit('add')">
-                <v-icon small>mdi-plus</v-icon>
+                <v-icon small>{{ mdiPlus }}</v-icon>
               </v-btn>
               <v-btn icon @click="$emit('xoa')">
-                <v-icon small>mdi-minus</v-icon>
+                <v-icon small>{{ mdiMinus }}</v-icon>
               </v-btn>
-              <v-btn icon @click="editMode=true">
-                <v-icon small>mdi-pen</v-icon>
+              <v-btn icon @click="editMode = true">
+                <v-icon small>{{ mdiPen }}</v-icon>
               </v-btn>
             </v-list-item>
           </v-list>
         </v-menu>
         <template v-if="editMode">
-          <v-btn icon @click="editMode=false;$emit('edit',item)">
-            <v-icon small>mdi-check</v-icon>
+          <v-btn
+            icon
+            @click="
+              editMode = false;
+              $emit('edit', item);
+            "
+          >
+            <v-icon small>{{ mdiCheck }}</v-icon>
           </v-btn>
         </template>
       </div>
@@ -69,6 +85,14 @@
 </template>
 
 <script>
+import {
+  mdiCheck,
+  mdiPen,
+  mdiMinus,
+  mdiPlus,
+  mdiDotsVertical,
+  mdiRepeatOnce,
+} from "@mdi/js";
 export default {
   components: {
     HtmlParser: () => import("@/components/HtmlParser"),
@@ -85,6 +109,13 @@ export default {
   data: () => ({
     editMode: false,
     hint: false,
+
+    mdiCheck,
+    mdiPen,
+    mdiMinus,
+    mdiPlus,
+    mdiDotsVertical,
+    mdiRepeatOnce,
     show1: true,
     show2: true,
     word: null,

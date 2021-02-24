@@ -89,7 +89,8 @@ export default {
                 services: {
                     auth: true,
                     firestore: true // Just as example. Can be any other service.
-                }
+                },
+                lazy: true
             }
         ]
         // ['@nuxtjs/google-adsense', {
@@ -226,6 +227,10 @@ export default {
      */
     vuetify: {
         customVariables: ['~/assets/variables.scss'],
+        defaultAssets: false,
+        icons: {
+            iconfont: 'mdiSvg',
+        },
         // treeShake: false,
         theme: {
             // disable: true,
@@ -263,7 +268,7 @@ export default {
      */
     render: {
         bundleRenderer: {
-            shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
+            // shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type),
             // resourceHints:false
         },
     },
