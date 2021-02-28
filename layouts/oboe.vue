@@ -5,32 +5,13 @@
       <nuxt-link to="/forum" class="nuxt-link" :prefetch="false"
         >Forum</nuxt-link
       >
-      <v-menu bottom left>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>{{ mdiDotsVertical }}</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item v-if="!loggedIn" to="/login">
-            <v-list-item-title>Login</v-list-item-title>
-          </v-list-item>
-          <template v-else>
-            <v-list-item
-              v-for="item in items"
-              :key="item.title"
-              :to="item.link"
-            >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/logout">
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-menu>
+      <v-btn v-if="!loggedIn" icon small>
+        <v-icon>{{mdiAccountOutline}}</v-icon>
+      </v-btn>
+      <v-btn v-else icon small>
+        <v-icon>{{mdiLogout }}</v-icon>
+      </v-btn>
     </v-app-bar>
-
     <v-main>
       <v-container fluid>
         <v-row class="fill-height" align="start" justify="center">
@@ -50,7 +31,7 @@
 </template> 
 
 <script>
-import { mdiDotsVertical } from "@mdi/js";
+import { mdiDotsVertical,mdiAccountOutline,mdiLogout  } from "@mdi/js";
 import { mapState } from "vuex";
 //const HtmlParser = () => import("@/components/HtmlParser");
 import HtmlParser from "@/components/HtmlParser";
@@ -62,6 +43,8 @@ export default {
   data() {
     return {
       mdiDotsVertical,
+      mdiAccountOutline,
+      mdiLogout, 
       selectedText: "",
       selectedTextShow: "",
       selectedTextApi: {
