@@ -5,11 +5,11 @@
       <nuxt-link to="/forum" class="nuxt-link" :prefetch="false"
         >Forum</nuxt-link
       >
-      <v-btn v-if="!loggedIn" icon small>
-        <v-icon>{{mdiAccountOutline}}</v-icon>
+      <v-btn v-if="!loggedIn" icon to="/login">
+        <v-icon small>{{mdiAccountOutline}}</v-icon>
       </v-btn>
-      <v-btn v-else icon small>
-        <v-icon>{{mdiLogout }}</v-icon>
+      <v-btn v-else icon to="/logout">
+        <v-icon small>{{mdiLogout }}</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>

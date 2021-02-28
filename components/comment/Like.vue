@@ -9,6 +9,9 @@
 <script>
 import {mdiThumbUp} from "@mdi/js"
 export default {
+  async asyncData({ $fire }) {
+    await $fire.firestoreReady();
+  },
   components: {},
   data() {
     return {
@@ -30,7 +33,7 @@ export default {
         .doc(this.path)
         .set(
           {
-            total_likeds: this.$fire.firestore.FieldValue.increment(this.is_liked)
+            total_likeds: this.$fireModule.firestore.FieldValue.increment(this.is_liked)
           },
           { merge: true }
         );

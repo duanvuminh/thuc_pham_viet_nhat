@@ -3,12 +3,17 @@
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
     infinite-scroll-distance="20"
-    style="max-width:600px;width:100%"
+    style="max-width: 600px; width: 100%"
   >
     <v-col cols="12">
       <v-row align="start" justify="center">
-        <template v-for="(post,index) in posts">
-          <v-card style="margin-bottom: 2rem;width:100%" class="ma-2" elevation="0" :key="index">
+        <template v-for="(post, index) in posts">
+          <v-card
+            style="margin-bottom: 2rem; width: 100%"
+            class="ma-2"
+            elevation="0"
+            :key="index"
+          >
             <v-card-text>
               <v-img
                 v-if="post.url"
@@ -19,15 +24,15 @@
               ></v-img>
               <HtmlParser :content="$md.render(post.content)"></HtmlParser>
               <div class="d-flex">
-                <b>{{post.id}}</b>
+                <b>{{ post.id }}</b>
                 <v-spacer></v-spacer>
                 <ActionPure
                   v-if="user.email == 'duanvuminh@gmail.com'"
                   :_add="false"
                   :_edit="true"
                   :_delete="true"
-                  @edit="$router.push(`/auth/manga/${post.id}`);"
-                  @delete="deleteArticle(index,post.id)"
+                  @edit="$router.push(`/auth/manga/${post.id}`)"
+                  @delete="deleteArticle(index, post.id)"
                 ></ActionPure>
               </div>
             </v-card-text>
@@ -45,24 +50,23 @@
       v-if="user.email == 'duanvuminh@gmail.com'"
       to="/auth/manga"
     >
-      <v-icon>{{mdiPencil}}</v-icon>
+      <v-icon>{{ mdiPencil }}</v-icon>
     </v-btn>
   </div>
 </template>
 <script>
-import {mdiPencil} from "@mdi/js"
+import { mdiPencil } from "@mdi/js";
 import HtmlParser from "@/components/HtmlParser";
 import { mapState } from "vuex";
 import ActionPure from "@/components/comment/ActionPure";
 export default {
   async asyncData({ params, store, $axios,$fire }) {
+    await $fire.firestoreReady()
     let posts = [];
     let lastId = "";
     let limit = 5;
-    await $fire.firestoreReady()
     try {
-      await this.$fire
-        .firestore
+      await $fire.firestore
         .collection("manga")
         .orderBy("edited", "desc")
         .limit(5)
@@ -82,34 +86,30 @@ export default {
           });
         });
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
     return { posts, lastId, limit };
   },
-  beforeCreate() {},
   components: {
     HtmlParser,
     ActionPure,
   },
   created() {
     if (this.lastId) {
-      this.$fire
-        .firestore
+      this.$fire.firestore
         .collection("manga")
         .doc(this.lastId)
         .get()
         .then((doc) => {
           this.last = doc;
-          this.next = this.$fire
-            .firestore
+          this.next = this.$fire.firestore
             .collection("manga")
             .orderBy("edited", "desc")
             .startAfter(this.last)
             .limit(this.limit);
         });
     } else {
-      this.$fire
-        .firestore
+      this.$fire.firestore
         .collection("manga")
         .orderBy("edited", "desc")
         .limit(5)
@@ -128,8 +128,7 @@ export default {
             this.lastId = doc.id;
             this.last = doc;
           });
-          this.next = this.$fire
-            .firestore
+          this.next = this.$fire.firestore
             .collection("manga")
             .orderBy("edited", "desc")
             .startAfter(this.last)
@@ -158,8 +157,7 @@ export default {
   layout: "simple",
   methods: {
     deleteArticle(index, id) {
-      this.$fire
-        .firestore
+      this.$fire.firestore
         .collection("manga")
         .doc(id)
         .delete()
@@ -193,8 +191,7 @@ export default {
         if (!this.last) return;
         // Construct a new query starting at this document,
         // get the next 25 cities.
-        this.next = this.$fire
-          .firestore
+        this.next = this.$fire.firestore
           .collection("manga")
           .orderBy("edited", "desc")
           .startAfter(this.last)
