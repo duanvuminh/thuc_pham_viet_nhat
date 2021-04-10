@@ -67,7 +67,7 @@ export default {
      */
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
-        '@nuxtjs/component-cache',
+        // '@nuxtjs/component-cache',
         '@nuxtjs/axios',
         '@nuxtjs/markdownit',
         '@nuxtjs/sitemap',

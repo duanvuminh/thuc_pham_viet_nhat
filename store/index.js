@@ -1,4 +1,3 @@
-import JWTDecode from "jwt-decode";
 import cookieparser from "cookieparser";
 
 export const state = () => ({

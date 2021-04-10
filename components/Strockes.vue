@@ -108,3 +108,8 @@ export default {
   watch: {}
 };
 </script>
+<style scoped>
+path:nth-child(1) {
+          stroke: #1976D2;
+        }
+</style>

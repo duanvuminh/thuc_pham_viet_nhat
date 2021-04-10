@@ -10,11 +10,11 @@
           <!-- <a text @click="getfulllistkanji">{{showmore?"Ẩn":"Kanji cơ bản"}}</a> -->
         </v-row>
       </v-col>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <template v-if="showmore">
           <HtmlParser :content="all" />
         </template>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-col>
 </template>
@@ -30,11 +30,11 @@ export default {
   },
   data() {
     return {
-      all: "",
-      introdue: ` 
-[池](/show/池)｜[北](/show/北)｜[姦](/show/姦)｜...
-      `,
-      showmore: false
+//       all: "",
+//       introdue: ` 
+// [池](/show/池)｜[北](/show/北)｜[姦](/show/姦)｜...
+//       `,
+//       showmore: false
     };
   },
   head() {
@@ -52,13 +52,13 @@ export default {
   },
   layout: "oboe",
   methods: {
-    getfulllistkanji() {
-      this.showmore = !this.showmore;
-      if (!this.showmore) return;
-      this.$axios.get(`/api/all`).then(r => {
-        this.all = this.$md.render(r.data.html);
-      });
-    }
+    // getfulllistkanji() {
+    //   this.showmore = !this.showmore;
+    //   if (!this.showmore) return;
+    //   this.$axios.get(`/api/all`).then(r => {
+    //     this.all = this.$md.render(r.data.html);
+    //   });
+    // }
   },
   mounted() {
   }

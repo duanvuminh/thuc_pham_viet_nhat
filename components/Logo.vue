@@ -10,6 +10,9 @@
     <text id="OBOE-2" data-name="OBOE" transform="translate(10 156)" fill="red" font-size="80" font-family="HelveticaNeue, Helvetica Neue"><tspan x="0" y="0">O</tspan><tspan y="0" fill="#0062ff">B</tspan><tspan y="0">O</tspan><tspan y="0" fill="#1162fb">E</tspan></text>
   </g>
 </svg>
+<!-- <div class="text-lg-h2 text-h3">
+  OBOE
+</div> -->
 </template>
 
 <style>

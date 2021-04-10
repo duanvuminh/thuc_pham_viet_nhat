@@ -9,9 +9,6 @@
 <script>
 import {mdiThumbUp} from "@mdi/js"
 export default {
-  async asyncData({ $fire }) {
-    await $fire.firestoreReady();
-  },
   components: {},
   data() {
     return {
@@ -49,7 +46,8 @@ export default {
         );
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$fire.firestoreReady();
     this.$fire
       .firestore
       .doc(this.path)

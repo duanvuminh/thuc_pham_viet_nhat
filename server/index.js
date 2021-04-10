@@ -6,7 +6,7 @@ import fulllistkanji from "./listkanji";
 var rp = require('request-promise');
 const fs = require('fs');
 const util = require('util')
-const cheerio = require('cheerio')
+// const cheerio = require('cheerio')
 
 const port = process.env.PORT || 3000
 const app = express();
@@ -150,50 +150,50 @@ app.get("/api/9gag", async(req, res) => {
         .then())
 
 });
-app.get("/api/dic", async(req, res) => {
-    // console.log(`/select: ${req.params}`);
-    // console.log(util.inspect(req, {showHidden: false, depth: 1}))
-    // console.log(`/select: ${req.params}`);
-    let result = ""
-    let params = req.query;
-    let url = `https://kotobank.jp/word/${encodeURIComponent(params.id)}`;
-    try {
-        let body = await rp(url).then();
-        const $ = cheerio.load(body);
-        $("a").map(function(i, el) {
-            // this === el
-            return $(this).attr("href", `/mean/${$(this).text()}`);
-        });
-        $(".pc-iframe-ad").remove();
-        $("img").remove();
-        $(".dictype.cf").map(function(i, el) {
-            // this === el
-            //return $(this).attr("href", `/show/${$(this).text()}`);
-            result += $(this).html()
-        });
-    } catch (e) {
-        // return res.json({ html: "", message: e.message });
-    }
-    url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
-    try {
-        let body = await rp(url).then();
-        const $ = cheerio.load(body);
-        $("a").map(function(i, el) {
-            // this === el
-            return $(this).attr("href", `/mean/${$(this).text()}`);
-        });
-        $("img").remove();
-        $(".kijiWrp .kiji .SsdSmlR").remove();
-        let html = `
-    ${result}    
-    ${$(".kijiWrp .kiji").html() ? $(".kijiWrp .kiji").html() : ""}`;
-        html ? html : "Không có dữ liệu";
-        return res.json({
-            html: html
-        });
-    } catch (e) {}
-    return res.json({ html: "", message: "ok" });
-});
+// app.get("/api/dic", async(req, res) => {
+//     // console.log(`/select: ${req.params}`);
+//     // console.log(util.inspect(req, {showHidden: false, depth: 1}))
+//     // console.log(`/select: ${req.params}`);
+//     let result = ""
+//     let params = req.query;
+//     let url = `https://kotobank.jp/word/${encodeURIComponent(params.id)}`;
+//     try {
+//         let body = await rp(url).then();
+//         const $ = cheerio.load(body);
+//         $("a").map(function(i, el) {
+//             // this === el
+//             return $(this).attr("href", `/mean/${$(this).text()}`);
+//         });
+//         $(".pc-iframe-ad").remove();
+//         $("img").remove();
+//         $(".dictype.cf").map(function(i, el) {
+//             // this === el
+//             //return $(this).attr("href", `/show/${$(this).text()}`);
+//             result += $(this).html()
+//         });
+//     } catch (e) {
+//         // return res.json({ html: "", message: e.message });
+//     }
+//     url = `https://www.weblio.jp/content/${encodeURIComponent(params.id)}`;
+//     try {
+//         let body = await rp(url).then();
+//         const $ = cheerio.load(body);
+//         $("a").map(function(i, el) {
+//             // this === el
+//             return $(this).attr("href", `/mean/${$(this).text()}`);
+//         });
+//         $("img").remove();
+//         $(".kijiWrp .kiji .SsdSmlR").remove();
+//         let html = `
+//     ${result}    
+//     ${$(".kijiWrp .kiji").html() ? $(".kijiWrp .kiji").html() : ""}`;
+//         html ? html : "Không có dữ liệu";
+//         return res.json({
+//             html: html
+//         });
+//     } catch (e) {}
+//     return res.json({ html: "", message: "ok" });
+// });
 
 app.get("/api/strokes", async(req, res) => {
     // console.log(`/select: ${req.params}`);
