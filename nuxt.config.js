@@ -199,7 +199,7 @@ export default {
      */
     axios: {
         baseURL: 'https://oboemasu.com/',
-        // baseURL: 'http://localhost:8000/',
+        //baseURL: 'http://localhost:8000/',
         // proxy: true,
         // proxyHeaders: false,
         // credentials: false

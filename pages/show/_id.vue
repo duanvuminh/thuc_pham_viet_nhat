@@ -11,7 +11,7 @@
               v-if="i == 0"
               :item="oboe"
               :searchkey="searchkey"
-              :email="oboe.id"
+              :email="email"
             >
               <Strockes :kanji="$route.params.id[0]" />
             </Ocard>
@@ -19,7 +19,7 @@
               v-else
               :item="oboe"
               :searchkey="searchkey"
-              :email="oboe.id"
+              :email="email"
             ></Ocard>
           </v-col>
         </v-row>
@@ -219,20 +219,20 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.items);
+    // console.log(this.webo);
     // console.log("im here");
-    // this.$fire
-    //   .firestore
-    //   .collection("kanji")
-    //   .doc(this.searchkey[0])
-    //   .collection("oboe")
-    //   .doc(this.email)
-    //   .get()
-    //   .then((doc) => {
-    //     if (doc.exists) {
-    //       this.commentvi = doc.data().vi ? doc.data().vi : "";
-    //     }
-    //   });
+    this.$fire
+      .firestore
+      .collection("kanji")
+      .doc(this.searchkey[0])
+      .collection("oboe")
+      .doc(this.email)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.commentvi = doc.data().vi ? doc.data().vi : "";
+        }
+      });
     // init tab
     // hiển thị nghĩa
     // hiển thị ví dụ

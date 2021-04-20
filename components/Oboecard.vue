@@ -55,7 +55,7 @@ export default {
   methods: {
   },
   mounted() {
-    this.$axios.get(`/api/user?id=${this.email}`).then(r => {
+    this.$axios.get(`/api/user?id=${this.item.id}`).then(r => {
       this.name = r.data.name;
     });
   }
