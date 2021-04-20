@@ -11,7 +11,7 @@
               v-if="i == 0"
               :item="oboe"
               :searchkey="searchkey"
-              :email="email"
+              :email="oboe.id"
             >
               <Strockes :kanji="$route.params.id[0]" />
             </Ocard>
@@ -19,7 +19,7 @@
               v-else
               :item="oboe"
               :searchkey="searchkey"
-              :email="email"
+              :email="oboe.id"
             ></Ocard>
           </v-col>
         </v-row>
@@ -219,7 +219,7 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.webo);
+    // console.log(this.items);
     // console.log("im here");
     // this.$fire
     //   .firestore
