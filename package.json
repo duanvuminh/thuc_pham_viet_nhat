@@ -32,7 +32,7 @@
     "markdown-it-attrs": "^3.0.3",
     "markdown-it-div": "^1.1.0",
     "markdown-it-video": "^0.6.3",
-    "nuxt": "^2.14.4",
+    "nuxt": "^3.4.3",
     "nuxt-compress": "^4.1.0",
     "nuxt-material-design-icons": "^1.0.4",
     "request": "^2.88.2",
